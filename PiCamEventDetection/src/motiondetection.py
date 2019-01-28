@@ -35,12 +35,12 @@ def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
 
 #constants:
 RES=tuple([640,480])
-FPS=10
+FPS=20
 CAM_WARMUP=2.5
 DELTA_THRESH=5
 SHOW_VIDEO=1 # TRUE
 MIN_UPLOAD_SECONDS=3.0
-MIN_MOTION_FRAMES=8
+MIN_MOTION_FRAMES=10
 MIN_AREA=5000
 
 # initialize the camera and grab a reference to the raw camera capture
