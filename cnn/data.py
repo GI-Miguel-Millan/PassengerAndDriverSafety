@@ -1,6 +1,28 @@
 # Not sure how important all of this is yet, but based on data manipulation from
 # https://github.com/harvitronix/five-video-classification-methods/blob/master/data.py
+"""
+The MIT License
 
+Copyright (c) 2017 Matt Harvey
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+"""
 import csv
 import numpy as np
 import random
@@ -9,7 +31,7 @@ import os.path
 import sys
 import operator
 import threading
-from processor import process_image
+from keras.preprocessing.image import img_to_array, load_img
 from keras.utils import to_categorical
 
 class DataSet():
@@ -228,6 +250,19 @@ class DataSet():
     def get_filename_from_image(filename):
         parts = filename.split(os.path.sep)
         return parts[-1].replace('.jpg', '')
+    
+    @staticmethod
+    def process_image(image, target_shape):
+    """Given an image, process it and return the array."""
+    # Load the image.
+    h, w, _ = target_shape
+    image = load_img(image, target_size=(h, w))
+
+    # Turn it into numpy, normalize and return.
+    img_arr = img_to_array(image)
+    x = (img_arr / 255.).astype(np.float32)
+
+    return x
 
     @staticmethod
     def rescale_list(input_list, size):
