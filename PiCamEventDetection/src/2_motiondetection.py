@@ -155,7 +155,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
             frameBuffer.append(frame)
             detectedCounter -= 1
 
-            if detectedCounter == 0 # we've up to the max AFTER MOTION frames 
+            if detectedCounter == 0: # we've up to the max AFTER MOTION frames 
                 # create filepath, write video and reset control variables
                 path = OUT_PATH+"{}.".format(timestamp.strftime(TIMEFORMAT))+EXTENSION
                 record_video(frameBuffer, path, CODEC, FPS, RES)
