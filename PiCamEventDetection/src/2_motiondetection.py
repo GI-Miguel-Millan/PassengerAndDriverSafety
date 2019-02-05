@@ -153,7 +153,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     else:
         if wasRecorded :
             frameBuffer.append(frame)
-            detectedCounter--
+            detectedCounter -= 1
 
             if detectedCounter == 0 # we've up to the max AFTER MOTION frames 
                 # create filepath, write video and reset control variables
@@ -166,7 +166,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
         else :
             if saveCounter < BEFORE_DETECTION_FRAMES :
                 frameBuffer.append(frame)
-                saveCounter++
+                saveCounter += 1
             else: 
                 try:
                     frameBuffer.popleft()
