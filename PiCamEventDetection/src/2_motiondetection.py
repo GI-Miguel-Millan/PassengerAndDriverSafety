@@ -60,7 +60,7 @@ MIN_AREA=5000
 OUTPATH = '../output/'
 PRIOR_DETECTION_FRAMES = 30 # number of frames to save before motion detected
 AFTER_DETECTION_FRAMES = 30 # number of frames to save after motion detected
-CODEC='MPEG'
+CODEC='h264'
 EXTENSION='avi'
 TIMEFORMAT='%Y%m%d-%H%M%S'
 
@@ -168,8 +168,10 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
                 tmpframeBuffer = frameBuffer
                 frameBuffer = collections.deque()
                 # Run the video saving script in a new thread
-                _thread.start_new_thread(record_video, (tmpframeBuffer, path, CODEC, FPS, RES))
-
+                #_thread.start_new_thread(record_video, (tmpframeBuffer, path, CODEC, FPS, RES))
+                
+                # must wait for video script to finish
+                record_video(tmpframeBuffer, path, CODEC, FPS, RES) 
         else :
             if saveCounter < PRIOR_DETECTION_FRAMES :
                 frameBuffer.append(saveframe)
