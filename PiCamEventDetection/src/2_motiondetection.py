@@ -40,9 +40,13 @@ def record_video(self, frames, filepath, codec, fps, resolution):
     # Define the codec and create VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*codec) 
     videowriter = cv2.VideoWriter(filepath, fourcc, fps, resolution)
+    
+    while True:
+        try:
+            videowriter.write(frames.leftpop())
+        except IndexError:
+            break
 
-    for frame in frames:
-        videowriter.write(frame)
     videowriter.release()
     
 #constants:
@@ -55,6 +59,9 @@ MIN_AREA=5000
 OUTPATH = '../output/'
 PRIOR_DETECTION_FRAMES = 10 # number of frames to save before motion detected
 AFTER_DETECTION_FRAMES = 10 # number of frames to save after motion detected
+CODEC='mp4v'
+EXTENSION='mp4'
+TIMEFORMAT='%Y%m%d-%H%M%S'
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
@@ -73,8 +80,9 @@ lastUploaded = datetime.datetime.now()
 recording = 0 # control variable, 0 = not recording, 1 = recording
 frameBuffer = collections.deque() #used to store frames for writing to video
 motionDetected = 0 # 0 = motion was detected in the frame, 1 = no motion
-detectedCounter = 10 # indicates # of frames to save after the last detected motion
-
+detectedCounter = AFTER_DETECTION_FRAMES # tracks number of frames after
+saveCounter = 0 # tracks number of frames before
+wasRecorded = 0 # 1 = the video was recording and has frames to write
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -83,7 +91,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     frame = f.array
     timestamp = datetime.datetime.now()
     text = "Unoccupied"
-    
+    motionDetected = 0
+
     # resize the frame, convert it to grayscale, and blur it
     frame = resize(frame, width=500)
     
@@ -116,13 +125,13 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     for c in cnts:
         # if the contour is too small, ignore it
         if cv2.contourArea(c) < MIN_AREA :
-            continue
-
+            continue 
         # compute the bounding box for the contour, draw it on the frame,
         # and update the text
         (x,y,w,h) = cv2.boundingRect(c)
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 255, 0), 2)
         text = "Occupied"
+        motionDetected = 1
 
     # draw the text and timestamp on the frame
     ts = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
@@ -133,7 +142,38 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     # 
     #
     # Put code for storing video if enough motion frames
-     
+    if motionDetected :
+        if recording : 
+            frameBuffer.append(frame)
+            detectedCounter = AFTER_DETECTION_FRAMES
+        else:
+            recording = 1 # start recording
+            frameBuffer.append(frame)
+            wasRecorded = 1
+    else:
+        if wasRecorded :
+            frameBuffer.append(frame)
+            detectedCounter--
+
+            if detectedCounter == 0 # we've up to the max AFTER MOTION frames 
+                # create filepath, write video and reset control variables
+                path = OUT_PATH+"{}.".format(timestamp.strftime(TIMEFORMAT))+EXTENSION
+                record_video(frameBuffer, path, CODEC, FPS, RES)
+                recording = 0
+                detectedCounter = AFTER_DETECTION_FRAMES
+                saveCounter = 0
+                wasRecorded = 0
+        else :
+            if saveCounter < BEFORE_DETECTION_FRAMES :
+                frameBuffer.append(frame)
+                saveCounter++
+            else: 
+                try:
+                    frameBuffer.popleft()
+                    frameBuffer.append(frame)
+                except IndexError:
+                    print("error while dequeing")
+
     #
     
     # check to see if the frames should be displayed to the screen
