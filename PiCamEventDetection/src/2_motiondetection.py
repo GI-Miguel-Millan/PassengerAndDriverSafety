@@ -59,8 +59,8 @@ MIN_AREA=5000
 OUTPATH = '../output/'
 PRIOR_DETECTION_FRAMES = 10 # number of frames to save before motion detected
 AFTER_DETECTION_FRAMES = 10 # number of frames to save after motion detected
-CODEC='mp4v'
-EXTENSION='mp4'
+CODEC='MPEG'
+EXTENSION='avi'
 TIMEFORMAT='%Y%m%d-%H%M%S'
 
 # initialize the camera and grab a reference to the raw camera capture
