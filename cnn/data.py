@@ -34,6 +34,24 @@ import threading
 from keras.preprocessing.image import img_to_array, load_img
 from keras.utils import to_categorical
 
+class threadsafe_iterator:
+    def __init__(self, iterator):
+        self.iterator = iterator
+        self.lock = threading.Lock()
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        with self.lock:
+            return next(self.iterator)
+
+def threadsafe_generator(func):
+    """Decorator"""
+    def gen(*a, **kw):
+        return threadsafe_iterator(func(*a, **kw))
+    return gen
+
 class DataSet():
 
     def __init__(self, seq_length=40, class_limit=None, image_shape=(224, 224, 3)):
@@ -61,6 +79,7 @@ class DataSet():
     @staticmethod
     def get_data():
         """Load our data from file."""
+        os.chdir(os.path.dirname(os.path.realpath(__file__)))
         with open(os.path.join('data', 'data_file.csv'), 'r') as fin:
             reader = csv.reader(fin)
             data = list(reader)
@@ -250,19 +269,19 @@ class DataSet():
     def get_filename_from_image(filename):
         parts = filename.split(os.path.sep)
         return parts[-1].replace('.jpg', '')
-    
+
     @staticmethod
     def process_image(image, target_shape):
-    """Given an image, process it and return the array."""
-    # Load the image.
-    h, w, _ = target_shape
-    image = load_img(image, target_size=(h, w))
+        """Given an image, process it and return the array."""
+        # Load the image.
+        h, w, _ = target_shape
+        image = load_img(image, target_size=(h, w))
 
-    # Turn it into numpy, normalize and return.
-    img_arr = img_to_array(image)
-    x = (img_arr / 255.).astype(np.float32)
+        # Turn it into numpy, normalize and return.
+        img_arr = img_to_array(image)
+        x = (img_arr / 255.).astype(np.float32)
 
-    return x
+        return x
 
     @staticmethod
     def rescale_list(input_list, size):

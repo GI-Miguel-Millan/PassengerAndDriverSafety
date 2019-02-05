@@ -105,24 +105,16 @@ def train(data_type, seq_length, model, saved_model=None,
 def main():
     """These are the main training settings. Set each before running
     this file."""
-    # model can be one of lstm, lrcn, mlp, conv_3d, c3d
-    model = 'lstm'
+    model = 'lrcn' #We will only have one type of model,, we can remove this later
     saved_model = None  # None or weights file
     class_limit = None  # int, can be 1-101 or None
     seq_length = 40
     load_to_memory = False  # pre-load the sequences into memory
-    batch_size = 32
+    batch_size = 1 #Set this number
     nb_epoch = 1000
 
-    # Chose images or features and image shape based on network.
-    if model in ['conv_3d', 'c3d', 'lrcn']:
-        data_type = 'images'
-        image_shape = (80, 80, 3)
-    elif model in ['lstm', 'mlp']:
-        data_type = 'features'
-        image_shape = None
-    else:
-        raise ValueError("Invalid model. See train.py for options.")
+    data_type = 'images'
+    image_shape = (80, 80, 3)
 
     train(data_type, seq_length, model, saved_model=saved_model,
           class_limit=class_limit, image_shape=image_shape,

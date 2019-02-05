@@ -26,9 +26,8 @@ class CNNModel():
         # Either use model that has already been made to build on it, or use new one
         if self.saved_model is not None:
             print("Loading model %s" % self.saved_model)
-            self.model = load_model(self.saved_model
-        else:
             self.model = load_model(self.saved_model)
+        else:
             self.input_shape = (seq_length, 80, 80, 3)
             self.model = self.lrcn()
 
