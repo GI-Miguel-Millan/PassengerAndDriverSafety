@@ -43,7 +43,7 @@ def record_video(frames, filepath, codec, fps, resolution):
     
     while True:
         try:
-            videowriter.write(frames.leftpop())
+            videowriter.write(frames.popleft())
         except IndexError:
             break
 
