@@ -36,7 +36,7 @@ def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
 
 # Record the video frames stored in a deque to an output file name.
 #
-def record_video(self, frames, filepath, codec, fps, resolution):
+def record_video(frames, filepath, codec, fps, resolution):
     # Define the codec and create VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*codec) 
     videowriter = cv2.VideoWriter(filepath, fourcc, fps, resolution)
