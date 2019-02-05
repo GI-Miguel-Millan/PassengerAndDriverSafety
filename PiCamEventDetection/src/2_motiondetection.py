@@ -92,6 +92,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     timestamp = datetime.datetime.now()
     text = "Unoccupied"
     motionDetected = 0
+    saveframe = frame # want to keep an unmodified frame for saving video
 
     # resize the frame, convert it to grayscale, and blur it
     frame = resize(frame, width=500)
@@ -144,15 +145,15 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     # Put code for storing video if enough motion frames
     if motionDetected :
         if recording : 
-            frameBuffer.append(f)
+            frameBuffer.append(saveframe)
             detectedCounter = AFTER_DETECTION_FRAMES
         else:
             recording = 1 # start recording
-            frameBuffer.append(f)
+            frameBuffer.append(saveframe)
             wasRecorded = 1
     else:
         if wasRecorded :
-            frameBuffer.append(f)
+            frameBuffer.append(saveframe)
             detectedCounter -= 1
 
             if detectedCounter == 0: # we've up to the max AFTER MOTION frames 
@@ -165,12 +166,12 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
                 wasRecorded = 0
         else :
             if saveCounter < PRIOR_DETECTION_FRAMES :
-                frameBuffer.append(f)
+                frameBuffer.append(saveframe)
                 saveCounter += 1
             else: 
                 try:
                     frameBuffer.popleft()
-                    frameBuffer.append(f)
+                    frameBuffer.append(saveframe)
                 except IndexError:
                     print("error while dequeing")
 
