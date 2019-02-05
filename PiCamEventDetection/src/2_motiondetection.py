@@ -12,7 +12,7 @@ import cv2
 import numpy as np
 import sys
 import collections
-
+import _thread
 
 # Re-written function from the imutils library in order to avoid 
 # the Illegal Instruction Error I was getting
@@ -57,8 +57,8 @@ DELTA_THRESH=5
 SHOW_VIDEO=1 # TRUE
 MIN_AREA=5000
 OUTPATH = '../output/'
-PRIOR_DETECTION_FRAMES = 10 # number of frames to save before motion detected
-AFTER_DETECTION_FRAMES = 10 # number of frames to save after motion detected
+PRIOR_DETECTION_FRAMES = 30 # number of frames to save before motion detected
+AFTER_DETECTION_FRAMES = 30 # number of frames to save after motion detected
 CODEC='MPEG'
 EXTENSION='avi'
 TIMEFORMAT='%Y%m%d-%H%M%S'
@@ -159,11 +159,15 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
             if detectedCounter == 0: # we've up to the max AFTER MOTION frames 
                 # create filepath, write video and reset control variables
                 path = OUTPATH+"{}.".format(timestamp.strftime(TIMEFORMAT))+EXTENSION
-                record_video(frameBuffer, path, CODEC, FPS, RES)
                 recording = 0
                 detectedCounter = AFTER_DETECTION_FRAMES
                 saveCounter = 0
                 wasRecorded = 0
+                tmpframeBuffer = frameBuffer
+                frameBuffer = collections.deque()
+                # Run the video saving script in a new thread
+                _thread.start_new_thread(record_video, (tmpframeBuffer, path, CODEC, FPS, RES))
+
         else :
             if saveCounter < PRIOR_DETECTION_FRAMES :
                 frameBuffer.append(saveframe)
