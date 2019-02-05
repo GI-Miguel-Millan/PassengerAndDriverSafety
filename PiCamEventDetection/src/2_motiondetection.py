@@ -13,6 +13,7 @@ import numpy as np
 import sys
 import collections
 import _thread
+import threading
 
 # Re-written function from the imutils library in order to avoid 
 # the Illegal Instruction Error I was getting
@@ -83,6 +84,7 @@ motionDetected = 0 # 0 = motion was detected in the frame, 1 = no motion
 detectedCounter = AFTER_DETECTION_FRAMES # tracks number of frames after
 saveCounter = 0 # tracks number of frames before
 wasRecorded = 0 # 1 = the video was recording and has frames to write
+savingInProgress = 0
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -112,8 +114,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     # frame and running average
     cv2.accumulateWeighted(gray, avg, 0.5)
     frameDelta = cv2.absdiff(gray, cv2.convertScaleAbs(avg)) # delta = |background_model - current_frame|
-    print("framedelta: {}".format(frameDelta))
-    print("avg: {}".format(avg))
+    #print("framedelta: {}".format(frameDelta))
+    #print("avg: {}".format(avg))
     
     # Threshold the delta image, dilate the thresholded image to fill
     # in the holes, then find contours on thresholded image
@@ -188,7 +190,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
         key = cv2.waitKey(1) & 0xFF
 
         # if the 'q' key is pressed, break from the loop
-        if key == ord("q"):
+        if key == ord("q") :
             break
 
     #clear the stream in preparation for the next frame
