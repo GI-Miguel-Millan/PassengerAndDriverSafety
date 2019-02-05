@@ -8,7 +8,7 @@ import picamera
 
 path="../output/"
 codec="h264"
-extension="h264"
+extension="mpeg"
 timeformat="%Y%m%d-%H%M%S"
 testing=1 # set 1 = true, 0 = false
 
@@ -18,8 +18,8 @@ def change_detected():
     return 1
 
 camera = picamera.PiCamera()
-camera.resolution = (256, 256)
-stream = picamera.PiCameraCircularIO(camera, seconds=20)
+camera.resolution = (640,480)
+stream = picamera.PiCameraCircularIO(camera, seconds=60)
 camera.start_recording(stream, format=codec)
 
 if testing:
