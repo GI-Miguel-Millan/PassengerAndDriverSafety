@@ -144,15 +144,15 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     # Put code for storing video if enough motion frames
     if motionDetected :
         if recording : 
-            frameBuffer.append(frame)
+            frameBuffer.append(f)
             detectedCounter = AFTER_DETECTION_FRAMES
         else:
             recording = 1 # start recording
-            frameBuffer.append(frame)
+            frameBuffer.append(f)
             wasRecorded = 1
     else:
         if wasRecorded :
-            frameBuffer.append(frame)
+            frameBuffer.append(f)
             detectedCounter -= 1
 
             if detectedCounter == 0: # we've up to the max AFTER MOTION frames 
@@ -165,12 +165,12 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
                 wasRecorded = 0
         else :
             if saveCounter < PRIOR_DETECTION_FRAMES :
-                frameBuffer.append(frame)
+                frameBuffer.append(f)
                 saveCounter += 1
             else: 
                 try:
                     frameBuffer.popleft()
-                    frameBuffer.append(frame)
+                    frameBuffer.append(f)
                 except IndexError:
                     print("error while dequeing")
 
