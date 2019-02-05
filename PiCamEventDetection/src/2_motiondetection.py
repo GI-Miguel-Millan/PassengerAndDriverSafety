@@ -164,7 +164,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
                 saveCounter = 0
                 wasRecorded = 0
         else :
-            if saveCounter < BEFORE_DETECTION_FRAMES :
+            if saveCounter < PRIOR_DETECTION_FRAMES :
                 frameBuffer.append(frame)
                 saveCounter += 1
             else: 
