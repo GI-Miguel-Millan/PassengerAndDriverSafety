@@ -14,6 +14,7 @@ import sys
 import collections
 import _thread
 import threading
+import SaveVideoThread as svt
 
 # Re-written function from the imutils library in order to avoid 
 # the Illegal Instruction Error I was getting
@@ -35,27 +36,13 @@ def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
     resized=cv2.resize(image, dim, inter) # Here we changed interpolation=inter to just inter.
     return resized  
 
-# Record the video frames stored in a deque to an output file name.
-#
-def record_video(frames, filepath, codec, fps, resolution):
-    # Define the codec and create VideoWriter object
-    fourcc = cv2.VideoWriter_fourcc(*codec) 
-    videowriter = cv2.VideoWriter(filepath, fourcc, fps, resolution)
-    
-    while True:
-        try:
-            videowriter.write(frames.popleft())
-        except IndexError:
-            break
-
-    videowriter.release()
-    
 #constants:
 RES=tuple([640,480])
 FPS=30
+RECFPS=20
 CAM_WARMUP=2.5
 DELTA_THRESH=5
-SHOW_VIDEO=1 # TRUE
+SHOW_VIDEO=1 # 1=TRUE
 MIN_AREA=5000
 OUTPATH = '../output/'
 PRIOR_DETECTION_FRAMES = 30 # number of frames to save before motion detected
@@ -85,6 +72,8 @@ detectedCounter = AFTER_DETECTION_FRAMES # tracks number of frames after
 saveCounter = 0 # tracks number of frames before
 wasRecorded = 0 # 1 = the video was recording and has frames to write
 savingInProgress = 0
+threadID = 1 # each video saving thread spawned has a threadID associated
+threads = [] # stores references to threads
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -171,7 +160,14 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
                 #_thread.start_new_thread(record_video, (tmpframeBuffer, path, CODEC, FPS, RES))
                 
                 # must wait for video script to finish
-                record_video(tmpframeBuffer, path, CODEC, FPS, RES) 
+                #record_video(tmpframeBuffer, path, CODEC, FPS, RES)
+
+                # Create a new thread, start it, save its reference, increment the threadID.
+                thread = svt.SaveVideoThread(threadID,tmpframeBuffer, path, CODEC, RECFPS,RES)
+                thread.start()
+                threads.append(thread)
+                threadID += 1
+
         else :
             if saveCounter < PRIOR_DETECTION_FRAMES :
                 frameBuffer.append(saveframe)
@@ -193,6 +189,9 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
         # if the 'q' key is pressed, break from the loop
         if key == ord("q") :
+            # wait for all threads to complete before exiting.
+            for t in threads:
+                t.join()
             break
 
     #clear the stream in preparation for the next frame
