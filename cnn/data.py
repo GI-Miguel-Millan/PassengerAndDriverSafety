@@ -42,7 +42,7 @@ class threadsafe_iterator:
     def __iter__(self):
         return self
 
-    def __next__(self):
+    def next(self):
         with self.lock:
             return next(self.iterator)
 
@@ -271,19 +271,6 @@ class DataSet():
         return parts[-1].replace('.jpg', '')
 
     @staticmethod
-    def process_image(image, target_shape):
-        """Given an image, process it and return the array."""
-        # Load the image.
-        h, w, _ = target_shape
-        image = load_img(image, target_size=(h, w))
-
-        # Turn it into numpy, normalize and return.
-        img_arr = img_to_array(image)
-        x = (img_arr / 255.).astype(np.float32)
-
-        return x
-
-    @staticmethod
     def rescale_list(input_list, size):
         """Given a list and a size, return a rescaled/samples list. For example,
         if we want a list of size 5 and we have a list of size 25, return a new
@@ -318,3 +305,15 @@ class DataSet():
             if i > nb_to_return - 1 or class_prediction[1] == 0.0:
                 break
             print("%s: %.2f" % (class_prediction[0], class_prediction[1]))
+
+def process_image(image, target_shape):
+    """Given an image, process it and return the array."""
+    # Load the image.
+    h, w, _ = target_shape
+    image = load_img(image, target_size=(h, w))
+
+    # Turn it into numpy, normalize and return.
+    img_arr = img_to_array(image)
+    x = (img_arr / 255.).astype(np.float32)
+
+    return x

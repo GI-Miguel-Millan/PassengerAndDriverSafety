@@ -110,7 +110,7 @@ def main():
     class_limit = None  # int, can be 1-101 or None
     seq_length = 40
     load_to_memory = False  # pre-load the sequences into memory
-    batch_size = 1 #Set this number
+    batch_size = 7 #Set this number
     nb_epoch = 1000
 
     data_type = 'images'
