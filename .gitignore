@@ -2,3 +2,5 @@ __pycache__/
 *.py[cod]
 *$py.class
 cnn/data/logs/*
+cnn/data/train/*.png
+cnn/data/test/*.png
