@@ -1,0 +1,15 @@
+{
+	"RES": [640,480],
+	"FPS": 30,
+	"RECFPS": 30,
+	"CAM_WARMUP": 2.5,
+	"DELTA_THRESH": 10,
+	"SHOW_VIDEO": 1,
+	"WHT_CNT": 200,
+	"OUTPATH": "../output/",
+	"PRIOR_DETECTION_FRAMES": 30,
+	"AFTER_DETECTION_FRAMES": 30,
+	"CODEC": "h264",
+	"EXTENSION": "avi",
+	"TIMEFORMAT": "%Y%m%d-%H%M%S"
+}
