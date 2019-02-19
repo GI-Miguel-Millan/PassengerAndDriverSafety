@@ -32,12 +32,12 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="{% url 'index' %}">Home</a>
+            <a class="nav-link" href="{% url 'index' %}"></a>
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Video</a>
+            <a class="nav-link" href="#">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Register Device</a>
@@ -48,12 +48,16 @@
            <li class="nav-item">
             <a class="nav-link" href="#">Profile</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %} onclick="changeLabel()">Logout</a>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
   <!-- /.container -->
     {% block content %}
+
     {% endblock %}
   <!-- Footer -->
   <footer class="py-5 bg-dark">

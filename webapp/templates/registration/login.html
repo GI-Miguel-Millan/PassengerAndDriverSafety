@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Login{% endblock %}
+
+  <!-- Bootstrap core CSS -->
+<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+<link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
 
 {% block content %}
 <h2>Login</h2>
