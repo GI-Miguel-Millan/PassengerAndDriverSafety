@@ -42,7 +42,7 @@ class threadsafe_iterator:
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         with self.lock:
             return next(self.iterator)
 
