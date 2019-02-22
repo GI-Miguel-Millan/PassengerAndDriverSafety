@@ -2,3 +2,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 cnn/data/logs/*
+*.xml
+*.xml
+*.xml
+*.xml
+*.xml

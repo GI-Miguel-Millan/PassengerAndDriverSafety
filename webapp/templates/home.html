@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
 {% extends 'base.html' %}
+{% load static %}
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>{% block title %}Home{% endblock %}</title>
+
 </head>
+
 <body>
+
+{% block content %}
  <!-- Jumbotron Header -->
     <header class="jumbotron my-4">
       <h1 class="display-3">Welcome To Our Project</h1>
@@ -70,6 +84,7 @@
       </div>
 
     </div>
+{% endblock content %}
     <!-- /.row -->
 </body>
 </html>

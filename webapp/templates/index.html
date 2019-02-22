@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
 {% if user.is_authenticated %}
-  <a href="{% url 'logout' %}"></a>
+  <meta http-equiv="refresh" content=".000001;URL='{% url 'home' %}'"></a>
 {% else %}
+  <p>You are not logged in.</p>
   <a href="{% url 'login' %}">Login</a>
 {% endif %}
-
-
 {% endblock %}

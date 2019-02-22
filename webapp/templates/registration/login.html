@@ -3,16 +3,18 @@
 {% block title %}Login{% endblock %}
 
   <!-- Bootstrap core CSS -->
-<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-<link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
+  <link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
 
 {% block content %}
-<h2>Login</h2>
+<h2 class="card-body">Login</h2>
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Login</button>
+  <div class="col-lg-3 col-md-6 mb-4">
+  <button class="btn btn-primary">Login</button>
+  </div>
 </form>
 {% endblock %}
