@@ -5,6 +5,9 @@
 # import necessary packages
 from picamera.array import PiRGBArray
 from picamera import PiCamera
+import argparse
+import warnings
+import json
 import datetime
 import imutils
 import time
@@ -15,6 +18,15 @@ import collections
 import _thread
 import threading
 import SaveVideoThread as svt
+
+# Construct the argument parser and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-c", "--conf", required=True, help="path to the JSON configuration file")
+args = vars(ap.parse_args())
+
+#filter warnings, and load the configuration
+warnings.filterwarnings("ignore")
+conf = json.load(open(args["conf"]))
 
 # Re-written function from the imutils library in order to avoid 
 # the Illegal Instruction Error I was getting
@@ -37,19 +49,19 @@ def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
     return resized  
 
 #constants:
-RES=tuple([640,480])
-FPS=30
-RECFPS=20
-CAM_WARMUP=2.5
-DELTA_THRESH=5
-SHOW_VIDEO=1 # 1=TRUE
-MIN_AREA=5000
-OUTPATH = '../output/'
-PRIOR_DETECTION_FRAMES = 30 # number of frames to save before motion detected
-AFTER_DETECTION_FRAMES = 30 # number of frames to save after motion detected
-CODEC='h264'
-EXTENSION='avi'
-TIMEFORMAT='%Y%m%d-%H%M%S'
+RES=tuple(conf["RES"])
+FPS=conf["FPS"]
+RECFPS=conf["RECFPS"]
+CAM_WARMUP=conf["CAM_WARMUP"]
+DELTA_THRESH=conf["DELTA_THRESH"]
+SHOW_VIDEO=conf["SHOW_VIDEO"] # 1=TRUE
+MIN_AREA=conf["MIN_AREA"]
+OUTPATH = conf["OUTPATH"]
+PRIOR_DETECTION_FRAMES = conf["PRIOR_DETECTION_FRAMES"] # number of frames to save before motion detected
+AFTER_DETECTION_FRAMES = conf["AFTER_DETECTION_FRAMES"] # number of frames to save after motion detected
+CODEC=conf["CODEC"]
+EXTENSION=conf["EXTENSION"]
+TIMEFORMAT=conf["TIMEFORMAT"]
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()

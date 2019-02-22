@@ -7,9 +7,9 @@
 	"SHOW_VIDEO": 1,
 	"WHT_CNT": 17000,
 	"MIN_AREA": 5000,
-	"OUTPATH": "../output/",
+	"OUTPATH": "../output/bagEvent/",
 	"PRIOR_DETECTION_FRAMES": 30,
-	"AFTER_DETECTION_FRAMES": 30,
+	"AFTER_DETECTION_FRAMES": 15,
 	"CODEC": "h264",
 	"EXTENSION": "avi",
 	"TIMEFORMAT": "%Y%m%d-%H%M%S"
