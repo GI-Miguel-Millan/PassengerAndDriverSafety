@@ -8,3 +8,4 @@ PiCamEventDetection/output/*
 bag_cnn/data/train/*
 bag_cnn/data/test/*
 bag_cnn/data/logs/*
+bag_cnn/bagEnv/*
