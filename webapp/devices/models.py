@@ -5,6 +5,9 @@ import os, string
 # Create your models here.
 
 class Device(models.Model)
+    # Name given by the user/admin who is registering the device
+    name = models.CharField(max_length=255)
+    
     # The key the device connects with for verification
     key = models.CharField(max_length=10)
 
@@ -14,6 +17,9 @@ class Device(models.Model)
     # Who registered the device, the user/admin who made the Database entry
     regBy = models.CharField(max_length=50)
 
+
+    def __init__(self):
+        self.key = GenerateKey()
     
     def __str__(self):
         text = self.pk + " " + self.key + " " + self.regDate
