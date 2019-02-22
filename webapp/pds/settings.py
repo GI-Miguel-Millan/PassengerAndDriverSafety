@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -36,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -113,25 +113,14 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-# Crispy-Forms
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-# Authentication Redirects
-LOGIN_REDIRECT_URL = 'index'
-LOGOUT_REDIRECT_URL = 'login.html'
-
-# Email
-EMAIL_HOST = 'mail.gandi.net'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'admin@isrow.net'
-EMAIL_HOST_PASSWORD = 'AJ=S7?=Tr7!*hus,'
-EMAIL_USE_TLS = True
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/var/www/static/',
+]
