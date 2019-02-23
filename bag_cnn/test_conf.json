@@ -1,0 +1,7 @@
+{
+	"seq_length": 40,
+	"class_limit": null,
+	"image_shape": [80, 80, 3],
+	"batch_size": 7,
+	"using_images": true
+}
