@@ -1,3 +1,4 @@
+
 """pds URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -23,4 +24,7 @@ urlpatterns = [
 	path('', include('django.contrib.auth.urls')),
 	path('', TemplateView.as_view(template_name='index.html'), name='index'),
 	path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('devices/', include('devices.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
+

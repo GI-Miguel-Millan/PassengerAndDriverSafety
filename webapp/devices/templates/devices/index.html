@@ -1,0 +1,9 @@
+﻿{% if deviceList %}
+    <ul>
+    {% for device in deviceList %}
+        <li><a href="/devices/{{ device.name }}/">{{ device.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Devices are available.</p>
+{% endif %}
