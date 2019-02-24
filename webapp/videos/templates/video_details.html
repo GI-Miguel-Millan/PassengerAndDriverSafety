@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Video Details{% endblock %}
+
+{% block content %}
+<h2>Video Details</h2>
+<p style="font-weight: bold;">{{ video.name }}</p>
+<p>{{ video.event }}</p>
+<p>{{ video.size }}</p>
+<p>{{ video.upload }}</p>
+<video controls width="250">
+    <source src="{{ video.file.url }}" type="video/webm">
+    Sorry, your browser doesn't support embedded videos.
+</video>
+{% endblock %}
