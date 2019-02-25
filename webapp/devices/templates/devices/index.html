@@ -1,9 +1,21 @@
-﻿{% if deviceList %}
+﻿{% extends 'base.html' %}
+{% load static %}
+ <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
+{% block content %}
+
+{% if deviceList %}
     <ul>
+    <h2 class="display-3 align-content-center">Device List</h2>
+    <br>
     {% for device in deviceList %}
-        <li><a href="/devices/{{ device.name }}/">{{ device.name }}</a></li>
+        <li class="list-group-item"><a href="/devices/{{ device.name }}/">{{ device.name }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
     <p>No Devices are available.</p>
 {% endif %}
+{% endblock content %}

@@ -2,7 +2,6 @@
 <html lang="en">
 
 {% load static %}
-
 <head>
 
   <meta charset="utf-8">
@@ -32,26 +31,23 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="index.html"></a>
+            <a class="nav-link" href="{%  url 'index' %}"></a>
               <span class="sr-only">(current)</span>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'home' %}">Home</a>
           </li>
            <li class="nav-item">
-            <a class="nav-link" href="#">Videos</a>
+            <a class="nav-link" href="{% url 'list' %}">Videos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Register Device</a>
+            <a class="nav-link" href="{% url 'admin:index' %}">Register</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Registered Devices</a>
-          </li>
-           <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
+            <a class="nav-link" href="{% url 'devices:index' %}">Registered Devices</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            <a class="nav-link" href="{% url 'login' %}">Logout</a>
           </li>
         </ul>
       </div>

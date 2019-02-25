@@ -1,7 +1,20 @@
-﻿<h1>{{ device.name }}</h1>
+﻿{% extends 'base.html' %}
+{% load static %}
+ <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
+{% block content %}
+<br>
+    <div class="form-check">
+ <h3  class="display-4">{{ device.name }}</h3>
+     </div>
 <ul>
-    	<li>{{ device.regBy }}</li>
-	<li>{{ device.regDate }}</li>
-	<li>{{ device.active }}</li>
-	<li>{{ device.key }}</li>
+    	<li class="card-text">{{ device.regBy }}</li>
+	<li class="card-text">{{ device.regDate }}</li>
+	<li class="card-text">{{ device.active }}</li>
+	<li class="card-text">{{ device.key }}</li>
+<br>
 </ul>
+{% endblock content %}
