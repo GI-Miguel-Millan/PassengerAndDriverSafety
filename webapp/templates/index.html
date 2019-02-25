@@ -4,10 +4,11 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  <p>You are logged in.</p>
-  <a href="{% url 'logout' %}">logout</a>
+  <meta http-equiv="refresh" content=".000001;URL='{% url 'home' %}'"></a>
 {% else %}
-  <p>You are not logged in.</p>
-  <a href="{% url 'login' %}">login</a>
+<div class="col-lg-3 col-md-6 mb-4">
+  <p class="lead">You are not Logged in.</p>
+  <a href="{% url 'login' %}" class="btn btn-primary">Click Here to Login</a>
+</div>
 {% endif %}
 {% endblock %}

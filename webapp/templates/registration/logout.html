@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
 
 {% load crispy_forms_tags %}
 {% block title %}Logout{% endblock %}
