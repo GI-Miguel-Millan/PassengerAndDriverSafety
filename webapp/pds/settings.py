@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'crispy_forms',
+	'devices',
 	'videos',
 ]
 
@@ -130,8 +131,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Authentication Redirects
-LOGIN_REDIRECT_URL = 'index'
-LOGOUT_REDIRECT_URL = 'login.html'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
 
 # Email
 EMAIL_HOST = 'mail.gandi.net'
