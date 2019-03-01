@@ -3,10 +3,12 @@
 {% block title %}Video Delete{% endblock %}
 
 {% block content %}
-<h2>Delete Video</h2>
-<p>Are you sure you want to delete {{ video.name }}?</p>
-<form action="{% url 'delete' video.id %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Delete" class="btn btn-primary"/>
-</form>
+<div class="container mt-2 mb-2">
+	<h4>Delete Video</h4>
+	<p>Are you sure you want to delete {{ video.name }}?</p>
+	<form action="{% url 'delete' video.id %}" method="post">
+		{% csrf_token %}
+		<input type="submit" value="Delete" class="btn btn-primary"/>
+	</form>
+</div>
 {% endblock %}

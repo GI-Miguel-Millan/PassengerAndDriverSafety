@@ -1,20 +1,19 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
- <!-- Bootstrap core CSS -->
-  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+{% block title %}Device{% endblock %}
 
-  <!-- Custom styles for this template -->
-  <link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
+{% load crispy_forms_tags %}
+
 {% block content %}
-<br>
-    <div class="form-check">
- <h3  class="display-4">{{ device.name }}</h3>
-     </div>
-<ul>
-    	<li class="card-text">{{ device.regBy }}</li>
-	<li class="card-text">{{ device.regDate }}</li>
-	<li class="card-text">{{ device.active }}</li>
-	<li class="card-text">{{ device.key }}</li>
-<br>
-</ul>
+<div class="container">
+	<div class="form-check">
+		<h3  class="display-4">{{ device.name }}</h3>
+	</div>
+	<ul>
+		<li class="card-text">{{ device.regBy }}</li>
+		<li class="card-text">{{ device.regDate }}</li>
+		<li class="card-text">{{ device.active }}</li>
+		<li class="card-text">{{ device.key }}</li>
+	</ul>
+</div>
 {% endblock content %}

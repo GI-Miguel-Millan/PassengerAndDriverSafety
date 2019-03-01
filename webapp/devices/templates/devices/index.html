@@ -1,21 +1,35 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
- <!-- Bootstrap core CSS -->
-  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+{% block title %}Devices{% endblock %}
 
-  <!-- Custom styles for this template -->
-  <link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
+{% load crispy_forms_tags %}
+
 {% block content %}
-
-{% if deviceList %}
-    <ul>
-    <h2 class="display-3 align-content-center">Device List</h2>
-    <br>
-    {% for device in deviceList %}
-        <li class="list-group-item"><a href="/devices/{{ device.name }}/">{{ device.name }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No Devices are available.</p>
-{% endif %}
+<div class="container">
+<h4>Devices</h4>
+	{% if deviceList %}
+			<div class="row">
+			{% for device in deviceList %}
+				<div class="col-lg-3 col-md-6 mb-4">
+					<div class="card mt-2 mb-2">
+						<div class="card-header">
+								<h4>{{ device.name }}</h4>
+						</div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">{{ device.regBy }}</li>
+							<li class="list-group-item">{{ device.regDate }}</li>
+							{% if device.active %}
+								<li class="list-group-item">Active: <span class="oi oi-check"></span></li>
+							{% else %}
+								<li class="list-group-item">Active: <span class="oi oi-x"></span></li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+			{% endfor %}
+			</div>
+	{% else %}
+		<p>No Devices are available.</p>
+	{% endif %}
+</div>
 {% endblock content %}
