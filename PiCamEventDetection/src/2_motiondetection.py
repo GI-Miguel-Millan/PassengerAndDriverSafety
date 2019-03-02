@@ -143,7 +143,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
     cv2.putText(frame, ts, (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
             0.35, (0, 0, 255), 1)
-    # 
+    
+    saveframe = thresh
     #
     # Put code for storing video if enough motion frames
     if motionDetected :
@@ -196,7 +197,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     # check to see if the frames should be displayed to the screen
     if SHOW_VIDEO :
         # display the security feed
-        cv2.imshow("Security Feed", frame)
+        cv2.imshow("Security Feed", thresh)
         key = cv2.waitKey(1) & 0xFF
 
         # if the 'q' key is pressed, break from the loop
