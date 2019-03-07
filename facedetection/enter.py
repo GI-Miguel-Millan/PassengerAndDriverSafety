@@ -10,9 +10,11 @@ Example:
 face_detection_camera.py --num_frames 10
 """
 import argparse
+import io
 
+from time import sleep
 from picamera import PiCamera
-
+from PIL import Image, ImageDraw
 from aiy.vision.inference import CameraInference
 from aiy.vision.models import object_detection
 from aiy.vision.models import face_detection
@@ -48,13 +50,13 @@ def main():
     parser.add_argument('--enter_side', type=int, default=1,
                         help='Used to determine which side of the region should be considered "entering": 1 = right, 0 = left')
     args = parser.parse_args()
-
+    
     # Forced sensor mode, 1640x1232, full FoV. See:
     # https://picamera.readthedocs.io/en/release-1.13/fov.html#sensor-modes
     # This is the resolution inference run on.
     with PiCamera(sensor_mode=4, resolution=(args.cam_width, args.cam_height), framerate=args.fps) as camera:
         camera.start_preview()
-        
+
         # Get the camera width and height
         width = args.cam_width
         height = args.cam_height
@@ -98,9 +100,13 @@ def main():
         num_previous_faces = 0
         num_faces = 0
         faces = []
+        stream = io.BytesIO()
         with CameraInference(face_detection.model()) as inference:
-            
+
             for result in inference.run(args.num_frames):
+                # get the frame as a picture 
+                sleep(2)
+                camera.capture('test.jpg')
 
                 num_previous_faces = num_faces
                 faces = face_detection.get_faces(result)
