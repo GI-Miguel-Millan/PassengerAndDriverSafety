@@ -359,6 +359,8 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
             num_faces = 0
             tmp_arr = []
             faces_in_region = []
+            photo_taken = False
+            image = None
             for face in faces:
                 face_center = (face.bounding_box[0] + face.bounding_box[2] / 2,
                                face.bounding_box[1] + face.bounding_box[3] / 2)
@@ -367,11 +369,19 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                 if (face_center[0] >= r_corners[0] and face_center[0] <= r_corners[1] and
                         face_center[1] >= r_corners[2] and face_center[1] <= r_corners[3]):
 
+                    if not photo_taken:
+                        stream = io.BytesIO()
+                        with stopwatch('Taking photo'):
+                            camera.capture(stream, format=image_format, use_video_port=True)
+                        stream.seek(0)
+                        image = Image.open(stream)
+                        photo_taken = True
+
                     num_faces = num_faces + 1
                     faces_in_region.append(face)
 
                     # creates a tuple ( image of the face, entering/exiting status)
-                    tmp_arr.append([crop_face(camera,image_format, image_folder, face.bounding_box), get_status(face.bounding_box, r_center, enter_side)])
+                    tmp_arr.append([crop_face(image, image_format, image_folder, face.bounding_box), get_status(face.bounding_box, r_center, enter_side)])
                     if use_annotator:
                         annotator.bounding_box(transform(face.bounding_box, scale_x, scale_y),
                                                fill=0)  # draw a box around the face
@@ -398,19 +408,12 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
 
 
 # crops a face out of the picture and saves it to the disk.
-def crop_face(camera, image_format, image_folder, bounding_box):
+def crop_face(image, image_format, image_folder, bounding_box):
     timestamp = time.strftime('%Y-%m-%d_%H.%M.%S')
-
-    stream = io.BytesIO()
-    with stopwatch('Taking photo'):
-        camera.capture(stream, format=image_format, use_video_port=True)
 
     filename = os.path.expanduser('%s/%s.%s' % (image_folder, timestamp, image_format))
     with stopwatch('Saving Cropped %s' % filename):
-        stream.seek(0)
-        image = Image.open(stream)
         xi, yi, wi, hi = bounding_box
-
         #print('w: %d, h: %d, xi: %d, yi: %d, wi: %d, hi: %d' % (w, h, xi, yi, wi, hi))
         cropped_image = image.crop((xi, yi, (xi+wi), (yi+hi)))
         cropped_image.save(filename)
