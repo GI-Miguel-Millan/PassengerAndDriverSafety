@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Video Upload{% endblock %}
+
+{% block content %}
+<style>
+	.asteriskField {
+		display: none;
+	}
+	.select {
+		max-width: 500px;
+	}
+</style>
+<div class="container mt-2 mb-2">
+	<h4>Video Upload</h4>
+	<form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+	  {% csrf_token %}
+	  {{ video_form|crispy }}
+	  <button type="submit" class="btn btn-success">Submit</button>
+	</form>
+</div>
+{% endblock %}

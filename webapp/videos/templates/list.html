@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Videos{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-2 mb-2">
+	<div class="row mb-2">
+		<div class="col- mr-auto">
+			<h4>Videos</h4>
+		</div>
+		<div class="col-">
+			<a href="{% url 'upload' %}" class="btn btn-success">Upload <span class="oi oi-arrow-thick-top"></span></a>
+		</div>
+	</div>
+	{% if videos %}
+		<div class="row">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+					  <th scope="col">#</th>
+					  <th scope="col">Name</th>
+					  <th scope="col">Edit</th>
+					  <th scope="col">Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for video in videos %}
+						<tr>
+							<th scope="row">{{ forloop.counter }}</th>
+							<td><a href="{% url 'details' video.id %}">{{ video.name }}</a></td>
+							<td><a href=""><span class="oi oi-pencil"></span></a></td>
+							<td><a href="{% url 'delete' video.id %}"><span class="oi oi-trash"></span></a></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	{% else %}
+		<p>No videos are available.</p>
+	{% endif %}
+</div>
+{% endblock %}

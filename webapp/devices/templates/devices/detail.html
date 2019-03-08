@@ -1,0 +1,19 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block title %}Device{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+	<div class="form-check">
+		<h3  class="display-4">{{ device.name }}</h3>
+	</div>
+	<ul>
+		<li class="card-text">{{ device.regBy }}</li>
+		<li class="card-text">{{ device.regDate }}</li>
+		<li class="card-text">{{ device.active }}</li>
+		<li class="card-text">{{ device.key }}</li>
+	</ul>
+</div>
+{% endblock content %}

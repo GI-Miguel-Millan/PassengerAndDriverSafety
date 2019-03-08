@@ -1,0 +1,35 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block title %}Devices{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+<h4>Devices</h4>
+	{% if deviceList %}
+			<div class="row">
+			{% for device in deviceList %}
+				<div class="col-lg-3 col-md-6 mb-4">
+					<div class="card mt-2 mb-2">
+						<div class="card-header">
+								<h4>{{ device.name }}</h4>
+						</div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">{{ device.regBy }}</li>
+							<li class="list-group-item">{{ device.regDate }}</li>
+							{% if device.active %}
+								<li class="list-group-item">Active: <span class="oi oi-check"></span></li>
+							{% else %}
+								<li class="list-group-item">Active: <span class="oi oi-x"></span></li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+			{% endfor %}
+			</div>
+	{% else %}
+		<p>No Devices are available.</p>
+	{% endif %}
+</div>
+{% endblock content %}
