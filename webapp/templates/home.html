@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+    <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>{% block title %}Home{% endblock %}</title>
+
+</head>
+
+<body>
+
+{% block content %}
+ <!-- Jumbotron Header -->
+    <header class="jumbotron my-4">
+      <h1 class="display-3">Welcome To Our Project</h1>
+      <p class="lead">This project was created by 5 CS/IT students from Oakland University for their senior capstone.</p>
+      <a href="https://github.com/mjmillan/PassengerAndDriverSafety/" class="btn btn-primary btn-lg">Check Our Github!</a>
+    </header>
+
+    <!-- Page Features -->
+    <div class="row text-center">
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100">
+          <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+          <div class="card-body">
+            <h4 class="card-title">Bus 1</h4>
+            <p class="card-text">Camera 1</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary">View Bus 1</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100">
+          <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+          <div class="card-body">
+            <h4 class="card-title">Bus 1</h4>
+            <p class="card-text">Camera 2</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary">View Bus 1</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100">
+          <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+          <div class="card-body">
+            <h4 class="card-title">Bus 2</h4>
+            <p class="card-text">Camera 1</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary">View Bus 2</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100">
+          <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+          <div class="card-body">
+            <h4 class="card-title">Bus 3 </h4>
+            <p class="card-text">Camera 1</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary">View Bus 3</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+{% endblock content %}
+    <!-- /.row -->
+</body>
+</html>
