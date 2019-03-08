@@ -14,6 +14,7 @@
 # limitations under the License.
 """Joy detection demo."""
 import argparse
+import requests
 import collections
 import contextlib
 import io
@@ -37,6 +38,7 @@ from aiy.vision.models import face_detection
 from aiy.vision.streaming.server import StreamingServer
 from aiy.vision.streaming import svg
 from aiy.vision.annotator import Annotator
+from timeit import default_timer as timer
 
 logger = logging.getLogger(__name__)
 
@@ -272,10 +274,90 @@ class Animator(Service):
     def update_joy_score(self, joy_score):
         self.submit(joy_score)
 
+# crops a face out of the picture and saves it to the disk.
+def crop_face(image, image_format, image_folder, bounding_box):
+    timestamp = time.strftime('%Y-%m-%d_%H.%M.%S')
+
+    filename = os.path.expanduser('%s/%s.%s' % (image_folder, timestamp, image_format))
+    with stopwatch('Saving Cropped %s' % filename):
+        xi, yi, wi, hi = bounding_box
+        #print('w: %d, h: %d, xi: %d, yi: %d, wi: %d, hi: %d' % (w, h, xi, yi, wi, hi))
+        cropped_image = image.crop((xi, yi, (xi+wi), (yi+hi)))
+        cropped_image.save(filename)
+    return filename
+
+
+# Incoming boxes are of the form (x, y, width, height). Scale and
+# transform to the form (x1, y1, x2, y2).
+def transform(bounding_box, scale_x, scale_y):
+    x, y, width, height = bounding_box
+    return (scale_x * x, scale_y * y, scale_x * (x + width),
+            scale_y * (y + height))
+
+
+# Both incoming boxes and the user defined region are of the form (x, y, width, height).
+# Determines whether the face is entering or exiting the region.
+def get_status(bounding_box, region_center, enter_side):
+    face_center = (bounding_box[0] + bounding_box[2]/2, bounding_box[1] + bounding_box[3]/2)
+    if face_center[0] > region_center[0]:
+        if enter_side == 0:
+            return True
+        else:
+            return False
+    else:
+        if enter_side == 0:
+            return False
+        else:
+            return True
+
+def preview_alpha(string):
+    value = int(string)
+    if value < 0 or value > 255:
+        raise argparse.ArgumentTypeError('Must be in [0...255] range.')
+    return value
+
+# Refresh the access token using the refresh token
+def refresh_access_token(url, refresh_token):
+    refresh_token_url = url + "/api/token/refresh/"
+    parameters = {'refresh': refresh_token}
+    r = requests.post(refresh_token_url, params=parameters)
+    return r.json()
+
+# Connect to web server and retrieve access and refresh tokens
+def connect_to_server(url, user_name, password):
+    get_token_url = url + "/api/token/"
+    parameters = {'username':user_name, 'password':password}
+    r = requests.post(get_token_url, params=parameters)
+    return r.json() # returns a json containing the access and refresh tokens.
+
+# Sends a face to the cloud for classification:
+def send_face(url, face, access_token):
+    headers={'Authorization':'access_token {}'.format(access_token)}
+    data = {'status': face[1]}
+    files = {'file': open(face[0], 'rb')} # mode r = reading, b = binary mode
+    r = requests.get(url, headers=headers, data=data, files=files)
+
+    print(r.content)
 
 def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                 enable_streaming, streaming_bitrate, mdns_name,
-                width, height, fps, region, enter_side, use_annotator):
+                width, height, fps, region, enter_side, use_annotator, url, uname, pw, image_dir):
+
+    # Sign the device in and get an access and a refresh token, if a password and username provided.
+    access_token = None
+    refresh_token = None
+    start_token_timer = timer()
+    if uname is not None and pw is not None:
+        try:
+            tokens = connect_to_server(url, uname, pw)
+            access_token = tokens['access']
+            refresh_token = tokens['refresh']
+        except:
+            print("Could not get tokens from the server.")
+            pass
+
+    # location where we want to send the faces + status for classification on web server.
+    classification_path = url + "/" + image_dir
 
     done = threading.Event()
     def stop():
@@ -339,6 +421,12 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
         num_faces = 0
         for faces, frame_size in run_inference(num_frames, model_loaded):
 
+            # If 4 mins have passed since access token obtained, refresh the token.
+            end_token_timer = timer() # time in seconds
+            if refresh_token is not None and end_token_timer - start_token_timer >= 240:
+                tokens = refresh_access_token(url, refresh_token)
+                access_token = tokens["access"]
+
             photographer.update_faces((faces, frame_size))
             joy_score = joy_moving_average.send(average_joy_score(faces))
             animator.update_joy_score(joy_score)
@@ -366,8 +454,8 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                                face.bounding_box[1] + face.bounding_box[3] / 2)
 
                 # check if the center of the face is in our region of interest:
-                if (face_center[0] >= r_corners[0] and face_center[0] <= r_corners[1] and
-                        face_center[1] >= r_corners[2] and face_center[1] <= r_corners[3]):
+                if r_corners[0] <= face_center[0] <= r_corners[1] and \
+                        r_corners[2] <= face_center[1] <= r_corners[3]:
 
                     if not photo_taken:
                         stream = io.BytesIO()
@@ -399,55 +487,14 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                     #take_photo()
 
                 for face in previous_faces:
-                    print(face)
+                    print(url, face, access_token)
+                    if access_token is not None:
+                        send_face(classification_path, face, access_token)
 
             previous_faces = tmp_arr
 
             if done.is_set():
                 break
-
-
-# crops a face out of the picture and saves it to the disk.
-def crop_face(image, image_format, image_folder, bounding_box):
-    timestamp = time.strftime('%Y-%m-%d_%H.%M.%S')
-
-    filename = os.path.expanduser('%s/%s.%s' % (image_folder, timestamp, image_format))
-    with stopwatch('Saving Cropped %s' % filename):
-        xi, yi, wi, hi = bounding_box
-        #print('w: %d, h: %d, xi: %d, yi: %d, wi: %d, hi: %d' % (w, h, xi, yi, wi, hi))
-        cropped_image = image.crop((xi, yi, (xi+wi), (yi+hi)))
-        cropped_image.save(filename)
-    return filename
-
-
-# Incoming boxes are of the form (x, y, width, height). Scale and
-# transform to the form (x1, y1, x2, y2).
-def transform(bounding_box, scale_x, scale_y):
-    x, y, width, height = bounding_box
-    return (scale_x * x, scale_y * y, scale_x * (x + width),
-            scale_y * (y + height))
-
-
-# Both incoming boxes and the user defined region are of the form (x, y, width, height).
-# Determines whether the face is entering or exiting the region.
-def get_status(bounding_box, region_center, enter_side):
-    face_center = (bounding_box[0] + bounding_box[2]/2, bounding_box[1] + bounding_box[3]/2)
-    if face_center[0] > region_center[0]:
-        if enter_side == 0:
-            return True
-        else:
-            return False
-    else:
-        if enter_side == 0:
-            return False
-        else:
-            return True
-
-def preview_alpha(string):
-    value = int(string)
-    if value < 0 or value > 255:
-        raise argparse.ArgumentTypeError('Must be in [0...255] range.')
-    return value
 
 
 def main():
@@ -465,7 +512,7 @@ def main():
                         help='Folder to save captured images')
     parser.add_argument('--blink_on_error', default=False, action='store_true',
                         help='Blink red if error occurred')
-    parser.add_argument('--enable_streaming', default=False, action='store_true',
+    parser.add_argument('--enable_streaming', default=True, action='store_true',
                         help='Enable streaming server')
     parser.add_argument('--streaming_bitrate', type=int, default=1000000,
                         help='Streaming server video bitrate (kbps)')
@@ -484,12 +531,21 @@ def main():
                         help='Used to determine which side of the region should be considered "entering": 1 = right, 0 = left')
     parser.add_argument('--annotator', default=False,
                         help='Shows the annotator overlay, however disables camera snapshots.')
+    parser.add_argument('--url', default="http://127.0.0.1",
+                        help='Url to send the face captures that are taken.')
+    parser.add_argument('--username', default=None,
+                        help='User name used to authenticate this device initially')
+    parser.add_argument('--password', default=None,
+                        help='Password used to authenticate this device initially')
+    parser.add_argument('--image_dir', default="",
+                        help='{url + "/" + image_dir} will give us path to send the face data')
     args = parser.parse_args()
 
     try:
         monitor_run(args.num_frames, args.preview_alpha, args.image_format, args.image_folder,
                     args.enable_streaming, args.streaming_bitrate, args.mdns_name,
-                    args.cam_width, args.cam_height, args.fps, args.region, args.enter_side, args.annotator)
+                    args.cam_width, args.cam_height, args.fps, args.region, args.enter_side,
+                    args.annotator, args.url, args.username, args.password, args.image_dir)
     except KeyboardInterrupt:
         pass
     except Exception:
