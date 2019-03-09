@@ -1,0 +1,29 @@
+<<<<<<< HEAD:webapp/templates/index.html
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <p>You are logged in.</p>
+  <a href="{% url 'logout' %}">logout</a>
+{% else %}
+  <p>You are not logged in.</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+{% endblock %}
+=======
+{% extends 'base.html' %}
+
+{% block title %}Index{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <p>You are logged in.</p>
+  <a href="{% url 'logout' %}">logout</a>
+{% else %}
+  <p>You are not logged in.</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+{% endblock %}
+>>>>>>> master:old_project/webapp/templates/index.html
