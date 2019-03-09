@@ -23,11 +23,6 @@ class BusSerializer(serializers.ModelSerializer):
     class Meta:
         model = ('name')
 
-class StopSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Stop
-        fields = ('bus','pick_up','drop_off','location')
-
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver
