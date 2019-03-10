@@ -1,9 +1,11 @@
 ﻿<h><strong>Main Parent Screen</strong></h>
 
-{% if latest_question_list %}
+{% if childList %}
     <ul>
     {% for student in  childList%}
-        <li><a href="{% url 'api:update' student.id %}">{{ student.first_name student.last_name }}</a></li>
+        <li>
+	<a href="{% url 'api:updateStud' student.id %}">{{ student.first_name }}</a>
+	</li>
     {% endfor %}
     </ul>
 {% else %}

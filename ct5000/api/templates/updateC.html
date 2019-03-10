@@ -1,7 +1,13 @@
 <h><strong>Update Specific Child Screen</strong></h>
 
+{% if student % }
+
+	<p>
+	<label for="student">Set Student Image Profile:</label>
+	<input type="file" id="student" name="student" accept="image/png, image/jpeg" value="{{ student.picture }}">
+	<input type="checkbox" name="trackcheck" value="tracking" checked value="{{ student.tracking }}">Track child</li>
+	</p>
+
 <p>
-<label for="student">Set Student Image Profile:</label>
-<input type="file" id="student" name="student" accept="image/png, image/jpeg">
-<input type="checkbox" name="trackcheck" value="tracking" checked>Track child</li>
+<input type="submit" value="Update & Save">
 </p>

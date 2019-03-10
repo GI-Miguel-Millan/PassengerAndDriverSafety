@@ -9,8 +9,8 @@ urlpatterns = [
     #path()
     
     # path for parent view
-    path('parent/<int:pk>' views.ParentView.as_view(), name='parent'),
+    path('parent/<int:parent_id>', views.ParentView.as_view(), name='parent'),
 
     # path for update child/student view
-    path('parent/student/<int:pk>', views.updateStudent, name='updateStud'),
+    path('parent/student/<int:stud_id>', views.updateStudent, name='updateStud'),
 ]
