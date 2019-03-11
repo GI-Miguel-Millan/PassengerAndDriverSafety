@@ -19,5 +19,6 @@ else:
         'name': args.person
     }
     response = requests.post("https://eastus.api.cognitive.microsoft.com/face/v1.0/persongroups/%s/persons" % args.group, data=json.dumps(data), headers=headers)
-    with open('personIds/%s.json' % args.person, 'w') as f:
-        json.dump(response.json(), f)
+    if response.status_code == 200:
+        with open('personIds/%s.json' % args.person, 'w') as f:
+            json.dump(response.json(), f)
