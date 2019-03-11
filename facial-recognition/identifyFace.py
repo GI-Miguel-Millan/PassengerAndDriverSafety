@@ -4,9 +4,7 @@ import json
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--faceIds', required=True,
-                    help="An array of faceIds corresponding to images you want to identify.")
-parser.add_argument('--personGroupID', required=True,
+parser.add_argument('--personGroupId', required=True,
                     help="personGroupId -> points to our group of people")
 args = parser.parse_args()
 
@@ -16,10 +14,14 @@ headers = {
     'Content-Type': 'application/json',
     'Ocp-Apim-Subscription-Key': '[key]',
 }
-data = {
-    'faceIds': args.faceIds,
-    'personGroupId': args.peronGroupId
-}
-response = requests.post(url, data=json.dumps(data), headers=headers)
+with open('./personIds/temp.json') as f:
+    target = json.load(f)
+    data = {
+        'personGroupId': args.personGroupId,
+        'faceIds': [target[0]['faceId']]
+    }
 
+response = requests.post(url, data=json.dumps(data), headers=headers)
+print(response.status_code)
+print(response.text)
 # TODO choose candidate with highest confidence and update database to reflect that persons status.
