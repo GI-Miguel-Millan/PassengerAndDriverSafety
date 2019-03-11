@@ -7,7 +7,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('group')
 args = parser.parse_args()
 
-if args.group is '' or args.person is '':
+if args.group is '':
     print('Missing arguments')
 else:
     headers = {
