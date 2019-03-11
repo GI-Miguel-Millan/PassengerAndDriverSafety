@@ -487,7 +487,7 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                     #take_photo()
 
                 for face in previous_faces:
-                    print(url, face, access_token)
+                    print(classification_path, face, access_token)
                     if access_token is not None:
                         send_face(classification_path, face, access_token)
 
@@ -531,13 +531,13 @@ def main():
                         help='Used to determine which side of the region should be considered "entering": 1 = right, 0 = left')
     parser.add_argument('--annotator', default=False,
                         help='Shows the annotator overlay, however disables camera snapshots.')
-    parser.add_argument('--url', default="http://127.0.0.1",
+    parser.add_argument('--url', default="http://isrow.net",
                         help='Url to send the face captures that are taken.')
     parser.add_argument('--username', default=None,
                         help='User name used to authenticate this device initially')
     parser.add_argument('--password', default=None,
                         help='Password used to authenticate this device initially')
-    parser.add_argument('--image_dir', default="",
+    parser.add_argument('--image_dir', default="events/",
                         help='{url + "/" + image_dir} will give us path to send the face data')
     args = parser.parse_args()
 
