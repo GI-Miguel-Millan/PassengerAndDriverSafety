@@ -7,9 +7,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--img', required=True,
                     help="url location of the image e.g. http://ourserver.com/img-location.jpg")
 parser.add_argument('--personGroupID', required=True,
-                    help="url location of the image e.g. http://ourserver.com/img-location.jpg")
+                    help="personGroupId -> points to our group of people")
 parser.add_argument('--personID', required=True,
-                    help="url location of the image e.g. http://ourserver.com/img-location.jpg")
+                    help="personID -> points to a specific person you want to associate the image with.")
 args = parser.parse_args()
 
 url = "https://eastus.api.cognitive.microsoft.com/face/v1.0/persongroups/{}/persons/{}/persistedFaces".format(args.personGroupID, args.personID)
