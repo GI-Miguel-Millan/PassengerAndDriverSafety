@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ video.name }} - Details{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-2 mb-2">
+	<div class="row">
+		<div class="col-sm"><h4>{{ video.name }}</h4></div>
+	</div>
+	<div class="row">
+		<div class="col-sm">{{ video.upload }}</div>
+	</div>
+	<div class="row">
+		<video controls width="600px" height="337px">
+			<source src="{{ video.file.url }}" type="video/webm">
+			Sorry, your browser doesn't support embedded videos.
+		</video>
+	</div>
+</div>
+{% endblock %}
