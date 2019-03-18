@@ -1,29 +1,16 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import Login from './components/Login'
-import Dashboard from './components/Dashboard'
-import PrivateRoute from './components/PrivateRoute'
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-
+import SimpleTable from './components/SimpleTable';
+import NavTabs from './components/tabs';
+import FloatingActionButton from './components/ActionButton';
 class App extends Component {
-	state = {
-		logged_in: false,
-		loading: true
-	}
-
-	render() {
-		const { classes } = this.props;
-		const authenticated = (localStorage.getItem('token') !== null);
-		return (
-			<BrowserRouter>
-				<div>
-					<Route path='/login' component={Login} />
-					<Route path='/' exact component={Dashboard} />
-					
-				</div>
-			</BrowserRouter>
+	  render() {
+    return (
+		<div>
+			<NavTabs />
+			<FloatingActionButton />
+			<SimpleTable />
+		</div>
     );
   }
 }
-
-export default App;
+export default App
