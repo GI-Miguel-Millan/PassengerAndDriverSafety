@@ -299,19 +299,13 @@ def transform(bounding_box, scale_x, scale_y):
 # Determines whether the face is entering or exiting the region.
 def get_status(bounding_box, region_center, enter_side):
     face_center = (bounding_box[0] + bounding_box[2]/2, bounding_box[1] + bounding_box[3]/2)
-    if enter_side == 2:         # In dual mode operation, 2 is used for the camera that monitors entering (True)
-        return True
-    if enter_side == 3:
-        return False            # In dual mode operation, 3 is used for the camera that monitors the exiting (False)
-
-    # In single mode operation, divide the region box and specify which side is entering (True) and exiting (False)
     if face_center[0] > region_center[0]:
-        if enter_side == 0:     # 0 indicates Right side of the region box is entering
+        if enter_side == 0:
             return True
-        else:                   # 1 indicates Left side of the region box is exiting.
+        else:
             return False
     else:
-        if enter_side == 0:  #
+        if enter_side == 0:
             return False
         else:
             return True
@@ -531,11 +525,10 @@ def main():
                         help='Camera Height')
     parser.add_argument('--fps', type=int, default=30,
                         help='Camera Frames Per Second')
-    parser.add_argument('--region', nargs=4, type=int, default=[504,632, 632, 632],
+    parser.add_argument('--region', nargs=4, type=int, default=[1040,600, 600, 632],
                         help='Region for entering/exiting face detection: x, y, width, height')
-    parser.add_argument('--enter_side', type=int, default=2,
-                        help='Used to determine which side of the region should be considered "entering": 0 = right, 1 = left'
-                             'Or in dual camera operation: 2 = entering, 3 = Exiting')
+    parser.add_argument('--enter_side', type=int, default=1,
+                        help='Used to determine which side of the region should be considered "entering": 1 = right, 0 = left')
     parser.add_argument('--annotator', default=False,
                         help='Shows the annotator overlay, however disables camera snapshots.')
     parser.add_argument('--url', default="http://isrow.net",

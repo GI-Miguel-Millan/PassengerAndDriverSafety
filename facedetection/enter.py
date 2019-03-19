@@ -105,8 +105,6 @@ def main():
 
             for result in inference.run(args.num_frames):
                 # get the frame as a picture 
-                sleep(2)
-                camera.capture('test.jpg')
 
                 num_previous_faces = num_faces
                 faces = face_detection.get_faces(result)
@@ -120,24 +118,11 @@ def main():
                     face_center = (face.bounding_box[0] + face.bounding_box[2]/2, face.bounding_box[1] + face.bounding_box[3]/2)
                     
                     # check if the center of the face is in our region of interest:
-                    if (face_center[0] >= r_corners[0] and face_center[0] <= r_corners[1] and  
-                        face_center[1] >= r_corners[2] and face_center[1] <= r_corners[3]) :
                         
-                        num_faces = num_faces + 1
-
-                        tmp_arr.append([crop_face(camera, face.bounding_box), get_status(face.bounding_box)]) # creates a tuple ( image of the face, entering/exiting status)  
-                        annotator.bounding_box(transform(face.bounding_box), fill=0) # draw a box around the face 
+                    annotator.bounding_box(transform(face.bounding_box), fill=0) # draw a box around the face 
 
 
                 annotator.update()
-
-                if num_faces < num_previous_faces:
-                    # loop through previous faces: send face data, image and status
-                    print (" A face left the region: send previous face data")
-                    for face in previous_faces:
-                        print(face)
-
-                previous_faces = tmp_arr
 
         camera.stop_preview()
 
