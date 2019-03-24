@@ -16,6 +16,9 @@ class Device(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     registered_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='admin')
     bus = models.OneToOneField('Bus', null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.user.username + " (" + str(self.user.id) + ")"
     
 class Event(models.Model):
     enter = models.BooleanField()
@@ -25,7 +28,7 @@ class Event(models.Model):
     student = models.ForeignKey('Student', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return self.id + " (" + self.timestamp + ")"
+        return str(self.id) + " - " + self.student.first_name + " (" + str(self.timestamp) + ")"
 
 class Bus(models.Model):
     name = models.CharField(max_length=50)

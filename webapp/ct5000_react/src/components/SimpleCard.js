@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+
 const styles = {
   card: {
     minWidth: 275,
@@ -24,7 +25,27 @@ const styles = {
   },
 };
 
-function SimpleCard(props) {
+async function getSomething() {
+    var res = await fetch('http://127.0.0.1:8000/parents/', {method: "GET"})
+	.then(function(response) {
+    		return response.json();
+  		})
+  	.then(function(myJson) {
+    		console.log(JSON.stringify(myJson));
+		res = myJson;
+		console.log("Printing res\n" + res[0].phone_number)
+		return res
+  		})
+    console.log("Printing res\n" + res[0].phone_number)
+    return res
+}
+
+async function SimpleCard(props) {
+
+  var response = await getSomething()
+
+  console.log(response[0].phone_number)  
+
   const { classes } = props;
   const bull = <span className={classes.bullet}>•</span>;
 
