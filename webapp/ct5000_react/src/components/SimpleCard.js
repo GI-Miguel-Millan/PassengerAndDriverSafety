@@ -7,7 +7,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-
 const styles = {
   card: {
     minWidth: 275,
@@ -25,6 +24,11 @@ const styles = {
   },
 };
 
+function ToEvents()
+{
+    window.open('http://localhost:3000/events', "_self")
+}
+
 async function getSomething() {
     var res = await fetch('http://127.0.0.1:8000/parents/', {method: "GET"})
 	.then(function(response) {
@@ -37,14 +41,11 @@ async function getSomething() {
 		return res
   		})
     console.log("Printing res\n" + res[0].phone_number)
-    return res
 }
 
-async function SimpleCard(props) {
+getSomething()
 
-  var response = await getSomething()
-
-  console.log(response[0].phone_number)  
+function SimpleCard(props) { 
 
   const { classes } = props;
   const bull = <span className={classes.bullet}>•</span>;
@@ -68,7 +69,7 @@ async function SimpleCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">See All Events</Button>
+        <Button size="small" id='btn' onClick={ToEvents.bind(this)}>See All Events</Button>
       </CardActions>
     </Card>
   );
