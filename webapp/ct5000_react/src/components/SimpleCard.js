@@ -29,50 +29,59 @@ function ToEvents()
     window.open('http://localhost:3000/events', "_self")
 }
 
-async function getSomething() {
-    var res = await fetch('http://127.0.0.1:8000/parents/', {method: "GET"})
-	.then(function(response) {
-    		return response.json();
-  		})
-  	.then(function(myJson) {
-    		console.log(JSON.stringify(myJson));
-		res = myJson;
-		console.log("Printing res\n" + res[0].phone_number)
-		return res
-  		})
-    console.log("Printing res\n" + res[0].phone_number)
+export const parents  = async () => {
+    let res = await fetch('http://127.0.0.1:8000/parents/', {method: "GET"})
+    return res.json()
 }
 
-getSomething()
+class SimpleCard extends React.Component {
 
-function SimpleCard(props) { 
-
-  const { classes } = props;
-  const bull = <span className={classes.bullet}>•</span>;
-
-  return (
-    <Card className={classes.card}>
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Chris Byers
-        </Typography>
-        <Typography variant="h5" component="h2">
-          Status: Entered Bus
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          03/20/2019 7:30:12
-        </Typography>
-        <Typography component="p">
-          Bus #12-4
-	  <br />
-	  Driven by Samuel
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small" id='btn' onClick={ToEvents.bind(this)}>See All Events</Button>
-      </CardActions>
-    </Card>
-  );
+    state = { data: [] };
+  
+    componentDidMount() {
+        parents().then(data => {
+            this.setState({ data })
+            console.log(this.state.data)
+        });
+    }
+  
+    render() {
+        const { classes } = this.props;
+        
+        return (
+            <Card className={classes.card}>
+                <CardContent>
+                {
+                    this.state.data.map(data => {
+                        console.log(data.city)
+                        return(
+                            <Typography>
+                                {data.city}
+                            </Typography>
+                        );
+                    })
+                }
+		<Typography className={classes.title} color="textSecondary" gutterBottom>
+          	Chris Byers
+        	</Typography>
+        	<Typography variant="h5" component="h2">
+          	Status: Entered Bus
+        	</Typography>
+        	<Typography className={classes.pos} color="textSecondary">
+         	03/20/2019 7:30:12
+        	</Typography>
+        	<Typography component="p">
+          	Bus #12-4
+	  	<br />
+	  	Driven by Samuel
+        	</Typography>
+                </CardContent>
+		<CardActions>
+        	<Button size="small" id='btn' onClick={ToEvents.bind(this)}>See All Events</Button>
+      		</CardActions>
+            </Card>
+        );
+    }
 }
 
 SimpleCard.propTypes = {
