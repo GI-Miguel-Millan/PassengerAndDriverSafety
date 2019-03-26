@@ -4,6 +4,7 @@ import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import PrivateRoute from './components/PrivateRoute'
 import { BrowserRouter, Route, Link } from 'react-router-dom';
+import Event from './components/Event'
 
 class App extends Component {
 	state = {
@@ -19,7 +20,8 @@ class App extends Component {
 				<div>
 					<Route path='/login' component={Login} />
 					<Route path='/' exact component={Dashboard} />
-					
+					<Route path='/events' exact component={Event} />
+
 				</div>
 			</BrowserRouter>
     );
