@@ -1,0 +1,58 @@
+Instructions for setting up a development environment with Django and React
+
+******************************************************************
+------------------------- Django Setup ---------------------------
+******************************************************************
+
+* Install Python 3.7.2
+** Go To https://www.python.org/downloads/ and install version 3.7.2 for your OS.
+
+* Install the Virtualenv library for Python 
+** In your terminal: pip install virtualenv
+
+* Create a virtual enviroment (I'd suggest creating a dedicated folder outside the project):
+** python -m virtualenv (enviroment name here)
+
+A folder for will be created with all the virtual enviroment stuff. 
+Go into it and find the activate script. 
+Run the script to activate the enviroment. 
+On Windows, it is "activate.bat".
+** start <path to virtual environment>/Scripts/activate.bat
+
+You enviroment is now activated. 
+Navigate to the project (within the virtual environment) 
+and install all the libraries needed for the project from "requirements.txt". 
+
+* Install python dependencies:
+** cd /c/PassengerAndDriverSafety/webapp/ct5000_python/
+** pip install -r requirements.txt
+
+* Make migrations for the Rest framework API, then migrate.
+** python manage.py makemigrations api
+** python manage.py migrate
+
+* Create a superUser
+** python manage.py createsuperuser
+
+* You can now run the project. 
+** python manage.py runserver
+
+By Default, Django development server runs on port 8000 (i.e. go to 127.0.0.1:8000)
+
+******************************************************************
+------------------------- React Setup ---------------------------
+******************************************************************
+
+* Install Node.js (comes with npm)
+** Download the installer from: https://nodejs.org/en/
+
+* Now, navigate to the front end directory:
+** cd /c/PassengerAndDriverSafety/webapp/ct5000_react/
+
+* Install the  dependencies
+** npm install 
+
+* Start the development Server
+** npm start
+
+By Default, react front end runs on port 3000 (i.e. go to 127.0.0.1:3000)
