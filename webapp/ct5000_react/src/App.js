@@ -1,29 +1,34 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
-import PrivateRoute from './components/PrivateRoute'
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { refresh } from './api/Api.js';
 
 class App extends Component {
-	state = {
-		logged_in: false,
-		loading: true
-	}
 
-	render() {
-		const { classes } = this.props;
-		const authenticated = (localStorage.getItem('token') !== null);
-		return (
-			<BrowserRouter>
-				<div>
-					<Route path='/login' component={Login} />
-					<Route path='/' exact component={Dashboard} />
-					
-				</div>
-			</BrowserRouter>
-    );
-  }
+    render() {
+        const { classes } = this.props;
+        const PrivateRoute = ({ component: Component, ...rest }) => (
+            <Route {...rest} render={(props) => (
+                localStorage.getItem('access') !== null
+                    ? <Component {...props} />
+                    : <Redirect to={{
+                        pathname: '/login',
+                        state: { from: props.location }
+                    }} />
+            )} />
+        )
+
+        return (
+            <BrowserRouter>
+                <Switch>
+                    <Route path='/login' component={Login} />
+                    <PrivateRoute path='/home' component={Dashboard} />
+                    <PrivateRoute path='/student/:id' component={Dashboard} />
+                </Switch>
+            </BrowserRouter>
+        );
+    }
 }
 
 export default App;

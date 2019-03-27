@@ -1,5 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    is_parent = models.BooleanField(default=False)
+    is_device = models.BooleanField(default=False)
 
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -19,7 +23,7 @@ class Device(models.Model):
     
 class Event(models.Model):
     enter = models.BooleanField()
-    picture = models.ImageField(upload_to='events/')
+    picture = models.ImageField(upload_to='events/', blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     device = models.ForeignKey('Device', null=True, on_delete=models.SET_NULL)
     student = models.ForeignKey('Student', null=True, on_delete=models.SET_NULL)
@@ -48,7 +52,7 @@ class Student(models.Model):
     grade = models.PositiveIntegerField()
     school = models.ForeignKey('School', null=True, on_delete=models.SET_NULL)
     bus = models.ForeignKey('Bus', null=True, on_delete=models.SET_NULL)
-    picture = models.ImageField(upload_to='students/')
+    picture = models.ImageField(upload_to='students/', blank=True)
     parent_one = models.ForeignKey('Parent', null=True, related_name='parent_one', on_delete=models.SET_NULL)
     parent_two = models.ForeignKey('Parent', null=True, related_name='parent_two', on_delete=models.SET_NULL)
     track = models.BooleanField(default=True)
