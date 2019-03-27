@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+
 const styles = {
   card: {
     minWidth: 275,
@@ -34,15 +35,26 @@ export const parents  = async () => {
     return res.json()
 }
 
-class SimpleCard extends React.Component {
-
-    state = { data: [] };
-  
-    componentDidMount() {
+function componentDidMount() {
         parents().then(data => {
             this.setState({ data })
             console.log(this.state.data)
         });
+    }
+
+
+class SimpleCard extends React.Component {
+
+    constructor(props)
+    {
+	super(props)
+	
+	this.state = {
+		data: [props.title, props.header, props.info1, props.info2, props.info3],
+	}
+	
+    
+	console.log("In SimpleCard: " + this.state.data)
     }
   
     render() {
@@ -51,33 +63,24 @@ class SimpleCard extends React.Component {
         return (
             <Card className={classes.card}>
                 <CardContent>
-                {
-                    this.state.data.map(data => {
-                        console.log(data.city)
-                        return(
-                            <Typography>
-                                {data.city}
-                            </Typography>
-                        );
-                    })
-                }
 		<Typography className={classes.title} color="textSecondary" gutterBottom>
-          	Chris Byers
+          	{ this.state.data[0] }
         	</Typography>
         	<Typography variant="h5" component="h2">
-          	Status: Entered Bus
+          	{ this.state.data[1] }
         	</Typography>
         	<Typography className={classes.pos} color="textSecondary">
-         	03/20/2019 7:30:12
+         	{ this.state.data[2] }
         	</Typography>
         	<Typography component="p">
-          	Bus #12-4
-	  	<br />
-	  	Driven by Samuel
+          	{ this.state.data[3] }
+        	</Typography>
+		<Typography component="p">
+          	{ this.state.data[4] }
         	</Typography>
                 </CardContent>
 		<CardActions>
-        	<Button size="small" id='btn' onClick={ToEvents.bind(this)}>See All Events</Button>
+        	<Button size="small" id='btn' onClick={ToEvents.bind(this)}>SEE ALL EVENTS</Button>
       		</CardActions>
             </Card>
         );

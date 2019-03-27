@@ -102,7 +102,7 @@ class Events extends Component {
     super(props);
 
     this.state = {
-        value : 'Chris'
+        value : 'All Events'
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -183,8 +183,8 @@ class Events extends Component {
           <div className={classes.appBarSpacer} />
 	  <Typography variant="h4" gutterBottom component="h2">
 	    <select value={this.state.value} onChange={this.handleChange}>
-            <option value="Chris">Chris Byers</option>
-	    <option value="Other">Other</option>
+            <option value="All Events">All</option>
+	    <option value="Chris">Chris Byers</option>
             </select>
 	  </Typography>
           <Typography variant="h4" gutterBottom component="h2">
