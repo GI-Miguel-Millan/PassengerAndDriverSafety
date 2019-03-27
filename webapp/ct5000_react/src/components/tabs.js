@@ -6,6 +6,14 @@ import Tabs from '@material-ui/core/Tabs';
 import NoSsr from '@material-ui/core/NoSsr';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import ParentAdmin from './ParentAdmin';
+import DevicesAdmin from './DevicesAdmin';
+import StudentsAdmin from './StudentsAdmin';
+import BussAdmin from './BussAdmin';
+import DriversAdmin from './DriversAdmin';
+import SchoolsAdmin from './SchoolsAdmin';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
 
 function TabContainer(props) {
   return (
@@ -20,14 +28,14 @@ TabContainer.propTypes = {
 };
 
 function LinkTab(props) {
-  return <Tab component="a" onClick={event => event.preventDefault()} {...props} />;
+  return <Tab onClick={event => event.Default()} {...props} />;
 }
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+   flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-  },
+ },
 });
 
 class NavTabs extends React.Component {
@@ -48,17 +56,17 @@ class NavTabs extends React.Component {
         <div className={classes.root}>
           <AppBar position="static">
             <Tabs variant="fullWidth" value={value} onChange={this.handleChange}>
-              <LinkTab label="Devices" href="page1" />
-              <LinkTab label="Parents" href="page2" />
-              <LinkTab label="Events" href="page3" />
-			  <LinkTab label="Bus'" href="page4" />
-              <LinkTab label="Drivers" href="page5" />
-              <LinkTab label="Students" href="page6" />
-			  <LinkTab label="Schools" href="page7" />
+              <LinkTab label="Parents" component={Link} to='/parents' />     
+              <LinkTab label="Devices" component={Link} to='/devices' />
+              <LinkTab label="Events" component={Link} to='/events' />
+			  <LinkTab label="Bus'" component={Link} to='/buss' />
+              <LinkTab label="Drivers" component={Link} to='/drivers' />
+              <LinkTab label="Students" component={Link} to='/students' />
+			  <LinkTab label="Schools" component={Link} to='/schools' />
             </Tabs>
           </AppBar>
-          {value === 0 && <TabContainer>Devices</TabContainer>}
-          {value === 1 && <TabContainer>Parents</TabContainer>}
+          {value === 0 && <TabContainer>Parents</TabContainer>}
+          {value === 1 && <TabContainer>Devices</TabContainer>}
           {value === 2 && <TabContainer>Events</TabContainer>}
 		  {value === 3 && <TabContainer>Bus'</TabContainer>}
           {value === 4 && <TabContainer>Drivers</TabContainer>}

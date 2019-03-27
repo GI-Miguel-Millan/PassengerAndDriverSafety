@@ -1,16 +1,56 @@
 import React, { Component } from 'react';
-import SimpleTable from './components/SimpleTable';
-import NavTabs from './components/tabs';
-import FloatingActionButton from './components/ActionButton';
+import classNames from 'classnames';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+import PrivateRoute from './components/PrivateRoute';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+import tabs from './components/tabs';
+import FloatingActionButtons from './components/ActionButton';
+import ParentAdmin from './components/ParentAdmin';
+import DevicesAdmin from './components/DevicesAdmin';
+import StudentsAdmin from './components/StudentsAdmin';
+import BussAdmin from './components/BussAdmin';
+import DriversAdmin from './components/DriversAdmin';
+import SchoolsAdmin from './components/SchoolsAdmin';
+
 class App extends Component {
-	  render() {
-    return (
-		<div>
-			<NavTabs />
-			<FloatingActionButton />
-			<SimpleTable />
-		</div>
+    state = {
+        logged_in: false,
+        loading: true
+    }
+
+    render() {
+        const { classes } = this.props;
+        const authenticated = (localStorage.getItem('token') !== null);
+        return (
+			<BrowserRouter>
+				<div>
+					<Route path='/login' component={Login} />
+					<Route path='/' exact component={Dashboard} />
+					<Route path='/parents' component={ParentAdmin} />
+                    <Route path='/devices' component={DevicesAdmin} />
+                    <Route path='/students' component={StudentsAdmin} />
+                    <Route path='/buss' component={BussAdmin} />
+                    <Route path='/drivers' component={DriversAdmin} />
+                    <Route path='/schools' component={SchoolsAdmin} />
+                    <Route path='/admin/parents' />
+                    <Route path='/admin/devices' />
+                    <Route path='/admin/students' />
+                    <Route path='/admin/buss' />
+                    <Route path='/admin/drivers' />
+                    <Route path='/admin/schools' />
+                    
+				</div>
+			</BrowserRouter>
     );
-  }
-}
+					}
+}      
+
+
+			    
+
+
+			    
+			    
+
 export default App

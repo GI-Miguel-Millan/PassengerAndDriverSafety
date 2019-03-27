@@ -15,7 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import SimpleTable from './SimpleTable';
+
 
 const drawerWidth = 240;
 
@@ -173,7 +173,7 @@ class Dashboard extends Component {
             Products
           </Typography>
           <div className={classes.tableContainer}>
-            <SimpleTable />
+            
           </div>
         </main>
       </div>
