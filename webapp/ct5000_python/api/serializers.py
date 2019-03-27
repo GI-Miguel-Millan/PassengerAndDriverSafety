@@ -21,7 +21,7 @@ class DeviceSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ('first_name','last_name','age','grade','school','bus','picture','parent_one','parent_two', 'track')
+        fields = ('id', 'first_name','last_name','age','grade','school','bus','picture','parent_one','parent_two', 'track')
 		
 class EventSerializer(serializers.ModelSerializer):
     class Meta:

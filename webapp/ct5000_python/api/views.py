@@ -2,6 +2,7 @@ from api.models import Parent, Device, Event, Bus, Driver, Student, School
 from api.serializers import UserSerializer, ParentSerializer, DeviceSerializer, EventSerializer, BusSerializer, DriverSerializer, StudentSerializer, SchoolSerializer
 from django.contrib.auth.models import User
 from rest_framework import generics
+from face-detection.face import create_group, add_student, identify, delete_student
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -30,6 +31,8 @@ class DeviceDetail(generics.RetrieveUpdateDestroyAPIView):
 class StudentList(generics.ListCreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    def perform_create(self, serializer):
+        face.add_student(self.request.Student.bus, self.request.Student.id, 'http://jisrow.net/%s' % self.request.Student.picture)
 
 class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
@@ -38,6 +41,8 @@ class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
 class EventList(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    def perform_create(self, serializer):
+        person = face.identify(self.request.event.Bus, 'http://jisrow.net/%s' % self.request.Event.picture)
 
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
@@ -46,6 +51,8 @@ class EventDetail(generics.RetrieveUpdateDestroyAPIView):
 class BusList(generics.ListCreateAPIView):
     queryset = Bus.objects.all()
     serializer_class = BusSerializer
+    def perform_create(self, serializer):
+        face.create_group(self.request.Bus.name)
 
 class BusDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Bus.objects.all()
