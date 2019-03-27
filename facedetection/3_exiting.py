@@ -346,12 +346,10 @@ def connect_to_server(url, user_name, password):
 # Sends a face to the cloud for classification:
 def send_face(url, face, access_token):
     headers={'Authorization':'access_token {}'.format(access_token)}
-
+    #headers = {'Content-type': 'application/json'}
     data = {'enter': face[1]}
-
-    files = {'picture':  open(face[0], 'rb')}
-
-    r = requests.post(url, headers=headers, files=files, data=data)
+    files = {'picture': open(face[0], 'rb')} # mode r = reading, b = binary mode
+    r = requests.post(url, headers=headers, data=data, files=files)
 
     print(r.json())
 
@@ -547,14 +545,14 @@ def main():
                         help='Camera Frames Per Second')
     parser.add_argument('--region', nargs=4, type=int, default=[504,632, 632, 632],
                         help='Region for entering/exiting face detection: x, y, width, height')
-    parser.add_argument('--enter_side', type=int, default=2,
+    parser.add_argument('--enter_side', type=int, default=3,
                         help='Used to determine which side of the region should be considered "entering": 0 = right, 1 = left'
                              'Or in dual camera operation: 2 = entering, 3 = Exiting')
     parser.add_argument('--annotator', default=False,
                         help='Shows the annotator overlay, however disables camera snapshots.')
     parser.add_argument('--url', default="http://10.8.0.6:8000",
                         help='Url to send the face captures that are taken.')
-    parser.add_argument('--username', default="device-entering",
+    parser.add_argument('--username', default="device-exiting",
                         help='User name used to authenticate this device initially')
     parser.add_argument('--password', default="Temp12345",
                         help='Password used to authenticate this device initially')
