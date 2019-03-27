@@ -1,7 +1,9 @@
 import requests
 import json
+import os
 
 api_key = [key]
+confidence = 0.60
 
 # Make group
 def create_group(group):
@@ -28,6 +30,9 @@ def add_student(group, person, img):
         with open('personIds/%s.json' % person, 'w') as f:
             json.dump(response.json(), f)
 
+        with open('personIds/%s.json' % response['personId'], 'w') as f:
+            json.dump([person], f)
+
         url = "https://eastus.api.cognitive.microsoft.com/face/v1.0/persongroups/{}/persons/{}/persistedFaces".format(group, response.personID)
 
         data2 = {
@@ -35,6 +40,7 @@ def add_student(group, person, img):
         }
         response2 = requests.post(url, data=json.dumps(data2), headers=headers)
 
+        train(group)
         return True
     
     else:
@@ -50,7 +56,7 @@ def train(group):
     }
     response = requests.post("https://eastus.api.cognitive.microsoft.com/face/v1.0/persongroups/%s/train" % group, headers=headers)
 
-# Identify person in image
+# Identify person in image (returns person in image)
 def identify(group, img):
     url = "https://eastus.api.cognitive.microsoft.com/face/v1.0/detect"
 
@@ -64,25 +70,33 @@ def identify(group, img):
     response = requests.post(url, data=json.dumps(data), headers=headers)
 
     if response.status_code == 200:
-        with open('personIds/temp.json', 'w') as f:
-            json.dump(response.json(), f)
 
-        url2 = "https://eastus.api.cognitive.microsoft.com/face/v1.0/identify"
-
-        with open('./personIds/temp.json') as f:
-            target = json.load(f)
-            data2 = {
-                'personGroupId': group,
-                'faceIds': [target[0]['faceId']]
-            }
+        data2 = {
+            'personGroupId': group,
+            'faceIds': [response[0]['faceId']],
+            'confidenceThreshold': confidence
+        }
 
         response2 = requests.post(url2, data=json.dumps(data2), headers=headers)
 
-        return True
+        if response2:
+            personId = response2[0]['candidates'][0]['personId']
+
+            try:
+                with open('./personIds/%s.json' % personId) as f:
+                    target = json.load(f)
+    
+                return target[0]
+
+            except:
+                print('Error occured finding student by Face API ID')
+        else:
+            return None
     
     else:
-        return False
+        print('Server could not connect to API')
 
+#Delete person from group
 def delete_student(group, person):
     headers = {
         'Content-Type': 'application/json',
@@ -95,5 +109,15 @@ def delete_student(group, person):
             url = "https://eastus.api.cognitive.microsoft.com/face/v1.0/persongroups/%s/persons/%s" % (group, target['personId'])
 
             response = requests.post(url, data=json.dumps(data), headers=headers)
+
+            if response.status_code == 200:
+
+                os.remove('./personIds/%s.json' % person)
+                os.remove('./personIds/%s.json' % target['personId'])
+
+                return True
+
+            else:
+                return False
     except:
-        print('No student named %s' % person)
+        print('No student named %s on file' % person)
