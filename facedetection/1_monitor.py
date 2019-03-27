@@ -26,6 +26,7 @@ import signal
 import sys
 import threading
 import time
+import json
 
 from PIL import Image, ImageDraw, ImageFont
 from picamera import PiCamera
@@ -324,26 +325,33 @@ def preview_alpha(string):
 
 # Refresh the access token using the refresh token
 def refresh_access_token(url, refresh_token):
+    headers = {'Content-type': 'application/json'}
     refresh_token_url = url + "/api/token/refresh/"
     parameters = {'refresh': refresh_token}
-    r = requests.post(refresh_token_url, params=parameters)
+    r = requests.post(refresh_token_url, data=json.dumps(parameters), headers=headers)
     return r.json()
 
 # Connect to web server and retrieve access and refresh tokens
 def connect_to_server(url, user_name, password):
     get_token_url = url + "/api/token/"
+
+    headers = {'Content-type': 'application/json'}
+
     parameters = {'username':user_name, 'password':password}
-    r = requests.post(get_token_url, params=parameters)
+
+    r=requests.post(get_token_url, data=json.dumps(parameters), headers=headers)
+
     return r.json() # returns a json containing the access and refresh tokens.
 
 # Sends a face to the cloud for classification:
 def send_face(url, face, access_token):
     headers={'Authorization':'access_token {}'.format(access_token)}
-    data = {'status': face[1]}
-    files = {'file': open(face[0], 'rb')} # mode r = reading, b = binary mode
-    r = requests.get(url, headers=headers, data=data, files=files)
+    #headers = {'Content-type': 'application/json'}
+    data = {'enter': face[1]}
+    files = {'picture': open(face[0], 'rb')} # mode r = reading, b = binary mode
+    r = requests.post(url, headers=headers, json=data, files=files)
 
-    print(r.content)
+    print(r.json())
 
 def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                 enable_streaming, streaming_bitrate, mdns_name,
@@ -352,12 +360,15 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
     # Sign the device in and get an access and a refresh token, if a password and username provided.
     access_token = None
     refresh_token = None
+    tokens = None
     start_token_timer = timer()
     if uname is not None and pw is not None:
         try:
             tokens = connect_to_server(url, uname, pw)
             access_token = tokens['access']
             refresh_token = tokens['refresh']
+            print(access_token)
+            print(refresh_token)
         except:
             print("Could not get tokens from the server.")
             pass
@@ -495,6 +506,7 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                 for face in previous_faces:
                     print(classification_path, face, access_token)
                     if access_token is not None:
+                        print("sent face with access token")
                         send_face(classification_path, face, access_token)
 
             previous_faces = tmp_arr
@@ -538,11 +550,11 @@ def main():
                              'Or in dual camera operation: 2 = entering, 3 = Exiting')
     parser.add_argument('--annotator', default=False,
                         help='Shows the annotator overlay, however disables camera snapshots.')
-    parser.add_argument('--url', default="http://isrow.net",
+    parser.add_argument('--url', default="http://10.8.0.2:8000",
                         help='Url to send the face captures that are taken.')
-    parser.add_argument('--username', default=None,
+    parser.add_argument('--username', default="device-entering",
                         help='User name used to authenticate this device initially')
-    parser.add_argument('--password', default=None,
+    parser.add_argument('--password', default="Temp12345",
                         help='Password used to authenticate this device initially')
     parser.add_argument('--image_dir', default="events/",
                         help='{url + "/" + image_dir} will give us path to send the face data')
