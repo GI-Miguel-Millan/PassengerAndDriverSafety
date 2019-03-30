@@ -32,7 +32,7 @@ class StudentList(generics.ListCreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     def perform_create(self, serializer):
-        face.add_student(self.request.bus, self.request.id, 'http://jisrow.net/%s' % self.request.picture)
+        face.add_student(self.request.bus, self.request.id, self.request.picture)
 
 class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
@@ -42,10 +42,9 @@ class EventList(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     def perform_create(self, serializer):
-        person = face.identify(self.request.bus, 'http://jisrow.net/%s' % self.request.picture)
+        person = face.identify(self.request.bus, self.request.picture)
         if person is not None
-            serializer.save(owner=self.request.student)
-
+            serializer.save(student=self.request.student)
 
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
