@@ -10,7 +10,7 @@ User = get_user_model()
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-		
+
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -87,7 +87,7 @@ class SchoolList(generics.ListCreateAPIView):
 class SchoolDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = School.objects.all()
     serializer_class = SchoolSerializer
-	
+
 class ParentStudents(generics.ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
