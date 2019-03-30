@@ -31,7 +31,7 @@ class StudentCard extends Component {
                 <CardActionArea>
                     <CardMedia
                         className={classes.media}
-                        image={require('../static/student.jpg')}
+                        //image={require('../static/student.gif')} // I assume this was hard coded for the presentation, fix please.
                         title="Student"
                     />
                     <CardContent>
