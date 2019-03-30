@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*$py.class
+cnn/data/logs/*
+cnn/data/train/*.png
+cnn/data/test/*.png
+PiCamEventDetection/output/*
+bag_cnn/data/train/*
+bag_cnn/data/test/*
+bag_cnn/data/logs/*
+bag_cnn/bagEnv/*
+bag_cnn/data/data_file.csv
+PiCamEventDetection/src/__pycache__/

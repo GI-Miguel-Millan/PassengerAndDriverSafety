@@ -1,0 +1,88 @@
+# Author: Miguel Millan
+# class: CSI4999 - Senior Capstone
+# title: AIY Raspberry Pi configuration documentation
+# version: 1.0
+
+# First follow instructions to set up the AIY vision kit (using this https://aiyprojects.withgoogle.com/vision)
+
+# On first boot, follow the GUI instructions to change the default password and set up your time zone.
+New Password = Rp!capst0ne
+region = United States
+timezone = detroit
+
+# Warning!!! Skip update/upgrade.
+
+# It is okay to update the system, but DO NOT UPGRADE!!! this will break the AIY packages. I had to reinstall the whole image to fix this.
+sudo apt-get update
+
+# Clone the git repo:
+git clone https://github.com/mjmillan/PassengerAndDriverSafety
+
+###########################################################################
+# (OPTIONAL STEP) 
+# Next we want to configure a static IP and ensure ssh is enable for headless operation (at least for home testing).
+
+sudo vim /etc/dhcpcd.conf
+
+# Inside the dhcpcd.conf define the network interface, static IP, router, and dns
+interface wlan0
+static ip_address=192.168.1.200/24
+static routers=192.168.1.1
+static domain_name_servers=192.168.1.1
+
+###########################################################################
+
+# By default, the AIY rasbian image should have shh already enabled, but you can check by using
+sudo systemctl status ssh.service
+
+# enable ssh if it is not already:
+sudo systemctl start ssh.service
+sudo systemctl enable ssh.service
+
+###########################################################################
+
+# (OPTIONAL STEP) Disable sleep
+sudo vim /etc/lightdm/lightdm.conf
+#   Inside the config look for xserver-command=X
+#   replace it with xserver-command=X -s 0 dpms
+
+###########################################################################
+
+# Disable to joy detector demo so it doesn't show on startup.
+sudo systemctl disable joy_detection_demo.service
+
+# reboot the pi, you should be able to ssh into it now using pi@192.168.1.200
+sudo reboot
+
+# Before you can run the monitoring application, you need create or specify a temporary image folder:
+# Go to the face detection subdirectory.
+cd PassengerAndDriverSafety/facedection
+
+# Make default tmpImage directory
+mkdir tmpImage
+
+###########################################################################
+
+# (OPTIONAL STEP) Install Openvpn
+
+# You will need a .ovpn file or create your own open vpn configuration file
+sudo apt-get install openvpn
+
+# add/create your configuration file into the home directory
+# then move it the openvpn client directory:
+sudo mv <name>.ovpn /etc/openvpn/client/
+
+# start the openvpn service
+sudo / etc/init.d/openvpn start
+
+###########################################################################
+
+## TODO create a service that automatically runs the monitoring program.
+
+
+
+
+
+
+
+
