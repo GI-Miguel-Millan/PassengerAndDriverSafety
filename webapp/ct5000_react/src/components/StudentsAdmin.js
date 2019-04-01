@@ -54,7 +54,6 @@ class StudentsAdmin extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root}>
-            <NavTabs />
             <FloatingActionButtons component={Link} to='admin/students'/>
                 <Table className={classes.table}>
                   <TableHead>

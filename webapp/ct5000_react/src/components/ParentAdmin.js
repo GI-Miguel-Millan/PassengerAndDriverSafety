@@ -48,7 +48,6 @@ class ParentAdmin extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root}>
-                <NavTabs />
                 <FloatingActionButtons />
                 <Table className={classes.table}>
                   <TableHead>

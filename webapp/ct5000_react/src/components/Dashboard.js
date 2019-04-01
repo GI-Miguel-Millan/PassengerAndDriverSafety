@@ -33,6 +33,9 @@ import StudentLayout from './StudentLayout.js';
 import EventTable from './EventTable.js';
 import StudentsAdmin from './StudentsAdmin.js';
 import ParentAdmin from './ParentAdmin.js';
+import DevicesAdmin from './DevicesAdmin.js';
+import SchoolsAdmin from './SchoolsAdmin.js';
+import BussAdmin from './BussAdmin.js';
 
 const drawerWidth = 240;
 
@@ -172,15 +175,15 @@ class Dashboard extends Component {
             } else if (page == "Students"){
                 mainContent = <PrivateRoute path="/" component={StudentsAdmin} />
             } else if (page == "Events"){
-                mainContent = <PrivateRoute path="/" component={StudentsAdmin} />
+                mainContent = <div>All Events Tab</div>
             }else if (page == "Devices"){
-                mainContent = <PrivateRoute path="/" component={StudentsAdmin} />
+                mainContent = <PrivateRoute path="/" component={DevicesAdmin} />
             }else if (page == "Parents"){
-                mainContent = <PrivateRoute path="/" component={StudentsAdmin} />
+                mainContent = <PrivateRoute path="/" component={ParentAdmin} />
             }else if (page == "Schools"){
-                mainContent = <PrivateRoute path="/" component={StudentsAdmin} />
+                mainContent = <PrivateRoute path="/" component={SchoolsAdmin} />
             }else if (page == "Buses"){
-                mainContent = <PrivateRoute path="/" component={StudentsAdmin} />
+                mainContent = <PrivateRoute path="/" component={BussAdmin} />
             }else {
                 mainContent = <div> An error occurred: Admin page not found.</div>
             }

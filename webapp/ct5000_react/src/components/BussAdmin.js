@@ -26,7 +26,7 @@ const styles = {
 
 
 export const busst = async () => {
-    let res = await fetch('http://127.0.0.1:8000/buss/', { method: "GET" })
+    let res = await fetch('http://127.0.0.1:8000/buses/', { method: "GET" })
     console.log(res)
     return res.json()
 }
@@ -48,7 +48,6 @@ class BussAdmin extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root}>
-            <NavTabs />
             <FloatingActionButtons />
                 <Table className={classes.table}>
                   <TableHead>
