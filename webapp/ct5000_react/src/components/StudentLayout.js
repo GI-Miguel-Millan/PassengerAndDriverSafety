@@ -28,8 +28,10 @@ class StudentLayout extends Component {
         refresh().then(token => {
             localStorage.setItem('access', token.access)
         }).then(get_students_by_current_parent().then(students => {
-            console.log(students)
-            this.setState({ students: students, isLoading: false })
+            let data = {}; // This way data is not a null value (which can't be mapped)
+            data = students;
+            console.log(data)
+            this.setState({ data: students, isLoading: false })
         }));
     }
 
