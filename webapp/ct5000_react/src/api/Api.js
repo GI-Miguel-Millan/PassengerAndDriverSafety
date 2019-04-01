@@ -169,13 +169,12 @@ export const get_events_by_student = async (student_id) => {
 
 export const get_events = async () => {
     let response = await fetch(
-        '/events/',
+        'http://127.0.0.1:8000/events/',
         {
             method: 'GET',
-            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )

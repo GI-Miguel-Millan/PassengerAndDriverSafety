@@ -37,6 +37,7 @@ import DevicesAdmin from './DevicesAdmin.js';
 import SchoolsAdmin from './SchoolsAdmin.js';
 import BussAdmin from './BussAdmin.js';
 import AdminHome from './AdminHome.js';
+import AllEventsAdmin from './AllEventsAdmin.js';
 
 const drawerWidth = 240;
 
@@ -176,7 +177,7 @@ class Dashboard extends Component {
             } else if (page == "Students"){
                 mainContent = <PrivateRoute path="/" component={StudentsAdmin} />
             } else if (page == "Events"){
-                mainContent = <div>All Events Tab</div>
+                mainContent = <PrivateRoute path="/" component={AllEventsAdmin} />
             }else if (page == "Devices"){
                 mainContent = <PrivateRoute path="/" component={DevicesAdmin} />
             }else if (page == "Parents"){
