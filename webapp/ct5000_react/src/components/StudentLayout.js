@@ -28,10 +28,9 @@ class StudentLayout extends Component {
         refresh().then(token => {
             localStorage.setItem('access', token.access)
         }).then(get_students_by_current_parent().then(students => {
-            let data = {}; // This way data is not a null value (which can't be mapped)
-            data = students;
-            console.log(data)
-            this.setState({ data: students, isLoading: false })
+            let studs = {}; // This way data is not a null value (which can't be mapped)
+            studs = students;
+            this.setState({ students: studs, isLoading: false });
         }));
     }
 
@@ -42,6 +41,7 @@ class StudentLayout extends Component {
         if (isLoading) {
             return <p>Loading ...</p>;
         }
+
         if (students !== null) {
             return (
                 <Grid container className={classes.root} spacing={16}>
@@ -51,7 +51,7 @@ class StudentLayout extends Component {
                                 students.map(student => {
                                     return (
                                         <Grid item xs>
-                                            <StudentCard student={student} />
+                                            <StudentCard student={student}></StudentCard>
                                         </Grid>
                                     );
                                 })
