@@ -50,32 +50,35 @@ class DeviceDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DeviceUserSerializer
 
 class StudentList(generics.ListCreateAPIView):
-    queryset = Student.objects.all()
+    #queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    def perform_create(self, serializer):
+    def get_queryset(self, serializer):
         face.add_student(self.request.bus, self.request.id, self.request.picture)
+        return Student.objects.all()
 
 class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
 class EventList(generics.ListCreateAPIView):
-    queryset = Event.objects.all()
+    #queryset = Event.objects.all()
     serializer_class = EventSerializer
-    def perform_create(self, serializer):
+    def get_queryset(self, serializer):
         person = face.identify(self.request.bus, self.request.picture)
         if person is not None:
             serializer.save(student=self.request.student)
+        return Event.objects.all()
 
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 	
 class BusList(generics.ListCreateAPIView):
-    queryset = Bus.objects.all()
+    #queryset = Bus.objects.all()
     serializer_class = BusSerializer
-    def perform_create(self, serializer):
+    def get_queryset(self, serializer):
         face.create_group(self.request.name)
+        return Bus.objects.all()
 
 class BusDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Bus.objects.all()
