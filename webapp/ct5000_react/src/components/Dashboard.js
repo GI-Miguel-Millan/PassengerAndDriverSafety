@@ -36,6 +36,7 @@ import ParentAdmin from './ParentAdmin.js';
 import DevicesAdmin from './DevicesAdmin.js';
 import SchoolsAdmin from './SchoolsAdmin.js';
 import BussAdmin from './BussAdmin.js';
+import AdminHome from './AdminHome.js';
 
 const drawerWidth = 240;
 
@@ -171,7 +172,7 @@ class Dashboard extends Component {
         
         if (user.is_superuser){
             if (page == "Home"){
-                mainContent = <div> Admin main page</div>
+                mainContent = <PrivateRoute path="/" component={AdminHome} />
             } else if (page == "Students"){
                 mainContent = <PrivateRoute path="/" component={StudentsAdmin} />
             } else if (page == "Events"){

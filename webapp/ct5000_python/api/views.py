@@ -29,6 +29,13 @@ class CurrentUser(APIView):
         serializer_class = self.get_serializer_class()(request.user)
         return Response(serializer_class.data)
 
+class AdminList(generics.ListCreateAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        queryset = User.objects.filter(is_superuser=True)
+        return queryset
+
 class ParentList(generics.ListCreateAPIView):
     serializer_class = ParentUserSerializer
 

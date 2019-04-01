@@ -109,6 +109,20 @@ export const get_students_by_current_parent = async () => {
     return await response.json()
 }
 
+export const get_admins = async () => {
+    let response = await fetch(
+        'http://127.0.0.1:8000/users/admins/',
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+            }
+        }
+    )
+    return await response.json()
+}
+
 export const get_students = async () => {
     let response = await fetch(
         '/students/',
