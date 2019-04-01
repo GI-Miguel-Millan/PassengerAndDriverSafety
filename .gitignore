@@ -11,3 +11,6 @@ bag_cnn/data/logs/*
 bag_cnn/bagEnv/*
 bag_cnn/data/data_file.csv
 PiCamEventDetection/src/__pycache__/
+webapp/ct5000_python/ct5000_python/__pycache__/
+webapp/ct5000_python/api/__pycache__/
+webapp/ct5000_python/api/migrations/__pycache__/
