@@ -130,11 +130,11 @@ class CurrentParentStudents(generics.ListAPIView):
     def get_queryset(self):
         queryset = Student.objects.all()
 
-        if(self.request.auth is not None and self.request.user.is_parent):
-            parent_id = self.request.user.id
-            return self.queryset.filter(Q(parent_one__pk=parent_id) | Q(parent_two__pk=parent_id))
+        if self.request.user.is_parent is False:
+            return queryset
 
-        return queryset
+        parent_id = self.request.user.id
+        return Student.objects.filter(Q(parent_one__pk=parent_id) | Q(parent_two__pk=parent_id))
 
 class StudentEvents(generics.ListAPIView):
     queryset = Event.objects.all()

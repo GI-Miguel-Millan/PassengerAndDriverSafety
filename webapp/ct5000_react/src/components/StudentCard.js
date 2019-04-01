@@ -31,7 +31,7 @@ class StudentCard extends Component {
                 <CardActionArea>
                     <CardMedia
                         className={classes.media}
-                        image={student.picture} // I assume this was hard coded for the presentation, fix please.
+                        image={student.picture}
                         title="Student"
                     />
                     <CardContent>
