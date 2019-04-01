@@ -6,6 +6,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 User = get_user_model()
+from facedetection import face
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
