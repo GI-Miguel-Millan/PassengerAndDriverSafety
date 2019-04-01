@@ -13,6 +13,7 @@ import StudentsAdmin from './components/StudentsAdmin';
 import BussAdmin from './components/BussAdmin';
 import DriversAdmin from './components/DriversAdmin';
 import SchoolsAdmin from './components/SchoolsAdmin';
+import NotFound from "./components/NotFound";
 
 class App extends Component {
     state = {
@@ -53,6 +54,7 @@ class App extends Component {
                     <PrivateRoute path='/admin/buss' />
                     <PrivateRoute path='/admin/drivers' />
                     <PrivateRoute path='/admin/schools' />
+                    <Route component={NotFound}/>
                 </Switch>
             </BrowserRouter>
         );
