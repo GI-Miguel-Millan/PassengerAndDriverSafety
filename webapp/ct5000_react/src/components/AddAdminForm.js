@@ -14,10 +14,10 @@ const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
-    width: 600,
+    width: 400,
   },
   FormControl: {
-    width: 600,
+    width: 400,
   },
   dense: {
     marginTop: 16,
