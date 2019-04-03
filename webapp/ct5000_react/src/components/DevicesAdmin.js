@@ -9,10 +9,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Redirect } from 'react-router-dom';
-import { devices } from '../api/Api.js';
+import { get_devices } from '../api/Api.js';
 import { login } from '../api/Api.js';
 import FloatingActionButtons from './ActionButton.js'
 import NavTabs from './tabs.js';
+import AddAdminForm from './AddAdminForm.js';
+import AddEditButtons from './AddEditButtons.js';
 
 const styles = {
     root: {
@@ -24,12 +26,6 @@ const styles = {
     },
 };
 
-export const devicest = async () => {
-    let res = await fetch('http://127.0.0.1:8000/devices/', { method: "GET" })
-    console.log(res)
-    return res.json()
-}
-
 class DevicesAdmin extends Component {
     constructor(props) {
         super(props)
@@ -37,7 +33,7 @@ class DevicesAdmin extends Component {
     }
 
     componentDidMount() {
-        devicest().then(data => {
+        get_devices().then(data => {
             console.log(data)
             this.setState({ data: data, isLoaded: true })
         });
@@ -47,7 +43,7 @@ class DevicesAdmin extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root}>
-            <FloatingActionButtons />
+            <AddEditButtons />
                 <Table className={classes.table}>
                   <TableHead>
                         <TableRow>

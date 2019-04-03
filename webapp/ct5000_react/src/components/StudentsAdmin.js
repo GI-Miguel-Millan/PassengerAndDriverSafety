@@ -9,13 +9,15 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Redirect } from 'react-router-dom';
-import { students } from '../api/Api.js';
+import { get_students } from '../api/Api.js';
 import { login } from '../api/Api.js';
 import FloatingActionButtons from './ActionButton.js';
 import NavTabs from './tabs.js';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import Button from '@material-ui/core/Button';
+import AddAdminForm from './AddAdminForm.js';
+import AddEditButtons from './AddEditButtons.js';
 
 const styles = {
     root: {
@@ -26,12 +28,6 @@ const styles = {
         minWidth: 700,
     },
 };
-
-export const studentst = async () => {
-    let res = await fetch('http://127.0.0.1:8000/students/', { method: "GET" })
-    console.log(res)
-    return res.json()
-}
 
 function Buttons(props) {
     return <Button onClick={event => event.Default()} {...props} />;
@@ -44,7 +40,7 @@ class StudentsAdmin extends Component {
     }
 
     componentDidMount() {
-        studentst().then(data => {
+        get_students().then(data => {
             console.log(data)
             this.setState({ data: data, isLoaded: true })
         });
@@ -54,7 +50,7 @@ class StudentsAdmin extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root}>
-            <FloatingActionButtons component={Link} to='admin/students'/>
+            <AddEditButtons/>
                 <Table className={classes.table}>
                   <TableHead>
                         <TableRow>

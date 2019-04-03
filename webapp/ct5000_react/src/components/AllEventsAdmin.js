@@ -11,6 +11,7 @@ import { get_events } from '../api/Api.js';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import FloatingActionButtons from './ActionButton.js';
 import Button from '@material-ui/core/Button';
+import AddEditButtons from './AddEditButtons.js';
 
 const styles = {
     root: {
@@ -44,7 +45,7 @@ class AllEventsAdmin extends Component {
 
         return (
             <Paper className={classes.root}>
-            <FloatingActionButtons component={Link} to='/'/>
+                <AddEditButtons />
                 <Table className={classes.table}>
                   <TableHead>
                         <TableRow>

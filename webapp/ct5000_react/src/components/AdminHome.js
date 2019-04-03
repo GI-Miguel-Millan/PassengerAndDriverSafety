@@ -24,6 +24,7 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import AddCircle from '@material-ui/icons/AddCircle';
 import Edit from '@material-ui/icons/Edit';
 import AddAdminForm from './AddAdminForm.js';
+import AddEditButtons from './AddEditButtons.js';
 import Modal from '@material-ui/core/Modal';
 
 
@@ -69,7 +70,7 @@ class AdminHome extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root}>
-            {IconButtons(this.props)}
+                <AddEditButtons />
                 <Table className={classes.table}>
                   <TableHead>
                         <TableRow>
@@ -95,24 +96,6 @@ class AdminHome extends Component {
         )
     }
 }
-
-function IconButtons(props) {
-    const { classes } = props;
-    return (
-      <div>
-        <IconButton className={classes.button} aria-label="Delete" color="primary">
-            <AddCircle />
-        </IconButton>
-        <IconButton className={classes.button} aria-label="Delete" color="primary">
-            <Edit />
-        </IconButton>
-      </div>
-    );
-  }
-  
-  IconButtons.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
 
 AdminHome.propTypes = {
     classes: PropTypes.object.isRequired,

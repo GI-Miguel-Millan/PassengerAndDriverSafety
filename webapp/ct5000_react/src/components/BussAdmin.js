@@ -9,10 +9,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Redirect } from 'react-router-dom';
-import { buss } from '../api/Api.js';
+import { get_buses } from '../api/Api.js';
 import { login } from '../api/Api.js';
 import NavTabs from './tabs.js';
 import FloatingActionButtons from './ActionButton.js'
+import AddEditButtons from './AddEditButtons.js';
 
 const styles = {
     root: {
@@ -24,13 +25,6 @@ const styles = {
     },
 };
 
-
-export const busst = async () => {
-    let res = await fetch('http://127.0.0.1:8000/buses/', { method: "GET" })
-    console.log(res)
-    return res.json()
-}
-
 class BussAdmin extends Component {
     constructor(props) {
         super(props)
@@ -38,7 +32,7 @@ class BussAdmin extends Component {
     }
 
     componentDidMount() {
-        busst().then(data => {
+        get_buses().then(data => {
             console.log(data)
             this.setState({ data: data, isLoaded: true })
         });
@@ -48,7 +42,7 @@ class BussAdmin extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root}>
-            <FloatingActionButtons />
+                <AddEditButtons />
                 <Table className={classes.table}>
                   <TableHead>
                         <TableRow>
