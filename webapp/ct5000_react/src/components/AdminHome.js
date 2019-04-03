@@ -88,9 +88,9 @@ class AdminHome extends Component {
                 })}
                     </TableBody>
                 </Table>
-                <Modal open={this.state.modalOpen} onClose={this.handleClose}>
-                    <AddAdminForm />
-                </Modal>
+
+                <AddAdminForm />
+
             </Paper>
         )
     }

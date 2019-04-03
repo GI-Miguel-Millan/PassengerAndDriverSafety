@@ -7,6 +7,8 @@ import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
+import {admins} from '../api/Api.js';
+import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
   container: {
@@ -40,6 +42,11 @@ class AddAdminForm extends React.Component {
     superUser: false,
   };
 
+  constructor(){
+      super();
+      this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   handleCheckChange = name => event => {
     this.setState({
       [name]: event.target.checked,
@@ -52,11 +59,26 @@ class AddAdminForm extends React.Component {
       });
   };
 
+  handleSubmit = async () => {
+
+        let response = await admins(this.state.username, this.state.firstname, this.state.lastname, 
+            this.state.email, this.state.password, this.state.active, this.state.superUser);
+
+        if (response.status === 200) {
+            console.log("200 all good");
+            
+        } else if (response.status === 400) {
+            console.log("400 error")
+        } else {
+            console.log("something went wrong.")
+        }
+    }
+
   render() {
     const { classes } = this.props;
 
     return (
-      <form className={classes.container} noValidate autoComplete="off">
+      <Paper className={classes.container} autoComplete="off">
         
         <TextField
             required
@@ -137,11 +159,11 @@ class AddAdminForm extends React.Component {
             label="Super User"
         />
 
-        <Button variant="contained" color="primary" className={classes.FormControl}>
+        <Button type="submit" onClick={() => this.handleSubmit()}variant="contained" color="primary" className={classes.FormControl}>
             Submit
         </Button>
 
-      </form>
+      </Paper>
     );
   }
 }

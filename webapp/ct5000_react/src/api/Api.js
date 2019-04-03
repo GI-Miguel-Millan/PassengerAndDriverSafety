@@ -333,7 +333,7 @@ export const parents = async (user, phone_number, address, city, state, zipcode)
 		    body: formBody
 		}
 	)
-    return response.JSON()
+    return await response
 }
 
 export const devices = async (user, registered_by, bus) => {
@@ -353,7 +353,7 @@ export const devices = async (user, registered_by, bus) => {
 		    body: formBody
 		}
 	)
-    return response.JSON()
+    return await response
 }
 export const students = async (first_name, last_name, age, grade, school, bus, picture, parent_one, parent_two, track) => {
     let data = {
@@ -372,7 +372,7 @@ export const students = async (first_name, last_name, age, grade, school, bus, p
 		    body: formBody
 		}
 	)
-    return response.JSON()
+    return await response
 }
 export const buss = async (name) => {
     let data = {
@@ -391,7 +391,7 @@ export const buss = async (name) => {
 		    body: formBody
 		}
 	)
-    return response.JSON()
+    return await response
 }
 export const drivers = async (bus, first_name, last_name) => {
     let data = {
@@ -410,7 +410,7 @@ export const drivers = async (bus, first_name, last_name) => {
 		    body: formBody
 		}
 	)
-    return response.JSON()
+    return await response
 }
 export const schools = async (name, address, city, state, zipcode) => {
     let data = {
@@ -429,5 +429,38 @@ export const schools = async (name, address, city, state, zipcode) => {
 		    body: formBody
 		}
 	)
-    return response.JSON()
+    return await response
+}
+
+export const admins = async (username, firstname, lastname, email, password, active, is_superuser) => {
+    let data = {
+        "username": username,
+        "password": password,
+        "first_name": firstname,
+        "last_name": lastname,
+        "email": email,
+        "is_active": active,
+        "is_parent": false,
+        "is_device": false,
+        "is_staff": false,
+        "is_superuser": is_superuser,
+    }
+
+    const formBody = JSON.stringify(data)
+
+    console.log(data);
+    console.log(formBody);
+
+    let response = await fetch(
+		'http://127.0.0.1:8000/users/',
+		{
+		    method: 'GET',
+		    headers: {
+		        'Content-Type': 'application/json',
+		    },
+		    data: formBody
+		}
+    )
+    console.log(response);
+    return await response
 }
