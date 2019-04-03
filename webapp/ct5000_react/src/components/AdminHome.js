@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+
+import { get_admins } from '../api/Api.js';
+import AddAdminForm from './AddAdminForm.js';
+
+// Material Ui table
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,30 +12,17 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Redirect } from 'react-router-dom';
-import { students } from '../api/Api.js';
-import { get_admins } from '../api/Api.js';
-import FloatingActionButtons from './ActionButton.js';
-import NavTabs from './tabs.js';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-import PrivateRoute from './PrivateRoute';
+
+// Icons and dialog
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import AddCircle from '@material-ui/icons/AddCircle';
 import Edit from '@material-ui/icons/Edit';
-import AddAdminForm from './AddAdminForm.js';
-import AddEditButtons from './AddEditButtons.js';
-import Modal from '@material-ui/core/Modal';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
 
 
 
@@ -96,13 +87,13 @@ class AdminHome extends Component {
                                     <TableCell>{n.email}</TableCell>
                                     <TableCell>{n.last_login}</TableCell>
                                     <TableCell>
-                                    <IconButton aria-label="Edit" color="primary">
-                                        <Edit />
-                                    </IconButton>
-                                    <IconButton aria-label="Delete" color="primary">
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </TableCell>
+                                        <IconButton aria-label="Edit" color="primary">
+                                            <Edit />
+                                        </IconButton>
+                                        <IconButton aria-label="Delete" color="primary">
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </TableCell>
                                 </TableRow>
                             );
                 })}
