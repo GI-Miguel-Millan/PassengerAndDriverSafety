@@ -1,5 +1,5 @@
 from api.models import Parent, Device, Event, Bus, Driver, Student, School
-from api.serializers import UserSerializer, ParentUserSerializer, ParentSerializer, DeviceSerializer, DeviceUserSerializer, EventSerializer, BusSerializer, DriverSerializer, StudentSerializer, SchoolSerializer
+from api.serializers import UserSerializer, AdminSerializer, ParentUserSerializer, ParentSerializer, DeviceSerializer, DeviceUserSerializer, EventSerializer, BusSerializer, DriverSerializer, StudentSerializer, SchoolSerializer
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from rest_framework import generics
@@ -9,11 +9,14 @@ User = get_user_model()
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = AdminSerializer
+    def get_queryset(self):
+        queryset = User.objects.filter(is_superuser=True)
+        return queryset
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = AdminSerializer
 
 class CurrentUser(APIView):
     def get_serializer_class(self):
