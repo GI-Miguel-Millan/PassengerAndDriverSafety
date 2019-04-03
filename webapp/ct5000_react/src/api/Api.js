@@ -1,3 +1,5 @@
+const baseurl = 'http://127.0.0.1:8000/';
+
 export const login = async (username, password) => {
     let data = {
         username,
@@ -7,7 +9,7 @@ export const login = async (username, password) => {
     const formBody = JSON.stringify(data)
 
     let response = await fetch(
-        'http://127.0.0.1:8000/api/token/',
+        baseurl + 'api/token/',
         {
             method: 'POST',
             headers: {
@@ -18,13 +20,12 @@ export const login = async (username, password) => {
     )
     return await response
 }
-
 export const refresh = async () => {
 
     const formBody = JSON.stringify({ "refresh": localStorage.getItem('refresh') })
 
     let response = await fetch(
-        'http://127.0.0.1:8000/api/token/refresh/',
+        baseurl + 'api/token/refresh/',
         {
             method: 'POST',
             headers: {
@@ -36,9 +37,10 @@ export const refresh = async () => {
     return await response.json()
 }
 
+// GET Requests
 export const current_user = async () => {
     let response = await fetch(
-        'http://127.0.0.1:8000/users/current/',
+        baseurl + 'users/current/',
         {
             method: 'GET',
             headers: {
@@ -49,13 +51,12 @@ export const current_user = async () => {
     )
     return await response.json()
 }
-
 export const get_parents = async () => {
     let response = await fetch(
-        'http://127.0.0.1:8000/parents/',
+        baseurl + 'parents/',
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('access'),
@@ -64,13 +65,12 @@ export const get_parents = async () => {
     )
     return await response.json()
 }
-
 export const get_parent = async (parent_id) => {
     let response = await fetch(
-        '/parents/' + parent_id,
+        baseurl + 'parents/' + parent_id,
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('access'),
@@ -79,13 +79,12 @@ export const get_parent = async (parent_id) => {
     )
     return await response.json()
 }
-
 export const get_students_by_parent = async (parent_id) => {
     let response = await fetch(
-        'http://127.0.0.1:8000/parents/' + parent_id + '/students/',
+        baseurl + 'parents/' + parent_id + '/students/',
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('access'),
@@ -94,10 +93,9 @@ export const get_students_by_parent = async (parent_id) => {
     )
     return await response.json()
 }
-
 export const get_students_by_current_parent = async () => {
     let response = await fetch(
-        'http://127.0.0.1:8000/parents/students/',
+        baseurl + 'parents/students/',
         {
             method: 'GET',
             headers: {
@@ -108,10 +106,9 @@ export const get_students_by_current_parent = async () => {
     )
     return await response.json()
 }
-
 export const get_admins = async () => {
     let response = await fetch(
-        'http://127.0.0.1:8000/users/admins/',
+        baseurl + 'users/admins/',
         {
             method: 'GET',
             headers: {
@@ -122,40 +119,37 @@ export const get_admins = async () => {
     )
     return await response.json()
 }
-
 export const get_students = async () => {
     let response = await fetch(
-        '/students/',
+        baseurl +'students/',
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
-
 export const get_student = async (student_id) => {
     let response = await fetch(
-        '/students/' + student_id,
+        baseurl + 'students/' + student_id,
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
-
 export const get_events_by_student = async (student_id) => {
     let response = await fetch(
-        'http://127.0.0.1:8000/students/' + student_id + '/events/',
+        baseurl + 'students/' + student_id + '/events/',
         {
             method: 'GET',
             headers: {
@@ -166,10 +160,9 @@ export const get_events_by_student = async (student_id) => {
     )
     return await response.json()
 }
-
 export const get_events = async () => {
     let response = await fetch(
-        'http://127.0.0.1:8000/events/',
+        baseurl + 'events/',
         {
             method: 'GET',
             headers: {
@@ -180,163 +173,219 @@ export const get_events = async () => {
     )
     return await response.json()
 }
-
 export const get_event = async (event_id) => {
     let response = await fetch(
-        '/events/' + event_id,
+        baseurl + 'events/' + event_id,
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
-
 export const get_devices = async () => {
     let response = await fetch(
-        '/devices/',
+        baseurl + 'devices/',
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
-
 export const get_device = async (device_id) => {
     let response = await fetch(
-        '/devices/' + device_id,
+        baseurl + 'devices/' + device_id,
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
-
 export const get_buses = async () => {
     let response = await fetch(
-        '/buses/',
+        baseurl + 'buses/',
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
-
 export const get_bus = async (bus_id) => {
     let response = await fetch(
-        '/buses/' + bus_id,
+        baseurl + 'buses/' + bus_id,
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
-
 export const get_schools = async () => {
     let response = await fetch(
-        '/schools/',
+        baseurl + 'schools/',
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
-
 export const get_school = async (school_id) => {
     let response = await fetch(
-        '/schools/' + school_id,
+        baseurl + 'schools/' + school_id,
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
-
 export const get_drivers = async () => {
     let response = await fetch(
-        '/drivers/',
+        baseurl + 'drivers/',
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
-
 export const get_driver = async (driver_id) => {
     let response = await fetch(
-        '/drivers/' + driver_id,
+        baseurl + 'drivers/' + driver_id,
         {
             method: 'GET',
-            credentials: 'include',
+            
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
     return await response.json()
 }
 
-export const parents = async (user, phone_number, address, city, state, zipcode) => {
+/// CREATE Requests
+export const add_parent = async (username, password, first_name, last_name, email, parent) => {
+    // note: parent: { phone_number, address, city, state, zipcode}
     let data = {
-        user, phone_number, address, city, state, zipcode
+        username, 
+        password,
+        first_name, 
+        last_name, 
+        email, 
+        parent,
     }
-
-    const formBody = JSON.stringify(data)
+    const formBody = JSON.stringify(data);
 
     let response = await fetch(
-		'http://127.0.0.1:8000/parents/',
+		baseurl + 'parents/',
 		{
 		    method: 'POST',
 		    headers: {
-		        'Content-Type': 'application/json',
+                //'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
 		    },
-		    body: formBody
+            data: formBody,
 		}
-	)
+    )
     return await response
 }
+export const add_admin = async (username, first_name, last_name, email, password) => {
+    let data = {
+        username,
+        password,
+        first_name,
+        last_name,
+        email,
+    }
 
-export const devices = async (user, registered_by, bus) => {
+    const formBody = JSON.stringify(data);
+
+    console.log(data);
+    console.log(formBody);
+
+    let response = await fetch(
+		baseurl + 'admins/',
+		{
+		    method: 'POST',
+		    headers: {
+                //'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+		    },
+            body: formBody,
+		}
+    )
+    console.log(response);
+    return await response
+}
+export const add_student = async (first_name, last_name, age, grade, school, bus, picture, parent_one, parent_two, track) => {
+    let data = {
+        first_name, 
+        last_name, 
+        age, 
+        grade, 
+        school, 
+        bus, 
+        picture, 
+        parent_one, 
+        parent_two, 
+        track
+    }
+    const formBody = JSON.stringify(data);
+
+    let response = await fetch(
+		baseurl + 'students/',
+		{
+		    method: 'POST',
+		    headers: {
+                //'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+		    },
+            data: formBody,
+		}
+    )
+    return await response
+}
+export const add_devices = async (user, registered_by, bus) => {
     let data = {
         user, registered_by, bus
     }
@@ -344,7 +393,7 @@ export const devices = async (user, registered_by, bus) => {
     const formBody = JSON.stringify(data)
 
     let response = await fetch(
-		'http://127.0.0.1:8000/devices/',
+		baseurl + 'devices/',
 		{
 		    method: 'POST',
 		    headers: {
@@ -355,26 +404,7 @@ export const devices = async (user, registered_by, bus) => {
 	)
     return await response
 }
-export const students = async (first_name, last_name, age, grade, school, bus, picture, parent_one, parent_two, track) => {
-    let data = {
-        first_name, last_name, age, grade, school, bus, picture, parent_one, parent_two, track
-    }
-
-    const formBody = JSON.stringify(data)
-
-    let response = await fetch(
-		'http://127.0.0.1:8000/students/',
-		{
-		    method: 'POST',
-		    headers: {
-		        'Content-Type': 'application/json',
-		    },
-		    body: formBody
-		}
-	)
-    return await response
-}
-export const buss = async (name) => {
+export const add_bus = async (name) => {
     let data = {
         name
     }
@@ -382,7 +412,7 @@ export const buss = async (name) => {
     const formBody = JSON.stringify(data)
 
     let response = await fetch(
-		'http://127.0.0.1:8000/buss/',
+		baseurl + 'buss/',
 		{
 		    method: 'POST',
 		    headers: {
@@ -393,7 +423,7 @@ export const buss = async (name) => {
 	)
     return await response
 }
-export const drivers = async (bus, first_name, last_name) => {
+export const add_driver = async (bus, first_name, last_name) => {
     let data = {
         bus, first_name, last_name
     }
@@ -401,7 +431,7 @@ export const drivers = async (bus, first_name, last_name) => {
     const formBody = JSON.stringify(data)
 
     let response = await fetch(
-		'http://127.0.0.1:8000/drivers/',
+		baseurl + 'drivers/',
 		{
 		    method: 'POST',
 		    headers: {
@@ -412,7 +442,7 @@ export const drivers = async (bus, first_name, last_name) => {
 	)
     return await response
 }
-export const schools = async (name, address, city, state, zipcode) => {
+export const add_school = async (name, address, city, state, zipcode) => {
     let data = {
         name, address, city, state, zipcode
     }
@@ -420,7 +450,7 @@ export const schools = async (name, address, city, state, zipcode) => {
     const formBody = JSON.stringify(data)
 
     let response = await fetch(
-		'http://127.0.0.1:8000/schools/',
+		baseurl + 'schools/',
 		{
 		    method: 'POST',
 		    headers: {
@@ -432,35 +462,7 @@ export const schools = async (name, address, city, state, zipcode) => {
     return await response
 }
 
-export const admins = async (username, firstname, lastname, email, password, active, is_superuser) => {
-    let data = {
-        "username": username,
-        "password": password,
-        "first_name": firstname,
-        "last_name": lastname,
-        "email": email,
-        "is_active": active,
-        "is_parent": false,
-        "is_device": false,
-        "is_staff": false,
-        "is_superuser": is_superuser,
-    }
 
-    const formBody = JSON.stringify(data)
 
-    console.log(data);
-    console.log(formBody);
 
-    let response = await fetch(
-		'http://127.0.0.1:8000/users/',
-		{
-		    method: 'GET',
-		    headers: {
-		        'Content-Type': 'application/json',
-		    },
-		    data: formBody
-		}
-    )
-    console.log(response);
-    return await response
-}
+

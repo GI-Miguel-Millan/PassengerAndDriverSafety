@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
-import {admins} from '../api/Api.js';
+import {add_admin} from '../api/Api.js';
 import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
@@ -61,8 +61,8 @@ class AddAdminForm extends React.Component {
 
   handleSubmit = async () => {
 
-        let response = await admins(this.state.username, this.state.firstname, this.state.lastname, 
-            this.state.email, this.state.password, this.state.active, this.state.superUser);
+        let response = await add_admin(this.state.username, this.state.firstname, this.state.lastname, 
+            this.state.email, this.state.password);
 
         if (response.status === 200) {
             console.log("200 all good");
@@ -125,38 +125,6 @@ class AddAdminForm extends React.Component {
             autoComplete="current-password"
             margin="normal"
             onChange={this.handleTxtBoxChange('password')}
-        />
-
-        <TextField
-        required
-            id="password-confirmation"
-            label="Confirm Password"
-            className={classes.FormControl}
-            type="password"
-            autoComplete="current-password"
-            margin="normal"
-            onChange={this.handleTxtBoxChange('passwordConfirmation')}
-        />
-        <FormControlLabel
-            control={
-                <Checkbox
-                checked={this.state.active}
-                onChange={this.handleCheckChange('active')}
-                value="Active"
-                />
-            }
-            label="Active"
-        />
-
-        <FormControlLabel
-            control={
-                <Checkbox
-                checked={this.state.superUser}
-                onChange={this.handleCheckChange('superUser')}
-                value="SuperUser"
-                />
-            }
-            label="Super User"
         />
 
         <Button type="submit" onClick={() => this.handleSubmit()}variant="contained" color="primary" className={classes.FormControl}>
