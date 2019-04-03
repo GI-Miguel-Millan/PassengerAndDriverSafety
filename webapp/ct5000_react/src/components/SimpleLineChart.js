@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
 import LineChart from 'recharts/lib/chart/LineChart';
 import Line from 'recharts/lib/cartesian/Line';
@@ -7,6 +7,20 @@ import YAxis from 'recharts/lib/cartesian/YAxis';
 import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
 import Tooltip from 'recharts/lib/component/Tooltip';
 import Legend from 'recharts/lib/component/Legend';
+
+
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+
+
+const styles = {
+    card: {
+        width: 300,
+    },
+    media: {
+        height: 300,
+    },
+};
 
 const data = [
   { name: 'Mon', Visits: 2200, Orders: 3400 },
@@ -18,21 +32,33 @@ const data = [
   { name: 'Sun', Visits: 4490, Orders: 4300 },
 ];
 
-function SimpleLineChart() {
-  return (
-    // 99% per https://github.com/recharts/recharts/issues/172
-    <ResponsiveContainer width="99%" height={320}>
-      <LineChart data={data}>
-        <XAxis dataKey="name" />
-        <YAxis />
-        <CartesianGrid vertical={false} strokeDasharray="3 3" />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="Visits" stroke="#82ca9d" />
-        <Line type="monotone" dataKey="Orders" stroke="#8884d8" activeDot={{ r: 8 }} />
-      </LineChart>
-    </ResponsiveContainer>
-  );
+class SimpleLineChart extends Component
+{
+	constructor(props)
+	{
+		super(props)
+	}
+
+	render() 
+	{
+        	const { classes, student } = this.props;
+        	return (
+            		<ResponsiveContainer width="99%" height={320}>
+      				<LineChart data={data}>
+        				<XAxis dataKey="name" />
+        				<YAxis />
+        				<Tooltip />
+        				<Legend />
+        				<Line type="monotone" dataKey="Visits" stroke="#82ca9d" />
+        				<Line type="monotone" dataKey="Orders" stroke="#8884d8" activeDot={{ r: 8 }} />
+      				</LineChart>
+    			</ResponsiveContainer>
+        	);
+    	}
 }
 
-export default SimpleLineChart;
+SimpleLineChart.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(SimpleLineChart);
