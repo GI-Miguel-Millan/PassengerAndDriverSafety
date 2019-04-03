@@ -322,7 +322,7 @@ export const add_parent = async (username, password, first_name, last_name, emai
                 'Content-Type': 'application/json',
                 //'Authorization': 'Bearer ' + localStorage.getItem('access'),
 		    },
-            data: formBody,
+            body: formBody,
 		}
     )
     return await response
@@ -380,7 +380,7 @@ export const add_student = async (first_name, last_name, age, grade, school, bus
                 'Content-Type': 'application/json',
                 //'Authorization': 'Bearer ' + localStorage.getItem('access'),
 		    },
-            data: formBody,
+            body: formBody,
 		}
     )
     return await response
@@ -461,6 +461,7 @@ export const add_school = async (name, address, city, state, zipcode) => {
 	)
     return await response
 }
+
 
 
 
