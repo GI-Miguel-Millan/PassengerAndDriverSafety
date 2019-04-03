@@ -26,6 +26,13 @@ import Edit from '@material-ui/icons/Edit';
 import AddAdminForm from './AddAdminForm.js';
 import AddEditButtons from './AddEditButtons.js';
 import Modal from '@material-ui/core/Modal';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
+
 
 
 const styles = {
@@ -41,14 +48,11 @@ const styles = {
     },
 };
 
-function Buttons(props) {
-    return <Button onClick={event => event.Default()} {...props} />;
-}
 
 class AdminHome extends Component {
     constructor(props) {
         super(props)
-        this.state = { data: [], isLoaded: false , modalOpen: false}
+        this.state = { data: [], isLoaded: false , open: false}
     }
 
     componentDidMount() {
@@ -70,12 +74,17 @@ class AdminHome extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root}>
-                <AddEditButtons />
+                <IconButton className={classes.button} onClick={this.handleOpen} aria-label="Delete" color="primary">
+                    <AddCircle />
+                </IconButton>
                 <Table className={classes.table}>
                   <TableHead>
                         <TableRow>
                             <TableCell>Username</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Email</TableCell>
                             <TableCell>Last Login</TableCell>
+                            <TableCell>Options</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -83,14 +92,38 @@ class AdminHome extends Component {
                             return (
                                 <TableRow key={n.id}>
                                     <TableCell component="th" scope="row">{n.username}</TableCell>
+                                    <TableCell>{n.first_name} {n.last_name}</TableCell>
+                                    <TableCell>{n.email}</TableCell>
                                     <TableCell>{n.last_login}</TableCell>
+                                    <TableCell>
+                                    <IconButton aria-label="Edit" color="primary">
+                                        <Edit />
+                                    </IconButton>
+                                    <IconButton aria-label="Delete" color="primary">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </TableCell>
                                 </TableRow>
                             );
                 })}
                     </TableBody>
                 </Table>
 
-                <AddAdminForm />
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="form-dialog-title"
+                    >
+                    <DialogTitle id="form-dialog-title">Add Admin</DialogTitle>
+                    <DialogContent>
+                        <AddAdminForm />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                        Cancel
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
             </Paper>
         )
