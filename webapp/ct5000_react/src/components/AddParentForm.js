@@ -95,14 +95,32 @@ state = {
                 });
         } else if (response.status === 400) {
             console.log("400 no good check input");
-            let message = "";
-            if (!this.state.username && !this.state.password){
-                message = "Make sure you've entered your Username and Password."
-            }else if (!this.state.username){
-                message = "Make sure you've entered your Username."
-            }else if (!this.state.password){
-                message = "Make sure you've entered your Password."
-            }else {
+            let message = "Make sure you've entered your: ";
+            if (!this.state.username){
+                message += "Username, "
+            }
+
+            if (!this.state.password){
+                message += "Password, "
+            }
+
+            if (!this.state.phone_number){
+                message += "Phone Number, "
+            }
+            if (!this.state.address){
+                message += "Address, "
+            }
+            if (!this.state.city){
+                message += "City, "
+            }
+            if (!this.state.zipcode){
+                message += "Zip Code, "
+            }
+            if (!this.state.state){
+                message += "State. "
+            }
+
+            if(message === "Make sure you've entered your: ") {
                 message = "You username was taken, try a different one."
             }
 
@@ -202,6 +220,8 @@ state = {
         />
 
         <TextField
+            error={this.state.error}
+            required
             id="phone_number"
             label="Phone Number"
             value={this.state.phone_number}
@@ -213,6 +233,8 @@ state = {
             onChange={this.handleTxtBoxChange('phone_number')}
         />
         <TextField
+            error={this.state.error}
+            required
             id="address"
             label="address"
             value={this.state.address}
@@ -224,6 +246,8 @@ state = {
             onChange={this.handleTxtBoxChange('address')}
         />
         <TextField
+            error={this.state.error}
+            required
             id="city"
             label="city"
             value={this.state.city}
@@ -235,6 +259,8 @@ state = {
             onChange={this.handleTxtBoxChange('city')}
         />
         <TextField
+            error={this.state.error}
+            required
             id="zipcode"
             label="zipcode"
             value={this.state.zipcode}
@@ -248,6 +274,8 @@ state = {
 
         <InputLabel htmlFor="state">State</InputLabel>
         <Select
+        error={this.state.error}
+        required
         id="state"
         label="state"
         value={this.state.state}

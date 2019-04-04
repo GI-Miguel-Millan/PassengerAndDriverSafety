@@ -101,7 +101,7 @@ class ParentAdmin extends Component {
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                     >
-                    <DialogTitle id="form-dialog-title">Add Admin</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Add Parent</DialogTitle>
                     <DialogContent>
                         <AddParentForm />
                     </DialogContent>
