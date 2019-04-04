@@ -81,7 +81,7 @@ class AddAdminForm extends React.Component {
             }else if (!this.state.password){
               message = "Make sure you've entered your Password."
             }else {
-              message = "You username was taken, try a different one."
+              message = "Your username was taken, try a different one."
             }
 
             this.setState(

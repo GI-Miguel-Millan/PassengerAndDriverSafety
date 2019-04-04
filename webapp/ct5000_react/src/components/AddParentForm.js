@@ -121,7 +121,7 @@ state = {
             }
 
             if(message === "Make sure you've entered your: ") {
-                message = "You username was taken, try a different one."
+                message = "Your username was taken, try a different one."
             }
 
             this.setState(
