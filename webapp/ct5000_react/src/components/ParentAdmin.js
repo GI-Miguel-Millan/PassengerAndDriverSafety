@@ -69,8 +69,8 @@ class ParentAdmin extends Component {
                             <TableCell align="right">Name</TableCell>
                             <TableCell align="right">Phone Number</TableCell>
                             <TableCell align="right">Email</TableCell>
-                            <TableCell align="right">Options</TableCell>
                             <TableCell align="right">Address</TableCell>
+                            <TableCell align="right">Options</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
