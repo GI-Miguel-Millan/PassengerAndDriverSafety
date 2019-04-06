@@ -65,6 +65,7 @@ class AddStudentForm extends React.Component {
         busesLoaded: false,
         fileName: "Upload Profile Picture",
         fileSize: "",
+        uploadButtonColor: "default",
     };
 
     constructor(){
@@ -136,6 +137,7 @@ class AddStudentForm extends React.Component {
                 track: false,
                 error: false,
                 errorMessage: "",
+                uploadButtonColor: "default",
                 });
         } else if (response.status === 400) {
             console.log("400 no good check input");
@@ -153,6 +155,12 @@ class AddStudentForm extends React.Component {
             if (!this.state.grade){
                 message += "Grade, "
             }
+            if (!this.state.picture){
+                message += "Picture, "
+            }
+            if (!this.state.bus){
+                message += "Bus, "
+            }
 
             if(message === "Make sure you've entered your: ") {
                 message = "Your username was taken, try a different one."
@@ -169,8 +177,9 @@ class AddStudentForm extends React.Component {
                 parent_one: "",
                 parent_two: "",
                 track: false,
-                error: false,
-                errorMessage: message
+                error: true,
+                errorMessage: message,
+                uploadButtonColor: "secondary",
                 });
         } else {
             this.setState(
@@ -184,8 +193,9 @@ class AddStudentForm extends React.Component {
                 parent_one: "",
                 parent_two: "",
                 track: false,
-                error: false,
-                errorMessage: "Something is wrong with the server. Try again later."
+                error: true,
+                errorMessage: "Something is wrong with the server. Try again later.",
+                uploadButtonColor: "secondary",
             });
         }
     }
@@ -199,6 +209,7 @@ class AddStudentForm extends React.Component {
 
         <TextField
             required
+            error={this.state.error}
             id="first_name"
             label="First Name"
             value={this.state.first_name}
@@ -209,6 +220,7 @@ class AddStudentForm extends React.Component {
 
         <TextField
             required
+            error={this.state.error}
             id="last_name"
             label="Last Name"
             value={this.state.last_name}
@@ -220,6 +232,7 @@ class AddStudentForm extends React.Component {
         <InputLabel htmlFor="age">Age</InputLabel>
         <Input
             required
+            error={this.state.error}
             id="age"
             label="age"
             type="number"
@@ -254,27 +267,6 @@ class AddStudentForm extends React.Component {
             <option value="12">12th</option>
         </Select>	
 
-        <InputLabel htmlFor="school">School</InputLabel>
-        <Select
-        error={this.state.error}
-        required
-        id="school"
-        label="school"
-        value={this.state.school}
-        className={classes.FormControl}
-        type="school"
-        name="school"
-        margin="normal"
-        onChange={this.handleTxtBoxChange('school')}
-        >
-            {this.state.schoolsLoaded && this.state.schoolData.map(n => {
-                    return (
-                        <option value={n.id}>{n.name}</option>
-                    );
-                })}
-  
-        </Select>	
-
         <InputLabel htmlFor="bus">Bus</InputLabel>
         <Select
         error={this.state.error}
@@ -293,12 +285,30 @@ class AddStudentForm extends React.Component {
                     );
                 })}
   
+        </Select>
+
+        <InputLabel htmlFor="school">School</InputLabel>
+        <Select
+        id="school"
+        label="school"
+        value={this.state.school}
+        className={classes.FormControl}
+        type="school"
+        name="school"
+        margin="normal"
+        onChange={this.handleTxtBoxChange('school')}
+        >
+            {this.state.schoolsLoaded && this.state.schoolData.map(n => {
+                    return (
+                        <option value={n.id}>{n.name}</option>
+                    );
+                })}
+  
         </Select>	
 
         <InputLabel htmlFor="parent_one">Parent One</InputLabel>
         <Select
-        error={this.state.error}
-        required
+        
         id="parent_one"
         label="parent_one"
         value={this.state.parent_one}
@@ -318,8 +328,7 @@ class AddStudentForm extends React.Component {
 
         <InputLabel htmlFor="parent_two">Parent Two</InputLabel>
         <Select
-        error={this.state.error}
-        required
+        
         id="parent_two"
         label="parent_two"
         value={this.state.parent_two}
@@ -356,9 +365,9 @@ class AddStudentForm extends React.Component {
             type="file"
             onChange={this.handleLoad}
         />
-        <InputLabel htmlFor="picture">
+        <InputLabel htmlFor="picture" error={this.state.error}>
             
-            <Button variant="contained" component="span" className={classes.button}>
+            <Button variant="contained" color={this.state.uploadButtonColor} component="span" className={classes.button}>
             {this.state.fileName}
             </Button>
         </InputLabel>
