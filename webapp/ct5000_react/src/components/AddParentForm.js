@@ -171,7 +171,7 @@ state = {
             id="username"
             label="User Name"
             value={this.state.username}
-            className={classes.FormControl}
+            className={classes.FormControlHalf}
             margin="normal"
             onChange={this.handleTxtBoxChange('username')}
         />
@@ -182,7 +182,7 @@ state = {
             id="password"
             label="Password"
             value={this.state.password}
-            className={classes.FormControl}
+            className={classes.FormControlHalf}
             type="password"
             autoComplete="current-password"
             margin="normal"
