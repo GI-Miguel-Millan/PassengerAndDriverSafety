@@ -10,8 +10,19 @@ import Paper from '@material-ui/core/Paper';
 import { get_events } from '../api/Api.js';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import FloatingActionButtons from './ActionButton.js';
-import Button from '@material-ui/core/Button';
 import AddEditButtons from './AddEditButtons.js';
+import AddEventForm from './AddEventForm.js';
+
+// Icons and dialog
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddCircle from '@material-ui/icons/AddCircle';
+import Edit from '@material-ui/icons/Edit';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = {
     root: {
@@ -40,12 +51,22 @@ class AllEventsAdmin extends Component {
         });
     }
 
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
     render() {
         const { classes } = this.props;
 
         return (
             <Paper className={classes.root}>
-                <AddEditButtons />
+                <IconButton className={classes.button} onClick={this.handleOpen} aria-label="Delete" color="primary">
+                    <AddCircle />
+                </IconButton>
                 <Table className={classes.table}>
                   <TableHead>
                         <TableRow>
@@ -54,6 +75,7 @@ class AllEventsAdmin extends Component {
                             <TableCell>Picture (temporary)</TableCell>
                             <TableCell>Device</TableCell>
                             <TableCell>Time Stamp</TableCell>
+                            <TableCell>Options</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -69,11 +91,34 @@ class AllEventsAdmin extends Component {
                                     <TableCell>{n.picture}</TableCell>
                                     <TableCell>{n.device}</TableCell>
                                     <TableCell>{n.timestamp}</TableCell>
+                                    <TableCell>
+                                    <IconButton aria-label="Edit" color="primary">
+                                        <Edit />
+                                    </IconButton>
+                                    <IconButton aria-label="Delete" color="primary">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    </TableCell>
                                 </TableRow>
                             );
                 })}
                     </TableBody>
                 </Table>
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="form-dialog-title"
+                    >
+                    <DialogTitle id="form-dialog-title">Add Event</DialogTitle>
+                    <DialogContent>
+                        <AddEventForm />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                        Cancel
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Paper>
         )
     }

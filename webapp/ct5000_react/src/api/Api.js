@@ -384,7 +384,7 @@ export const add_student = async (first_name, last_name, age, grade, school, bus
     return await response
 }
 
-export const add_student = async (enter, picture, device, student) => {
+export const add_event = async (enter, picture, device, student) => {
     const data = new FormData();
     data.append('enter',enter);
     data.append('picture',picture);

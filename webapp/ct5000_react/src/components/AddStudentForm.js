@@ -75,15 +75,12 @@ class AddStudentForm extends React.Component {
 
     componentDidMount() {
         get_parents().then(data => {
-            console.log(data)
             this.setState({ parentData: data, parentsLoaded: true})
         });
         get_schools().then(data => {
-            console.log(data)
             this.setState({ schoolData: data, schoolsLoaded: true})
         });
         get_buses().then(data => {
-            console.log(data)
             this.setState({ busData: data, busesLoaded: true})
         });
     }
@@ -116,7 +113,6 @@ class AddStudentForm extends React.Component {
         this.setState({bus: parseInt(this.state.bus)}); // get bus pk as an int
         this.setState({school: parseInt(this.state.school)}); // get school pk as an int
 
-        console.log(this.state);
 
         let response = await add_student(this.state.first_name,this.state.last_name,this.state.age,
             this.state.grade,this.state.school,this.state.bus,this.state.picture,this.state.parent_one,
