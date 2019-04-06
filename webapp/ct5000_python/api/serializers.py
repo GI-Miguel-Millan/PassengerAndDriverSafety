@@ -129,16 +129,16 @@ class EventSerializer(serializers.ModelSerializer):
 class BusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bus
-        fields = ('name',)
+        fields = ('id','name',)
 
 
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver
-        fields = ('bus', 'first_name', 'last_name')
+        fields = ('id','bus', 'first_name', 'last_name')
 
 
 class SchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = School
-        fields = ('name', 'address', 'city', 'state', 'zipcode')
+        fields = ('id','name', 'address', 'city', 'state', 'zipcode')
