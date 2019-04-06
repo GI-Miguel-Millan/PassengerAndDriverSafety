@@ -10,6 +10,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { InputBase, Input } from '@material-ui/core';
 
 const styles = theme => ({
   container: {
@@ -50,7 +51,7 @@ class AddStudentForm extends React.Component {
         age: "",
         grade: "",
         school: "",
-        picture: "",
+        picture: null,
         parent_one: "",
         parent_two: "",
         track: false,
@@ -97,15 +98,28 @@ class AddStudentForm extends React.Component {
             [name]: event.target.value,
         });
     };
+    
+    handleLoad = () => {
+        let picture = document.getElementById("picture").value;
+        let filename = picture.substr(picture.lastIndexOf('\\') + 1);
 
-    handleLoad = ({ name, size }) => {
-        this.setState({ fileName: name, fileSize: size });
+        let file = document.getElementById("picture").files[0];
+ 
+        this.setState({ fileName: filename, picture: file});
       };
 
     handleSubmit = async () => {
-        const {fn,ln,age,grd,school,bus,pic,p1,p2,track} = this.state;
+        this.setState({grade: parseInt(this.state.grade)}); // get grade as an int
+        this.setState({parent_one: parseInt(this.state.parent_one)}); // get pk1 as an int
+        this.setState({parent_two: parseInt(this.state.parent_two)}); // get pk2 as an int
+        this.setState({bus: parseInt(this.state.bus)}); // get bus pk as an int
+        this.setState({school: parseInt(this.state.school)}); // get school pk as an int
 
-        let response = await add_student(fn,ln,age,grd,school,bus,pic,p1,p2,track);
+        console.log(this.state);
+
+        let response = await add_student(this.state.first_name,this.state.last_name,this.state.age,
+            this.state.grade,this.state.school,this.state.bus,this.state.picture,this.state.parent_one,
+            this.state.parent_two,this.state.track);
 
         if (response.status < 300 ) {
             console.log("200 all good");
@@ -184,32 +198,34 @@ class AddStudentForm extends React.Component {
         <div>{this.state.errorMessage}</div>
 
         <TextField
+            required
             id="first_name"
             label="First Name"
             value={this.state.first_name}
-            className={classes.FormControlName}
+            className={classes.FormControlHalf}
             margin="normal"
             onChange={this.handleTxtBoxChange('first_name')}
         />
 
         <TextField
+            required
             id="last_name"
             label="Last Name"
             value={this.state.last_name}
-            className={classes.FormControlName}
+            className={classes.FormControlHalf}
             margin="normal"
             onChange={this.handleTxtBoxChange('last_name')}
         />
 
-        <TextField
+        <InputLabel htmlFor="age">Age</InputLabel>
+        <Input
+            required
             id="age"
             label="age"
+            type="number"
             value={this.state.age}
-            className={classes.FormControlAge}
-            type="age"
+            className={classes.FormControl}
             name="age"
-            autoComplete="age"
-            margin="normal"
             onChange={this.handleTxtBoxChange('age')}
         />
         <InputLabel htmlFor="grade">Grade</InputLabel>
@@ -253,7 +269,7 @@ class AddStudentForm extends React.Component {
         >
             {this.state.schoolsLoaded && this.state.schoolData.map(n => {
                     return (
-                        <option value={n.name}>{n.name}</option>
+                        <option value={n.id}>{n.name}</option>
                     );
                 })}
   
@@ -273,7 +289,7 @@ class AddStudentForm extends React.Component {
         >
             {this.state.busesLoaded && this.state.busData.map(n => {
                     return (
-                        <option value={n.name}>{n.name}</option>
+                        <option value={n.id}>{n.name}</option>
                     );
                 })}
   
@@ -338,13 +354,14 @@ class AddStudentForm extends React.Component {
             id="picture"
             multiple
             type="file"
-            onLoad={this.handleTxtBoxChange('picture')}
+            onChange={this.handleLoad}
         />
-        <label htmlFor="picture">
+        <InputLabel htmlFor="picture">
+            
             <Button variant="contained" component="span" className={classes.button}>
             {this.state.fileName}
             </Button>
-        </label>
+        </InputLabel>
 
         <Button type="submit" onClick={() => this.handleSubmit()} variant="contained" color="primary" className={classes.FormControl}>
             Submit

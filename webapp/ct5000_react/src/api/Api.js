@@ -357,30 +357,28 @@ export const add_admin = async (username, first_name, last_name, email, password
     return await response
 }
 export const add_student = async (first_name, last_name, age, grade, school, bus, picture, parent_one, parent_two, track) => {
-    let data = {
-        first_name, 
-        last_name, 
-        age, 
-        grade, 
-        school, 
-        bus, 
-        picture, 
-        parent_one, 
-        parent_two, 
-        track
-    }
-    const formBody = JSON.stringify(data);
-
+    const data = new FormData();
+    data.append('first_name',first_name);
+    data.append('last_name',last_name);
+    data.append('age',age);
+    data.append('grade',grade);
+    data.append('school',school);
+    data.append('bus',bus);
+    data.append('picture',picture);
+    data.append('parent_one',parent_one);
+    data.append('parent_two',parent_two);
+    data.append('track',track);
+    
     let response = await fetch(
 		baseurl + 'students/',
 		{
 		    method: 'POST',
 		    headers: {
                 //'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                //'Content-Type': 'application/json',
                 //'Authorization': 'Bearer ' + localStorage.getItem('access'),
 		    },
-            body: formBody,
+            body: data,
 		}
     )
     return await response
