@@ -63,7 +63,7 @@ class AddStudentForm extends React.Component {
         parentsLoaded: false,
         schoolsLoaded: false,
         busesLoaded: false,
-        fileName: "Upload Profile Picture",
+        fileName: "Upload Profile Picture*",
         fileSize: "",
         uploadButtonColor: "default",
     };
@@ -229,7 +229,7 @@ class AddStudentForm extends React.Component {
             onChange={this.handleTxtBoxChange('last_name')}
         />
 
-        <InputLabel htmlFor="age">Age</InputLabel>
+        <InputLabel htmlFor="age">Age*</InputLabel>
         <Input
             required
             error={this.state.error}
@@ -241,7 +241,7 @@ class AddStudentForm extends React.Component {
             name="age"
             onChange={this.handleTxtBoxChange('age')}
         />
-        <InputLabel htmlFor="grade">Grade</InputLabel>
+        <InputLabel htmlFor="grade">Grade*</InputLabel>
         <Select
         error={this.state.error}
         required
@@ -267,7 +267,7 @@ class AddStudentForm extends React.Component {
             <option value="12">12th</option>
         </Select>	
 
-        <InputLabel htmlFor="bus">Bus</InputLabel>
+        <InputLabel htmlFor="bus">Bus*</InputLabel>
         <Select
         error={this.state.error}
         required
