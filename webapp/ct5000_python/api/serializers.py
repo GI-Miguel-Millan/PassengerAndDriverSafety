@@ -102,8 +102,7 @@ class DeviceUserSerializer(serializers.ModelSerializer):
             is_device=True)
         device_data = validated_data.pop('device')
         device = Device.objects.create(
-            user=user,
-            registered_by=self.context['request'].user)
+            user=user)
         return user
 
     class Meta:

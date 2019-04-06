@@ -318,9 +318,7 @@ export const add_parent = async (username, password, first_name, last_name, emai
 		{
 		    method: 'POST',
 		    headers: {
-                //'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
 		    },
             body: formBody,
 		}
@@ -406,20 +404,24 @@ export const add_event = async (enter, picture, device, student) => {
     return await response
 }
 
-export const add_devices = async (user, registered_by, bus) => {
-    let data = {
-        user, registered_by, bus
+export const add_devices = async (username, password, is_device, device) => {
+    const data = {
+        username,
+        password,
+        is_device,
+        device,
     }
 
-    const formBody = JSON.stringify(data)
+    console.log(data);
+    const formBody = JSON.stringify(data);
 
     let response = await fetch(
 		baseurl + 'devices/',
 		{
-		    method: 'POST',
-		    headers: {
-		        'Content-Type': 'application/json',
-		    },
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+            },
 		    body: formBody
 		}
 	)
