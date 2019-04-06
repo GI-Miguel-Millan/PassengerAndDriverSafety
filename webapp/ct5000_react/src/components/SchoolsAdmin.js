@@ -65,9 +65,6 @@ class SchoolsAdmin extends Component {
                         <TableRow>
                             <TableCell>Name</TableCell>
                             <TableCell align="center">Address</TableCell>
-                            <TableCell align="center">City</TableCell> 
-                             <TableCell align="center">State</TableCell>
-                            <TableCell align="center">Zipcode</TableCell> 
                             <TableCell align="center">Options</TableCell> 
                              </TableRow>
                     </TableHead>
@@ -76,10 +73,7 @@ class SchoolsAdmin extends Component {
                             return (
                                 <TableRow key={n.id}>
                                     <TableCell component="th" scope="row">{n.name}</TableCell>
-                                    <TableCell align="center">{n.address}</TableCell>
-                                    <TableCell align="center">{n.city}</TableCell>
-                                    <TableCell align="center">{n.state}</TableCell>
-                                    <TableCell align="center">{n.zipcode}</TableCell>
+                                    <TableCell align="center">{n.address} {n.city} {n.state} {n.zipcode}</TableCell>
                                     <TableCell>
                                         <IconButton aria-label="Edit" color="primary">
                                             <Edit />
