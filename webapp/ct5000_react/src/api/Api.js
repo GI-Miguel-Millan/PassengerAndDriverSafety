@@ -368,7 +368,7 @@ export const add_student = async (first_name, last_name, age, grade, school, bus
     data.append('parent_one',parent_one);
     data.append('parent_two',parent_two);
     data.append('track',track);
-    
+
     let response = await fetch(
 		baseurl + 'students/',
 		{
@@ -383,6 +383,29 @@ export const add_student = async (first_name, last_name, age, grade, school, bus
     )
     return await response
 }
+
+export const add_student = async (enter, picture, device, student) => {
+    const data = new FormData();
+    data.append('enter',enter);
+    data.append('picture',picture);
+    data.append('device',device);
+    data.append('student',student);
+    
+    let response = await fetch(
+		baseurl + 'events/',
+		{
+		    method: 'POST',
+		    headers: {
+                //'Accept': 'application/json',
+                //'Content-Type': 'application/json',
+                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+		    },
+            body: data,
+		}
+    )
+    return await response
+}
+
 export const add_devices = async (user, registered_by, bus) => {
     let data = {
         user, registered_by, bus
