@@ -348,7 +348,6 @@ export const add_admin = async (username, first_name, last_name, email, password
             body: formBody,
 		}
     )
-    console.log(response);
     return await response
 }
 export const add_student = async (first_name, last_name, age, grade, school, bus, picture, parent_one, parent_two, track) => {
@@ -529,7 +528,6 @@ export const edit_admin = async (id, username, first_name, last_name, email, pas
             body: formBody,
 		}
     )
-    console.log(response);
     return await response
 }
 export const edit_student = async (id, first_name, last_name, age, grade, school, bus, picture, parent_one, parent_two, track) => {
@@ -664,5 +662,86 @@ export const edit_school = async (id, name, address, city, state, zipcode) => {
     return await response
 }
 
+// DELETE REQUESTS
+export const delete_parent = async (id) => {
+
+    let response = await fetch(
+		baseurl + 'parents/'+id+"/",
+		{
+		    method: 'DELETE',
+		}
+    )
+    return await response
+}
+export const delete_admin = async (id) => {
+
+    let response = await fetch(
+		baseurl + 'admins/' + id + "/",
+		{
+		    method: 'DELETE',
+		}
+    )
+    return await response
+}
+export const delete_student = async (id) => {
+
+    let response = await fetch(
+		baseurl + 'students/' + id + "/",
+		{
+		    method: 'DELETE',
+		}
+    )
+    return await response
+}
+
+export const delete_event = async (id) => {
+
+    let response = await fetch(
+		baseurl + 'events/'+id+"/",
+		{
+		    method: 'DELETE',
+		}
+    )
+    return await response
+}
+
+export const delete_device = async (id) => {
+    let response = await fetch(
+		baseurl + 'devices/'+id+"/",
+		{
+            method: 'DELETE',
+		}
+	)
+    return await response
+}
+
+export const delete_bus = async (id) => {
+    let response = await fetch(
+		baseurl + 'buses/'+ id + "/",
+		{
+		    method: 'DELETE',
+		}
+	)
+    return await response
+}
+
+export const delete_driver = async (id) => {
+    let response = await fetch(
+		baseurl + 'drivers/'+id+"/",
+		{
+		    method: 'DELETE',
+		}
+	)
+    return await response
+}
+export const delete_school = async (id) => {
+    let response = await fetch(
+		baseurl + 'schools/'+id+"/",
+		{
+		    method: 'DELETE',
+		}
+	)
+    return await response
+}
 
 
