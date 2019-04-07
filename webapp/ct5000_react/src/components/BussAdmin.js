@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { get_buses } from '../api/Api.js';
+import { get_buses, delete_bus } from '../api/Api.js';
 // Add Form
 import AddBusForm from './AddBusForm.js';
 
@@ -61,6 +61,12 @@ class BussAdmin extends Component {
     handleClose = () => {
         this.setState({ open: false, entityID: -1 });
     };
+
+    handleDelete = async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        let response = await delete_bus(id);
+    }
+
     render() {
         const { classes } = this.props;
         let entities = null;
@@ -73,8 +79,8 @@ class BussAdmin extends Component {
                         <IconButton data-id={entity.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
                             <Edit data-id={entity.id} />
                         </IconButton>
-                        <IconButton aria-label="Delete" color="primary">
-                            <DeleteIcon />
+                        <IconButton data-id={entity.id} onClick={e => this.handleDelete(e)} aria-label="Delete" color="primary">
+                            <DeleteIcon data-id={entity.id}/>
                         </IconButton>
                     </TableCell>
                 </TableRow>

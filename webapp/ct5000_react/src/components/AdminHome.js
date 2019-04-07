@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { get_admins } from '../api/Api.js';
+import { get_admins, delete_admin } from '../api/Api.js';
 import AddAdminForm from './AddAdminForm.js';
 
 // Material Ui table
@@ -61,6 +61,11 @@ class AdminHome extends Component {
         this.setState({ open: false });
     };
 
+    handleDelete = async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        let response = await delete_admin(id);
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -90,8 +95,8 @@ class AdminHome extends Component {
                                         <IconButton aria-label="Edit" color="primary">
                                             <Edit />
                                         </IconButton>
-                                        <IconButton aria-label="Delete" color="primary">
-                                            <DeleteIcon />
+                                        <IconButton data-id={n.id} onClick={e => this.handleDelete(e)} aria-label="Delete" color="primary">
+                                            <DeleteIcon data-id={n.id}/>
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>

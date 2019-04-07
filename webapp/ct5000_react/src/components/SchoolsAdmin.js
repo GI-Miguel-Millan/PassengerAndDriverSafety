@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { get_schools } from '../api/Api.js';
+import { get_schools,delete_school } from '../api/Api.js';
 
 // Icons and dialog
 import Button from '@material-ui/core/Button';
@@ -62,6 +62,11 @@ class SchoolsAdmin extends Component {
         this.setState({ open: false, entityID: -1 });
     };
 
+    handleDelete = async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        let response = await delete_school(id);
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -87,8 +92,8 @@ class SchoolsAdmin extends Component {
                                         <IconButton data-id={n.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
                                             <Edit data-id={n.id} />
                                         </IconButton>
-                                        <IconButton aria-label="Delete" color="primary">
-                                            <DeleteIcon />
+                                        <IconButton data-id={n.id} onClick={e => this.handleDelete(e)} aria-label="Delete" color="primary">
+                                            <DeleteIcon data-id={n.id}/>
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>

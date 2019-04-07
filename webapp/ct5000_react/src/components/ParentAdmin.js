@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { get_parents } from '../api/Api.js';
+import { get_parents, delete_parent } from '../api/Api.js';
 import AddParentForm from './AddParentForm.js';
 
 // Material Ui table
@@ -65,6 +65,11 @@ class ParentAdmin extends Component {
         this.setState({ open: false, entityID: -1 });
     };
 
+    handleDelete = async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        let response = await delete_parent(id);
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -96,8 +101,8 @@ class ParentAdmin extends Component {
                                     <IconButton data-id={n.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
                                         <Edit data-id={n.id} />
                                     </IconButton>
-                                    <IconButton aria-label="Delete" color="primary">
-                                        <DeleteIcon />
+                                    <IconButton data-id={n.id} onClick={e => this.handleDelete(e)} aria-label="Delete" color="primary">
+                                        <DeleteIcon data-id={n.id}/>
                                     </IconButton>
                                 </TableCell>
                                 </TableRow>

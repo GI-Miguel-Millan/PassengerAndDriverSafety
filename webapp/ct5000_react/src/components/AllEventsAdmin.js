@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { get_events } from '../api/Api.js';
+import { get_events, delete_event } from '../api/Api.js';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import FloatingActionButtons from './ActionButton.js';
 import AddEditButtons from './AddEditButtons.js';
@@ -69,6 +69,11 @@ class AllEventsAdmin extends Component {
         this.setState({ open: false, entityID: -1 });
     };
 
+    handleDelete = async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        let response = await delete_event(id);
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -105,8 +110,8 @@ class AllEventsAdmin extends Component {
                                     <IconButton data-id={n.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
                                         <Edit data-id={n.id} />
                                     </IconButton>
-                                    <IconButton aria-label="Delete" color="primary">
-                                        <DeleteIcon />
+                                    <IconButton data-id={n.id} onClick={e => this.handleDelete(e)} aria-label="Delete" color="primary">
+                                        <DeleteIcon data-id={n.id}/>
                                     </IconButton>
                                     </TableCell>
                                 </TableRow>

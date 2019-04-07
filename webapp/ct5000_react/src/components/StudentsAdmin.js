@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { get_students } from '../api/Api.js';
+import { get_students, delete_student } from '../api/Api.js';
 
 // Material Ui table
 import { withStyles } from '@material-ui/core/styles';
@@ -70,6 +70,11 @@ class StudentsAdmin extends Component {
         this.setState({ open: false, entityID: -1 });
     };
 
+    handleDelete = async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        let response = await delete_student(id);
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -109,8 +114,8 @@ class StudentsAdmin extends Component {
                                         <IconButton data-id={n.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
                                             <Edit data-id={n.id} />
                                         </IconButton>
-                                        <IconButton aria-label="Delete" color="primary">
-                                            <DeleteIcon />
+                                        <IconButton data-id={n.id} onClick={e => this.handleDelete(e)} aria-label="Delete" color="primary">
+                                            <DeleteIcon data-id={n.id}/>
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>

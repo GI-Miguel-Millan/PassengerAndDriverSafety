@@ -9,7 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Redirect } from 'react-router-dom';
-import { get_devices } from '../api/Api.js';
+import { get_devices, delete_device } from '../api/Api.js';
 import { login } from '../api/Api.js';
 import FloatingActionButtons from './ActionButton.js'
 import NavTabs from './tabs.js';
@@ -66,6 +66,12 @@ class DevicesAdmin extends Component {
     handleClose = () => {
         this.setState({ open: false, entityID: -1 });
     };
+
+    handleDelete = async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        let response = await delete_device(id);
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -93,8 +99,8 @@ class DevicesAdmin extends Component {
                                         <IconButton data-id={n.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
                                             <Edit data-id={n.id} />
                                         </IconButton>
-                                        <IconButton aria-label="Delete" color="primary">
-                                            <DeleteIcon />
+                                        <IconButton data-id={n.id} onClick={e => this.handleDelete(e)} aria-label="Delete" color="primary">
+                                            <DeleteIcon data-id={n.id}/>
                                         </IconButton>
                                     </TableCell>           
                                 </TableRow>
