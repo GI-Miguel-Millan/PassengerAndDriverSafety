@@ -35,7 +35,12 @@ const styles = {
 class BussAdmin extends Component {
     constructor(props) {
         super(props)
-        this.state = { data: [], isLoaded: false }
+        this.state = { 
+            data: [], 
+            isLoaded: false,
+            entityID: -1,
+            title: "Add Bus",
+        }
     }
 
     componentDidMount() {
@@ -45,15 +50,41 @@ class BussAdmin extends Component {
         });
     }
     
-    handleOpen = () => {
-        this.setState({ open: true });
+    handleOpen = (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        if(id){
+            this.setState({ open: true, entityID:  id, title:"Edit Bus"});
+        }else{
+            this.setState({ open: true, title: "Add Bus"});
+        }
+        
+        
     };
 
     handleClose = () => {
-        this.setState({ open: false });
+        this.setState({ open: false, entityID: -1 });
     };
     render() {
         const { classes } = this.props;
+        let entities = null;
+        if (this.state.isLoaded){
+            entities = this.state.data.map(function(entity){
+                return(
+                    <TableRow key={entity.id}>
+                    <TableCell component="th" scope="row">{entity.name}</TableCell>
+                    <TableCell >
+                        <IconButton data-id={entity.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
+                            <Edit data-id={entity.id} />
+                        </IconButton>
+                        <IconButton aria-label="Delete" color="primary">
+                            <DeleteIcon />
+                        </IconButton>
+                    </TableCell>
+                </TableRow>
+                );}.bind(this)
+            );
+        }
+        
         return (
             <Paper className={classes.root}>
                 <IconButton className={classes.button} onClick={this.handleOpen} aria-label="Delete" color="primary">
@@ -68,21 +99,7 @@ class BussAdmin extends Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.state.isLoaded && this.state.data.map(n => {
-                            return (
-                                <TableRow key={n.id}>
-                                    <TableCell component="th" scope="row">{n.name}</TableCell>
-                                    <TableCell>
-                                        <IconButton aria-label="Edit" color="primary">
-                                            <Edit />
-                                        </IconButton>
-                                        <IconButton aria-label="Delete" color="primary">
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
-                            );
-                })}
+                        {entities}
                     </TableBody>
                 </Table>
                 <Dialog
@@ -90,9 +107,9 @@ class BussAdmin extends Component {
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                     >
-                    <DialogTitle id="form-dialog-title">Add Student</DialogTitle>
+                    <DialogTitle id="form-dialog-title">{this.state.title}</DialogTitle>
                     <DialogContent>
-                        <AddBusForm />
+                        <AddBusForm entityID={this.state.entityID}/>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">

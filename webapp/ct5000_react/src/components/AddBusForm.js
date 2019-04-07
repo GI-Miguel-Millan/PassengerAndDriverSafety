@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {add_bus} from '../api/Api.js';
+import {add_bus, get_bus, edit_bus} from '../api/Api.js';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
@@ -45,9 +45,18 @@ class AddStudentForm extends React.Component {
         errorMessage: "",
     };
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.props.entityID !== -1){
+            get_bus(this.props.entityID).then(data => {
+                //console.log(data)
+                this.setState({ name: data['name'], isLoaded: true })
+            });
+        }
     }
 
     handleCheckChange = name => event => {
@@ -63,7 +72,14 @@ class AddStudentForm extends React.Component {
     };
 
     handleSubmit = async () => {
-        let response = await add_bus(this.state.name);
+        let response = null;
+        if(this.props.entityID === -1){
+            response = await add_bus(this.state.name);
+        }else{
+            console.log(this.state.name);
+            response = await edit_bus(this.props.entityID, this.state.name);
+        }
+        
 
         if (response.status < 300 ) {
             console.log("200 all good");

@@ -237,7 +237,7 @@ export const get_bus = async (bus_id) => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
             }
         }
     )
@@ -435,7 +435,7 @@ export const add_bus = async (name) => {
     const formBody = JSON.stringify(data)
 
     let response = await fetch(
-		baseurl + 'buss/',
+		baseurl + 'buses/',
 		{
 		    method: 'POST',
 		    headers: {
@@ -485,8 +485,26 @@ export const add_school = async (name, address, city, state, zipcode) => {
     return await response
 }
 
+// EDIT REQUESTS
+export const edit_bus = async (id, name) => {
+    let data = {
+        name
+    }
 
+    const formBody = JSON.stringify(data)
 
+    let response = await fetch(
+		baseurl + 'buses/'+ id + "/",
+		{
+		    method: 'PUT',
+		    headers: {
+		        'Content-Type': 'application/json',
+		    },
+		    body: formBody
+		}
+	)
+    return await response
+}
 
 
 
