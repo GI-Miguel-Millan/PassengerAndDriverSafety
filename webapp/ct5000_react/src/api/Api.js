@@ -336,9 +336,6 @@ export const add_admin = async (username, first_name, last_name, email, password
 
     const formBody = JSON.stringify(data);
 
-    console.log(data);
-    console.log(formBody);
-
     let response = await fetch(
 		baseurl + 'admins/',
 		{
@@ -412,7 +409,6 @@ export const add_devices = async (username, password, is_device, device) => {
         device,
     }
 
-    console.log(data);
     const formBody = JSON.stringify(data);
 
     let response = await fetch(
@@ -486,6 +482,129 @@ export const add_school = async (name, address, city, state, zipcode) => {
 }
 
 // EDIT REQUESTS
+export const edit_parent = async (id, username, password, first_name, last_name, email, parent) => {
+    // note: parent: { phone_number, address, city, state, zipcode}
+    let data = {
+        username, 
+        password,
+        first_name, 
+        last_name, 
+        email, 
+        parent,
+    }
+    const formBody = JSON.stringify(data);
+
+    let response = await fetch(
+		baseurl + 'parents/'+id+"/",
+		{
+		    method: 'PUT',
+		    headers: {
+                'Content-Type': 'application/json',
+		    },
+            body: formBody,
+		}
+    )
+    return await response
+}
+export const edit_admin = async (id, username, first_name, last_name, email, password) => {
+    let data = {
+        username,
+        password,
+        first_name,
+        last_name,
+        email,
+    }
+
+    const formBody = JSON.stringify(data);
+
+    let response = await fetch(
+		baseurl + 'admins/' + id + "/",
+		{
+		    method: 'PUT',
+		    headers: {
+                //'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+		    },
+            body: formBody,
+		}
+    )
+    console.log(response);
+    return await response
+}
+export const edit_student = async (id, first_name, last_name, age, grade, school, bus, picture, parent_one, parent_two, track) => {
+    const data = new FormData();
+    data.append('first_name',first_name);
+    data.append('last_name',last_name);
+    data.append('age',age);
+    data.append('grade',grade);
+    data.append('school',school);
+    data.append('bus',bus);
+    data.append('picture',picture);
+    data.append('parent_one',parent_one);
+    data.append('parent_two',parent_two);
+    data.append('track',track);
+
+    let response = await fetch(
+		baseurl + 'students/' + id + "/",
+		{
+		    method: 'PUT',
+		    headers: {
+                //'Accept': 'application/json',
+                //'Content-Type': 'application/json',
+                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+		    },
+            body: data,
+		}
+    )
+    return await response
+}
+
+export const edit_event = async (id,enter, picture, device, student) => {
+    const data = new FormData();
+    data.append('enter',enter);
+    data.append('picture',picture);
+    data.append('device',device);
+    data.append('student',student);
+    
+    let response = await fetch(
+		baseurl + 'events/'+id+"/",
+		{
+		    method: 'PUT',
+		    headers: {
+                //'Accept': 'application/json',
+                //'Content-Type': 'application/json',
+                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+		    },
+            body: data,
+		}
+    )
+    return await response
+}
+
+export const edit_devices = async (id,username, password, is_device, device) => {
+    const data = {
+        username,
+        password,
+        is_device,
+        device,
+    }
+
+    const formBody = JSON.stringify(data);
+
+    let response = await fetch(
+		baseurl + 'devices/'+id+"/",
+		{
+            method: 'PUT',
+            headers:{
+                'Content-Type': 'application/json',
+            },
+		    body: formBody
+		}
+	)
+    return await response
+}
+
 export const edit_bus = async (id, name) => {
     let data = {
         name
@@ -495,6 +614,45 @@ export const edit_bus = async (id, name) => {
 
     let response = await fetch(
 		baseurl + 'buses/'+ id + "/",
+		{
+		    method: 'PUT',
+		    headers: {
+		        'Content-Type': 'application/json',
+		    },
+		    body: formBody
+		}
+	)
+    return await response
+}
+
+export const edit_driver = async (id, bus, first_name, last_name) => {
+    let data = {
+        bus, first_name, last_name
+    }
+
+    const formBody = JSON.stringify(data)
+
+    let response = await fetch(
+		baseurl + 'drivers/'+id+"/",
+		{
+		    method: 'PUT',
+		    headers: {
+		        'Content-Type': 'application/json',
+		    },
+		    body: formBody
+		}
+	)
+    return await response
+}
+export const edit_school = async (id, name, address, city, state, zipcode) => {
+    let data = {
+        name, address, city, state, zipcode
+    }
+
+    const formBody = JSON.stringify(data)
+
+    let response = await fetch(
+		baseurl + 'schools/'+id+"/",
 		{
 		    method: 'PUT',
 		    headers: {
