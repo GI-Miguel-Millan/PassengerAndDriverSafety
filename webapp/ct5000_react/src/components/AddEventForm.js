@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {add_event, get_devices, get_students} from '../api/Api.js';
+import {add_event, get_event, edit_event, get_devices, get_students} from '../api/Api.js';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -65,6 +65,17 @@ state = {
         get_students().then(data => {
             this.setState({ studentData: data, studentsLoaded: true})
         });
+        if (this.props.entityID !== -1){
+            get_event(this.props.entityID).then(data => {
+                //console.log(data)
+                this.setState({ 
+                    enter: data['enter'], 
+                    picture: data['picture'], 
+                    device: data['device'], 
+                    student: data['student'], 
+                })
+            });
+        }
     }
 
     handleCheckChange = name => event => {
@@ -91,7 +102,13 @@ state = {
     handleSubmit = async () => {
         this.setState({student: parseInt(this.state.student)}); // get student as an int
         this.setState({device: parseInt(this.state.device)}); // get device as an int
-        let response = await add_event(this.state.enter,this.state.picture, this.state.device, this.state.student);
+
+        let response = null;
+        if (this.props.entityID !== -1){
+            response = await add_event(this.state.enter,this.state.picture, this.state.device, this.state.student);
+        }else{
+            response = await edit_event(this.props.entityID,this.state.enter,this.state.picture, this.state.device, this.state.student);
+        }
 
         if (response.status < 300 ) {
             console.log("200 all good");
@@ -122,10 +139,6 @@ state = {
 
             this.setState(
                 {
-                enter: "",
-                picture: "",
-                device: "",
-                student: "",
                 error: true, 
                 errorMessage: message,
                 uploadButtonColor: "secondary"
@@ -133,10 +146,6 @@ state = {
         } else {
             this.setState(
             {
-                enter: "",
-                picture: "",
-                device: "",
-                student: "",
                 error: true, 
                 errorMessage: "Something is wrong with the server. Try again later.",
                 uploadButtonColor: "secondary"

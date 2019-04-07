@@ -104,14 +104,12 @@ class AddStudentForm extends React.Component {
 
             this.setState(
                 {
-                name: "",
                 error: true,
                 errorMessage: message,
                 });
         } else {
             this.setState(
             {
-                name: "",
                 error: true,
                 errorMessage: "Something is wrong with the server. Try again later.",
             });
