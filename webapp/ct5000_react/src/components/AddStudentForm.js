@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import {FileUpload } from 'react-md';
-import {add_student, get_student, get_parents, get_schools, get_buses} from '../api/Api.js';
+import {add_student, edit_student, get_student, get_parents, get_schools, get_buses} from '../api/Api.js';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -132,10 +132,18 @@ class AddStudentForm extends React.Component {
         this.setState({bus: parseInt(this.state.bus)}); // get bus pk as an int
         this.setState({school: parseInt(this.state.school)}); // get school pk as an int
 
-
-        let response = await add_student(this.state.first_name,this.state.last_name,this.state.age,
-            this.state.grade,this.state.school,this.state.bus,this.state.picture,this.state.parent_one,
-            this.state.parent_two,this.state.track);
+        
+        let response = null;
+        if(this.props.entityID === -1){
+            response = await add_student(this.state.first_name,this.state.last_name,this.state.age,
+                this.state.grade,this.state.school,this.state.bus,this.state.picture,this.state.parent_one,
+                this.state.parent_two,this.state.track);
+        }else{
+            console.log(this.state);
+            response = await edit_student(this.props.entityID,this.state.first_name,this.state.last_name,this.state.age,
+                this.state.grade,this.state.school,this.state.bus,this.state.picture,this.state.parent_one,
+                this.state.parent_two,this.state.track);
+        }
 
         if (response.status < 300 ) {
             console.log("200 all good");
