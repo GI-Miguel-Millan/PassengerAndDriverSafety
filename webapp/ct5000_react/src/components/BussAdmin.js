@@ -57,8 +57,6 @@ class BussAdmin extends Component {
         }else{
             this.setState({ open: true, title: "Add Bus"});
         }
-        
-        
     };
 
     handleClose = () => {

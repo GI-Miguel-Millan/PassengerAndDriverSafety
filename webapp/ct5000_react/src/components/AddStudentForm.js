@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import {FileUpload } from 'react-md';
-import {add_student, get_parents, get_schools, get_buses} from '../api/Api.js';
+import {add_student, get_student, get_parents, get_schools, get_buses} from '../api/Api.js';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -50,6 +50,7 @@ class AddStudentForm extends React.Component {
         last_name: "",
         age: "",
         grade: "",
+        bus: "",
         school: "",
         picture: null,
         parent_one: "",
@@ -83,6 +84,24 @@ class AddStudentForm extends React.Component {
         get_buses().then(data => {
             this.setState({ busData: data, busesLoaded: true})
         });
+
+        if (this.props.entityID !== -1){
+            get_student(this.props.entityID).then(data => {
+                console.log(data)
+                this.setState({ 
+                    first_name: data['first_name'], 
+                    last_name: data['last_name'],
+                    age: data['age'],
+                    grade: data['grade'],
+                    bus: data['bus'],
+                    school: data['school'],
+                    picture: data['picture'],
+                    parent_one: data['parent_one'],
+                    parent_two: data['parent_two'],
+                    track: data['track'],
+                 });
+            });
+        }
     }
 
     handleCheckChange = name => event => {
@@ -126,6 +145,7 @@ class AddStudentForm extends React.Component {
                 last_name: "",
                 age: "",
                 grade: "",
+                bus: "",
                 school: "",
                 picture: "",
                 parent_one: "",
@@ -168,6 +188,7 @@ class AddStudentForm extends React.Component {
                 last_name: "",
                 age: "",
                 grade: "",
+                bus: "",
                 school: "",
                 picture: "",
                 parent_one: "",
@@ -184,6 +205,7 @@ class AddStudentForm extends React.Component {
                 last_name: "",
                 age: "",
                 grade: "",
+                bus: "",
                 school: "",
                 picture: "",
                 parent_one: "",

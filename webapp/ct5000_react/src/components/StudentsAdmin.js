@@ -42,7 +42,12 @@ function Buttons(props) {
 class StudentsAdmin extends Component {
     constructor(props) {
         super(props)
-        this.state = { data: [], isLoaded: false }
+        this.state = { 
+            data: [], 
+            isLoaded: false,
+            entityID: -1,
+            title: "Add Student",
+        }
     }
 
     componentDidMount() {
@@ -52,12 +57,17 @@ class StudentsAdmin extends Component {
         });
     }
 
-    handleOpen = () => {
-        this.setState({ open: true });
+    handleOpen = (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        if(id){
+            this.setState({ open: true, entityID:  id, title:"Edit Student"});
+        }else{
+            this.setState({ open: true, title: "Add Student"});
+        }
     };
 
     handleClose = () => {
-        this.setState({ open: false });
+        this.setState({ open: false, entityID: -1 });
     };
 
     render() {
@@ -96,8 +106,8 @@ class StudentsAdmin extends Component {
                                     <TableCell align="right">{n.parent_two}</TableCell> 
                                     <TableCell align="right">{n.track}</TableCell> 
                                     <TableCell>
-                                        <IconButton aria-label="Edit" color="primary">
-                                            <Edit />
+                                        <IconButton data-id={n.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
+                                            <Edit data-id={n.id} />
                                         </IconButton>
                                         <IconButton aria-label="Delete" color="primary">
                                             <DeleteIcon />
@@ -113,9 +123,9 @@ class StudentsAdmin extends Component {
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                     >
-                    <DialogTitle id="form-dialog-title">Add Student</DialogTitle>
+                    <DialogTitle id="form-dialog-title">{this.state.title}</DialogTitle>
                     <DialogContent>
-                        <AddStudentForm />
+                        <AddStudentForm entityID={this.state.entityID} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
