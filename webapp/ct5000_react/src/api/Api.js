@@ -582,7 +582,7 @@ export const edit_event = async (id,enter, picture, device, student) => {
     return await response
 }
 
-export const edit_devices = async (id,username, password, is_device, device) => {
+export const edit_device = async (id,username, password, is_device, device) => {
     const data = {
         username,
         password,

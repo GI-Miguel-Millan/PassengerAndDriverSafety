@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import {FileUpload } from 'react-md';
-import {add_student, get_parents, get_admins, get_buses, add_devices} from '../api/Api.js';
+import {get_device, edit_device, get_admins, get_buses, add_devices} from '../api/Api.js';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -71,6 +71,17 @@ class AddDevicesForm extends React.Component {
         get_buses().then(data => {
             this.setState({ busData: data, busesLoaded: true})
         });
+
+        if (this.props.entityID !== -1){
+            get_device(this.props.entityID).then(data => {
+                //console.log(data)
+                this.setState({ 
+                    username: data['username'], 
+                    is_device: data['is_device'], 
+
+                })
+            });
+        }
     }
 
     handleCheckChange = name => event => {
@@ -98,8 +109,14 @@ class AddDevicesForm extends React.Component {
             bus,
         };
 
-        let response = await add_devices(this.state.username,this.state.password,this.state.is_device,
-            device);
+        let response = null;
+        if (this.props.entityID === -1){
+            response = await add_devices(this.state.username,this.state.password,this.state.is_device,
+                device);
+        }else {
+            response = await edit_device(this.props.entityID, this.state.username,this.state.password,this.state.is_device,
+                device);
+        }
 
         if (response.status < 300 ) {
             console.log("200 all good");
