@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {add_parent, add_school} from '../api/Api.js';
+import {get_school, edit_school, add_school} from '../api/Api.js';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -47,6 +47,20 @@ state = {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        if (this.props.entityID !== -1){
+            get_school(this.props.entityID).then(data => {
+                this.setState({ 
+                    name: data['name'], 
+                    address: data['address'],
+                    city: data['city'],
+                    state: data['state'],
+                    zipcode: data['zipcode'],
+                 });
+            });
+        }
+    }
+
     handleCheckChange = name => event => {
     this.setState({
         [name]: event.target.checked,
@@ -60,8 +74,14 @@ state = {
     };
 
     handleSubmit = async () => {
-
-        let response = await add_school(this.state.name,this.state.address, this.state.city, this.state.state, this.state.zipcode);
+        let response = null;
+        if(this.props.entityID === -1){
+            response = await add_school(this.state.name,this.state.address, this.state.city, this.state.state, this.state.zipcode);
+        }else{
+            console.log(this.state.name);
+            response = await edit_school(this.props.entityID, this.state.name,this.state.address, this.state.city, this.state.state, this.state.zipcode);
+        }
+       
 
         if (response.status < 300 ) {
             console.log("200 all good");
@@ -104,22 +124,12 @@ state = {
 
             this.setState(
                 {
-                name: "",
-                address: "",
-                city: "",
-                state: "", 
-                zipcode: "",
                 error: true, 
                 errorMessage: message
                 });
         } else {
             this.setState(
             {
-                name: "",
-                address: "",
-                city: "",
-                state: "",
-                zipcode: "",
                 error: true, 
                 errorMessage: "Something is wrong with the server. Try again later."
             });
@@ -192,7 +202,7 @@ state = {
         required
         id="state"
         label="state"
-        value={this.state.state}
+        value={this.state.state.toUpperCase()}
         className={classes.FormControl}
         type="state"
         name="state"

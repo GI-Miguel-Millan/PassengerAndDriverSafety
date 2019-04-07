@@ -45,7 +45,6 @@ class BussAdmin extends Component {
 
     componentDidMount() {
         get_buses().then(data => {
-            console.log(data)
             this.setState({ data: data, isLoaded: true })
         });
     }

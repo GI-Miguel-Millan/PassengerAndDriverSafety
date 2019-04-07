@@ -87,7 +87,6 @@ class AddStudentForm extends React.Component {
 
         if (this.props.entityID !== -1){
             get_student(this.props.entityID).then(data => {
-                console.log(data)
                 this.setState({ 
                     first_name: data['first_name'], 
                     last_name: data['last_name'],
