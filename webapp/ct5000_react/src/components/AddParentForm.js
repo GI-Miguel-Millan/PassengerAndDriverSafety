@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {add_parent} from '../api/Api.js';
+import {add_parent, get_parent, edit_parent} from '../api/Api.js';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -52,6 +52,25 @@ state = {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        if (this.props.entityID !== -1){
+            get_parent(this.props.entityID).then(data => {
+                //console.log(data)
+                this.setState({ 
+                    username: data['username'], 
+                    first_name: data['first_name'], 
+                    last_name: data['last_name'], 
+                    email: data['email'], 
+                    phone_number: data['phone_number'], 
+                    address: data['address'], 
+                    city: data['city'], 
+                    state: data['state'], 
+                    zipcode: data['zipcode'], 
+                })
+            });
+        }
+    }
+
     handleCheckChange = name => event => {
     this.setState({
         [name]: event.target.checked,
@@ -73,8 +92,14 @@ state = {
             zipcode: this.state.zipcode,
         }
 
-        let response = await add_parent(this.state.username,this.state.password, this.state.first_name, this.state.last_name, 
-            this.state.email, parent);
+        let response = null;
+        if(this.props.entityID === -1){
+            response = await add_parent(this.state.username,this.state.password, this.state.first_name, this.state.last_name, 
+                this.state.email, parent);
+        }else{
+            response = await edit_parent(this.props.entityID, this.state.username,this.state.password, this.state.first_name, this.state.last_name, 
+                this.state.email, parent);
+        }
 
         if (response.status < 300 ) {
             console.log("200 all good");
@@ -126,32 +151,12 @@ state = {
 
             this.setState(
                 {
-                username: "",
-                password: "",
-                first_name: "",
-                last_name: "",
-                email: "",
-                phone_number: "",
-                address: "",
-                city: "",
-                state: "", //
-                zipcode: "",
                 error: true, 
                 errorMessage: message
                 });
         } else {
             this.setState(
             {
-                username: "",
-                password: "",
-                first_name: "",
-                last_name: "",
-                email: "",
-                phone_number: "",
-                address: "",
-                city: "",
-                state: "",
-                zipcode: "",
                 error: true, 
                 errorMessage: "Something is wrong with the server. Try again later."
             });
@@ -265,7 +270,7 @@ state = {
             label="zipcode"
             value={this.state.zipcode}
             className={classes.FormControlHalf}
-            type="zipcode"
+            type="number"
             name="zipcode"
             autoComplete="zipcode"
             margin="normal"
@@ -278,7 +283,7 @@ state = {
         required
         id="state"
         label="state"
-        value={this.state.state}
+        value={this.state.state.toUpperCase()}
         className={classes.FormControl}
         type="state"
         name="state"
