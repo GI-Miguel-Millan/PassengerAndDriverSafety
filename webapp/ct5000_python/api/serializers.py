@@ -70,10 +70,28 @@ class ParentUserSerializer(serializers.ModelSerializer):
             zipcode=parent_data["zipcode"])
         return user
 
+    def update(self, instance, validated_data):
+        instance.username=validated_data["username"]
+        instance.password=make_password(validated_data["password"])
+        instance.first_name=validated_data["first_name"]
+        instance.last_name=validated_data["last_name"]
+        instance.email=validated_data["email"]
+        instance.is_active=validated_data["is_active"]
+        instance.save()
+        parent_data = validated_data.pop('parent')
+        parent = Parent.objects.get(user=instance.id)
+        parent.phone_number=parent_data["phone_number"]
+        parent.address=parent_data["address"]
+        parent.city=parent_data["city"]
+        parent.state=parent_data["state"]
+        parent.zipcode=parent_data["zipcode"]
+        parent.save()
+        return instance
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'email', 'last_login', 'date_joined','parent')
-        read_only_fields = ('id', 'last_login', 'date_joined')
+        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'email', 'last_login', 'date_joined', 'is_active', 'is_parent', 'parent')
+        read_only_fields = ('id', 'last_login', 'date_joined', 'is_parent')
 
 
 class DeviceSerializer(serializers.ModelSerializer):
@@ -86,6 +104,11 @@ class DeviceUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     device = DeviceSerializer()
 
+    def _user(self, obj):
+        request = getattr(self.context, 'request', None)
+        if request:
+            return request.user
+
     def to_representation(self, obj):
         representation = super().to_representation(obj)
         device_representation = representation.pop('device')
@@ -95,6 +118,7 @@ class DeviceUserSerializer(serializers.ModelSerializer):
         return representation
 
     def create(self, validated_data):
+        print(validated_data)
         user = User.objects.create(
             username=validated_data["username"],
             password=make_password(validated_data["password"]),
@@ -102,13 +126,27 @@ class DeviceUserSerializer(serializers.ModelSerializer):
             is_device=True)
         device_data = validated_data.pop('device')
         device = Device.objects.create(
-            user=user)
+            user=user,
+            bus=device_data["bus"],
+            registered_by=self._user)
         return user
+        
+    def update(self, instance, validated_data):
+        instance.username=validated_data["username"]
+        instance.password=make_password(validated_data["password"])
+        instance.is_active=validated_data["is_active"]
+        instance.save()
+        device_data = validated_data.pop('device')
+        device = Device.objects.get(user=instance)
+        device.bus = device_data["bus"]
+        device.registered_by = self._user
+        device.save()
+        return instance
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'is_device', 'last_login', 'date_joined', 'device')
-        read_only_fields = ('id', 'last_login', 'date_joined')
+        fields = ('id', 'username', 'password', 'last_login', 'date_joined', 'is_active', 'is_device', 'device')
+        read_only_fields = ('id', 'last_login', 'date_joined', 'is_device')
 
 
 class StudentSerializer(serializers.ModelSerializer):
