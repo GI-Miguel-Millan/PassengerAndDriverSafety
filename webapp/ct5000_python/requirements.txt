@@ -7,3 +7,4 @@ Markdown==3.0.1
 Pillow==5.4.1
 PyJWT==1.7.1
 pytz==2018.9
+requests==2.21.0
