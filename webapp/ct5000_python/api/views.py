@@ -69,7 +69,10 @@ class StudentList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         add_student(self.request.data['bus'], self.request.data['first_name'] + ' ' + self.request.data['last_name'], self.request.data['picture'])
         super(StudentList, self).perform_create(serializer)
-
+        
+    def perform_destroy(self, instance):
+        delete_student(instance.bus, instance.first_name + ' ' + instance.last_name)
+        super(StudentList, self).perform_destroy(instance)
 
 class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
@@ -91,13 +94,16 @@ class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EventSerializer
 
 class BusList(generics.ListCreateAPIView):
-    serializer_class = BusSerializer
     queryset = Bus.objects.all()
+    serializer_class = BusSerializer
 
     def perform_create(self, serializer):
-        create_group(self.request.data['name'])
-        super(BusList, self).perform_create(serializer)
+        instance = serializer.save()
+        create_group(instance.id)
 
+    def perform_destroy(self, instance):
+        delete_group(instance.id)
+        super(BusList, self).perform_destroy(instance)
 
 
 class BusDetail(generics.RetrieveUpdateDestroyAPIView):
