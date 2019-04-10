@@ -116,7 +116,7 @@ class StudentsAdmin extends Component {
                                     <TableCell align="right">{n.bus}</TableCell> 
                                     <TableCell align="right">{n.parent_one}</TableCell> 
                                     <TableCell align="right">{n.parent_two}</TableCell> 
-                                    <TableCell align="right">{n.track}</TableCell> 
+                                    <TableCell align="right">{n.track ? "Yes" : "No"}</TableCell> 
                                     <TableCell>
                                         <IconButton data-id={n.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
                                             <Edit data-id={n.id} />

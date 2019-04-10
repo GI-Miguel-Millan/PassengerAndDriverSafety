@@ -82,8 +82,8 @@ class DevicesAdmin extends Component {
                 <Table className={classes.table}>
                   <TableHead>
                         <TableRow>
+                            <TableCell>ID</TableCell>
                             <TableCell>Username</TableCell>
-                            
                             <TableCell >Date Added</TableCell> 
                             <TableCell >Options</TableCell>          
                         </TableRow>
@@ -92,8 +92,8 @@ class DevicesAdmin extends Component {
                         {this.state.isLoaded && this.state.data.map(n => {
                             return (
                                 <TableRow key={n.id}>
-                                    <TableCell component="th" scope="row">{n.username}</TableCell>
-                                   
+                                    <TableCell component="th" scope="row">{n.id}</TableCell>
+                                    <TableCell>{n.username}</TableCell>
                                     <TableCell>{n.date_joined}</TableCell>  
                                     <TableCell>
                                         <IconButton data-id={n.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">

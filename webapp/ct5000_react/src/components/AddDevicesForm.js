@@ -77,6 +77,7 @@ class AddDevicesForm extends React.Component {
                 this.setState({ 
                     username: data['username'], 
                     is_device: data['is_device'], 
+                    registered_by: data['registered_by_id'], 
 
                 })
             });
@@ -154,22 +155,14 @@ class AddDevicesForm extends React.Component {
 
             this.setState(
                 {
-                    username: "",
-                    password: "",
-                    is_device: false,
-                    registered_by: "",
-                    bus: "",
+  
                     error: true,
                     errorMessage: message,
                 });
         } else {
             this.setState(
             {
-                username: "",
-                password: "",
-                is_device: false,
-                registered_by: "",
-                bus: "",
+
                 error: true,
                 errorMessage: "Something is wrong with the server. Try again later.",
             });
