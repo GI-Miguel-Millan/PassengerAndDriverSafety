@@ -67,8 +67,8 @@ class StudentList(generics.ListCreateAPIView):
     queryset = Student.objects.all()
 
     def perform_create(self, serializer):
-        add_student(self.request.data['bus'], self.request.data['first_name'] + ' ' + self.request.data['last_name'], self.request.files['picture'])
-        super(EventList, self).perform_create(serializer)
+        add_student(self.request.data['bus'], self.request.data['first_name'] + ' ' + self.request.data['last_name'], self.request.data['picture'])
+        super(StudentList, self).perform_create(serializer)
 
 
 class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -80,7 +80,7 @@ class EventList(generics.ListCreateAPIView):
     queryset = Event.objects.all()
 
     def perform_create(self, serializer):
-        person = identify(self.request.data['bus'], self.request.files['picture'])
+        person = identify(self.request.data['bus'], self.request.data['picture'])
         if person is not None:
             serializer.save(student=person)
         super(EventList, self).perform_create(serializer)
