@@ -344,10 +344,10 @@ def connect_to_server(url, user_name, password):
     return r.json() # returns a json containing the access and refresh tokens.
 
 # Sends a face to the cloud for classification:
-def send_face(url, face, access_token):
+def send_face(url, face, access_token, bus):
     headers={'Authorization':'access_token {}'.format(access_token)}
     #headers = {'Content-type': 'application/json'}
-    data = {'enter': face[1]}
+    data = {'enter': face[1], 'bus': bus}
     files = {'picture': open(face[0], 'rb')} # mode r = reading, b = binary mode
     r = requests.post(url, headers=headers, data=data, files=files)
 
@@ -355,7 +355,7 @@ def send_face(url, face, access_token):
 
 def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                 enable_streaming, streaming_bitrate, mdns_name,
-                width, height, fps, region, enter_side, use_annotator, url, uname, pw, image_dir):
+                width, height, fps, region, enter_side, use_annotator, url, uname, pw, image_dir, bus):
 
     # Sign the device in and get an access and a refresh token, if a password and username provided.
     access_token = None
@@ -507,7 +507,7 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                     print(classification_path, face, access_token)
                     if access_token is not None:
                         print("sent face with access token")
-                        send_face(classification_path, face, access_token)
+                        send_face(classification_path, face, access_token, bus)
 
             previous_faces = tmp_arr
 
@@ -558,13 +558,15 @@ def main():
                         help='Password used to authenticate this device initially')
     parser.add_argument('--image_dir', default="events/",
                         help='{url + "/" + image_dir} will give us path to send the face data')
+    parser.add_argument('--bus', default="1",
+                        help='Specify the bus number this bus is on')
     args = parser.parse_args()
 
     try:
         monitor_run(args.num_frames, args.preview_alpha, args.image_format, args.image_folder,
                     args.enable_streaming, args.streaming_bitrate, args.mdns_name,
                     args.cam_width, args.cam_height, args.fps, args.region, args.enter_side,
-                    args.annotator, args.url, args.username, args.password, args.image_dir)
+                    args.annotator, args.url, args.username, args.password, args.image_dir, args.bus)
     except KeyboardInterrupt:
         pass
     except Exception:
