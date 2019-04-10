@@ -38,6 +38,7 @@ import SchoolsAdmin from './SchoolsAdmin.js';
 import BussAdmin from './BussAdmin.js';
 import AdminHome from './AdminHome.js';
 import AllEventsAdmin from './AllEventsAdmin.js';
+import AlertDialog from './AlertDialog.js';
 
 const drawerWidth = 240;
 
@@ -110,25 +111,22 @@ const styles = theme => ({
     chartContainer: {
         marginLeft: -22,
     },
-    tableContainer: {
-        height: 320,
-    },
     h5: {
         marginBottom: theme.spacing.unit * 2,
     },
 });
 
 class Dashboard extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state= {
+        this.state = {
             open: false,
             anchorEl: null,
             user: localStorage.getItem('user') !== null ? (JSON.parse(localStorage.getItem('user'))) : ({}),
             page: "Home",
             selectedIndex: 0,
         };
-        
+
         //this.handleNavClick = this.handleNavClick.bind(this);
     }
 
@@ -150,14 +148,13 @@ class Dashboard extends Component {
 
     handleListItemClick = (event, index, page) => {
         this.setState({ selectedIndex: index, page: page });
-        console.log(page);
     };
 
     render() {
         const { classes } = this.props;
         const { open, anchorEl, user, page } = this.state;
         const menu = Boolean(anchorEl);
-        
+
         const PrivateRoute = ({ component: Component, ...rest }) => (
             <Route {...rest} render={(props) => (
                 localStorage.getItem('access') !== null
@@ -170,31 +167,31 @@ class Dashboard extends Component {
         )
 
         let mainContent = null;
-        
-        if (user.is_superuser){
-            if (page == "Home"){
+
+        if (user.is_superuser) {
+            if (page == "Home") {
                 mainContent = <PrivateRoute path="/" component={AdminHome} />
-            } else if (page == "Students"){
+            } else if (page == "Students") {
                 mainContent = <PrivateRoute path="/" component={StudentsAdmin} />
-            } else if (page == "Events"){
+            } else if (page == "Events") {
                 mainContent = <PrivateRoute path="/" component={AllEventsAdmin} />
-            }else if (page == "Devices"){
+            } else if (page == "Devices") {
                 mainContent = <PrivateRoute path="/" component={DevicesAdmin} />
-            }else if (page == "Parents"){
+            } else if (page == "Parents") {
                 mainContent = <PrivateRoute path="/" component={ParentAdmin} />
-            }else if (page == "Schools"){
+            } else if (page == "Schools") {
                 mainContent = <PrivateRoute path="/" component={SchoolsAdmin} />
-            }else if (page == "Buses"){
+            } else if (page == "Buses") {
                 mainContent = <PrivateRoute path="/" component={BussAdmin} />
-            }else {
+            } else {
                 mainContent = <div> An error occurred: Admin page not found.</div>
             }
         } else {
-
+            mainContent = <PrivateRoute path="/" component={StudentLayout} />
         }
-        
+
         return (
-            
+
             <div className={classes.root}>
                 <CssBaseline />
                 <AppBar
@@ -204,6 +201,7 @@ class Dashboard extends Component {
                     <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
                         <IconButton
                             color="inherit"
+							style={{visibility: this.state.user.is_superuser ? 'visible' : 'hidden' }}
                             aria-label="Open drawer"
                             onClick={this.handleDrawerOpen}
                             className={classNames(
@@ -223,9 +221,9 @@ class Dashboard extends Component {
                             Child Tracker 5000
 						</Typography>
                         <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
+                            {(!user.is_superuser) &&
+								<AlertDialog />
+                            }
                         </IconButton>
                         <div>
                             <IconButton
@@ -251,29 +249,29 @@ class Dashboard extends Component {
                                 onClose={this.handleClose}
                             >
                                 <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                <MenuItem onClick={() => {localStorage.clear(); window.location.reload() }}>Logout</MenuItem>
+                                <MenuItem onClick={() => { localStorage.clear(); window.location.reload() }}>Logout</MenuItem>
                             </Menu>
                         </div>
                     </Toolbar>
                 </AppBar>
-                <Drawer
-                    variant="permanent"
-                    classes={{
-                        paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-                    }}
-                    open={this.state.open}
-                >
-                    <div className={classes.toolbarIcon}>
-                        <IconButton onClick={this.handleDrawerClose}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <List>
-                        {(user.is_superuser || user.is_superuser) &&
+                {(user.is_superuser) &&
+                    <Drawer
+                        variant="permanent"
+                        classes={{
+                            paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+                        }}
+                        open={this.state.open}
+                    >
+                        <div className={classes.toolbarIcon}>
+                            <IconButton onClick={this.handleDrawerClose}>
+                                <ChevronLeftIcon />
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <List>
                             <div>
-                                <ListItem 
-                                    button 
+                                <ListItem
+                                    button
                                     onClick={event => this.handleListItemClick(event, 0, "Home")}
                                 >
                                     <ListItemIcon>
@@ -281,9 +279,9 @@ class Dashboard extends Component {
                                     </ListItemIcon>
                                     <ListItemText primary="Home" />
                                 </ListItem>
-                                <ListItem 
-                                    button 
-                                    selected = {this.state.selectedIndex === 1}
+                                <ListItem
+                                    button
+                                    selected={this.state.selectedIndex === 1}
                                     onClick={event => this.handleListItemClick(event, 1, "Students")}
                                 >
                                     <ListItemIcon>
@@ -291,9 +289,9 @@ class Dashboard extends Component {
                                     </ListItemIcon>
                                     <ListItemText primary="Students" />
                                 </ListItem>
-                                <ListItem 
-                                    button 
-                                    selected = {this.state.selectedIndex === 2}
+                                <ListItem
+                                    button
+                                    selected={this.state.selectedIndex === 2}
                                     onClick={event => this.handleListItemClick(event, 2, "Events")}
                                 >
                                     <ListItemIcon>
@@ -301,9 +299,9 @@ class Dashboard extends Component {
                                     </ListItemIcon>
                                     <ListItemText primary="Events" />
                                 </ListItem>
-                                <ListItem 
-                                    button 
-                                    selected = {this.state.selectedIndex === 3}
+                                <ListItem
+                                    button
+                                    selected={this.state.selectedIndex === 3}
                                     onClick={event => this.handleListItemClick(event, 3, "Devices")}
                                 >
                                     <ListItemIcon>
@@ -311,9 +309,9 @@ class Dashboard extends Component {
                                     </ListItemIcon>
                                     <ListItemText primary="Devices" />
                                 </ListItem>
-                                <ListItem 
-                                    button 
-                                    selected = {this.state.selectedIndex === 4}
+                                <ListItem
+                                    button
+                                    selected={this.state.selectedIndex === 4}
                                     onClick={event => this.handleListItemClick(event, 4, "Parents")}
                                 >
                                     <ListItemIcon>
@@ -321,9 +319,9 @@ class Dashboard extends Component {
                                     </ListItemIcon>
                                     <ListItemText primary="Parents" />
                                 </ListItem>
-                                <ListItem 
-                                    button 
-                                    selected = {this.state.selectedIndex === 5}
+                                <ListItem
+                                    button
+                                    selected={this.state.selectedIndex === 5}
                                     onClick={event => this.handleListItemClick(event, 5, "Schools")}
                                 >
                                     <ListItemIcon>
@@ -331,9 +329,9 @@ class Dashboard extends Component {
                                     </ListItemIcon>
                                     <ListItemText primary="Schools" />
                                 </ListItem>
-                                <ListItem 
-                                    button 
-                                    selected = {this.state.selectedIndex === 6}
+                                <ListItem
+                                    button
+                                    selected={this.state.selectedIndex === 6}
                                     onClick={event => this.handleListItemClick(event, 6, "Buses")}
                                 >
                                     <ListItemIcon>
@@ -342,43 +340,9 @@ class Dashboard extends Component {
                                     <ListItemText primary="Buses" />
                                 </ListItem>
                             </div>
-                        }
-                        {user.is_parent &&
-                            <div>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <HomeIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Home" />
-                                </ListItem>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <SchoolIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Students" />
-                                </ListItem>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <EventIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Events" />
-                                </ListItem>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <DomainIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Schools" />
-                                </ListItem>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <DirectionsBusIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Buses" />
-                                </ListItem>
-                            </div>
-                        }
-                    </List>
-                </Drawer>
+                        </List>
+                    </Drawer>
+                }
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
                     {mainContent}

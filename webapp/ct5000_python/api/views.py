@@ -30,8 +30,16 @@ class CurrentUser(APIView):
             return UserSerializer
 
     def get(self, request):
+        print(request.user)
         serializer_class = self.get_serializer_class()(request.user)
         return Response(serializer_class.data)
+        
+#class CurrentUser(generics.UpdateAPIView):
+    #queryset = User.objects.all()
+    #serializer_class = ParentUserSerializer
+    
+    #def get_object(self):
+        #return self.request.user(last_login=
 
 class AdminList(generics.ListCreateAPIView):
     serializer_class = UserSerializer
@@ -131,10 +139,8 @@ class CurrentParentStudents(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Student.objects.all()
-
         if self.request.user.is_parent is False:
             return queryset
-
         parent_id = self.request.user.id
         return Student.objects.filter(Q(parent_one__pk=parent_id) | Q(parent_two__pk=parent_id))
         
@@ -157,6 +163,7 @@ class CurrentParentStudentsEvents(generics.ListAPIView):
         queryset = Event.objects.all()
         if self.request.user.is_parent is False:
             return queryset
+        parent_id = self.request.user.id
         last_login = self.request.user.last_login
         if last_login != None:
             return self.queryset.filter((Q(student__parent_one__pk=parent_id) | Q(student__parent_two__pk=parent_id)) & Q(timestamp__gte=last_login))
