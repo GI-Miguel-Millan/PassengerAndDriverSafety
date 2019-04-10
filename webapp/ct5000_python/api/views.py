@@ -2,6 +2,7 @@ from api.models import Parent, Device, Event, Bus, Driver, Student, School
 from api.serializers import UserSerializer, ParentUserSerializer, ParentSerializer, DeviceSerializer, DeviceUserSerializer, EventSerializer, BusSerializer, DriverSerializer, StudentSerializer, SchoolSerializer
 from django.db.models import Q
 from django.contrib.auth import get_user_model
+from facedetection.face import create_group, delete_group, add_student, delete_student, identify
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -51,8 +52,10 @@ class DeviceDetail(generics.RetrieveUpdateDestroyAPIView):
 class StudentList(generics.ListCreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+
     def perform_create(self, serializer):
-        face.add_student(self.request.bus, self.request.id, self.request.picture)
+        add_student(self.request.data['bus'], self.request.data['first_name'] + ' ' + self.request.data['last_name'], self.request.files['picture'])
+        super(EventList, self).perform_create(serializer)
 
 class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
@@ -61,20 +64,25 @@ class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
 class EventList(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+
     def perform_create(self, serializer):
-        person = face.identify(self.request.bus, self.request.picture)
+        person = identify(self.request.data['bus'], self.request.files['picture'])
         if person is not None:
-            serializer.save(student=self.request.student)
+            serializer.save(student=person)
+        super(EventList, self).perform_create(serializer)
 
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-	
+
 class BusList(generics.ListCreateAPIView):
     queryset = Bus.objects.all()
     serializer_class = BusSerializer
+
     def perform_create(self, serializer):
-        face.create_group(self.request.name)
+        create_group(self.request.data['name'])
+        super(BusList, self).perform_create(serializer)
+
 
 class BusDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Bus.objects.all()
