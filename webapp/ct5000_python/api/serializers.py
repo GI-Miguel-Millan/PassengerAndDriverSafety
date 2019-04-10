@@ -119,7 +119,6 @@ class DeviceUserSerializer(serializers.ModelSerializer):
         return representation
 
     def create(self, validated_data):
-        print(validated_data)
         user = User.objects.create(
             username=validated_data["username"],
             password=make_password(validated_data["password"]),
@@ -128,8 +127,8 @@ class DeviceUserSerializer(serializers.ModelSerializer):
         device_data = validated_data.pop('device')
         device = Device.objects.create(
             user=user,
-            bus=device_data["bus"],
-            registered_by=self._user)
+            bus_id=device_data["bus"].id,
+            registered_by_id=device_data["user"].id)
         return user
         
     def update(self, instance, validated_data):
@@ -139,8 +138,8 @@ class DeviceUserSerializer(serializers.ModelSerializer):
         instance.save()
         device_data = validated_data.pop('device')
         device = Device.objects.get(user=instance)
-        device.bus = device_data["bus"]
-        device.registered_by = self._user
+        device.bus = device_data["bus"].id
+        device.registered_by=device_data["user"].id
         device.save()
         return instance
 
