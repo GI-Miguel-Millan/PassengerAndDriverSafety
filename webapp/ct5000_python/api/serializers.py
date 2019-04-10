@@ -93,11 +93,12 @@ class ParentUserSerializer(serializers.ModelSerializer):
 
 class DeviceSerializer(serializers.ModelSerializer):
     registered_by = serializers.StringRelatedField()
+    registered_by_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_superuser=True), source='user')
     bus = serializers.StringRelatedField()
     bus_id = serializers.PrimaryKeyRelatedField(queryset=Bus.objects.all(), source='bus')
     class Meta:
         model = Device
-        fields = ('registered_by', 'bus', 'bus_id')
+        fields = ('registered_by', 'registered_by_id', 'bus', 'bus_id')
         read_only_fields = ('registered_by', 'bus')
 
 
