@@ -45,7 +45,7 @@ export const current_user = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -59,7 +59,7 @@ export const get_parents = async () => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -73,7 +73,7 @@ export const get_parent = async (parent_id) => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -87,7 +87,7 @@ export const get_students_by_parent = async (parent_id) => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -100,7 +100,7 @@ export const get_students_by_current_parent = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -113,7 +113,7 @@ export const get_admins = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -127,7 +127,7 @@ export const get_students = async () => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -141,7 +141,7 @@ export const get_student = async (student_id) => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -154,7 +154,7 @@ export const get_events_by_student = async (student_id) => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -167,7 +167,7 @@ export const get_events = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -181,7 +181,7 @@ export const get_event = async (event_id) => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -195,7 +195,7 @@ export const get_devices = async () => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -209,7 +209,7 @@ export const get_device = async (device_id) => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -223,7 +223,7 @@ export const get_buses = async () => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -237,7 +237,7 @@ export const get_bus = async (bus_id) => {
             
             headers: {
                 'Content-Type': 'application/json',
-                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                //'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -251,7 +251,7 @@ export const get_schools = async () => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -265,7 +265,7 @@ export const get_school = async (school_id) => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -279,7 +279,7 @@ export const get_drivers = async () => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -293,7 +293,7 @@ export const get_driver = async (driver_id) => {
             
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
             }
         }
     )
@@ -343,7 +343,7 @@ export const add_admin = async (username, first_name, last_name, email, password
 		    headers: {
                 //'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                //'Authorization': 'JWT ' + localStorage.getItem('access'),
 		    },
             body: formBody,
 		}
@@ -370,7 +370,7 @@ export const add_student = async (first_name, last_name, age, grade, school, bus
 		    headers: {
                 //'Accept': 'application/json',
                 //'Content-Type': 'application/json',
-                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                //'Authorization': 'JWT ' + localStorage.getItem('access'),
 		    },
             body: data,
 		}
@@ -392,7 +392,7 @@ export const add_event = async (enter, picture, device, student) => {
 		    headers: {
                 //'Accept': 'application/json',
                 //'Content-Type': 'application/json',
-                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                //'Authorization': 'JWT ' + localStorage.getItem('access'),
 		    },
             body: data,
 		}
@@ -523,7 +523,7 @@ export const edit_admin = async (id, username, first_name, last_name, email, pas
 		    headers: {
                 //'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                //'Authorization': 'JWT ' + localStorage.getItem('access'),
 		    },
             body: formBody,
 		}
@@ -550,7 +550,7 @@ export const edit_student = async (id, first_name, last_name, age, grade, school
 		    headers: {
                 //'Accept': 'application/json',
                 //'Content-Type': 'application/json',
-                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                //'Authorization': 'JWT ' + localStorage.getItem('access'),
 		    },
             body: data,
 		}
@@ -572,7 +572,7 @@ export const edit_event = async (id,enter, picture, device, student) => {
 		    headers: {
                 //'Accept': 'application/json',
                 //'Content-Type': 'application/json',
-                //'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                //'Authorization': 'JWT ' + localStorage.getItem('access'),
 		    },
             body: data,
 		}
