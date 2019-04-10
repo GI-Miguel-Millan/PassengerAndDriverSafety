@@ -100,12 +100,12 @@ class AddDevicesForm extends React.Component {
         this.setState({registered_by: parseInt(this.state.registered_by)}); // get registered_by as an int
         this.setState({bus: parseInt(this.state.bus)}); // get bus pk as an int
 
-        let registered_by = this.state.registered_by;
-        let bus = this.state.bus;
+        let registered_by_id = this.state.registered_by;
+        let bus_id = this.state.bus;
 
         let device = {
-            registered_by,
-            bus,
+            registered_by_id,
+            bus_id,
         };
 
         let response = null;

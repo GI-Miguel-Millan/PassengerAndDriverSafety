@@ -32,6 +32,10 @@ const styles = {
     table: {
         minWidth: 700,
     },
+    img:{
+        maxWidth: 75,
+        maxHeight: 75
+    }
 };
 
 function Buttons(props) {
@@ -87,7 +91,7 @@ class AllEventsAdmin extends Component {
                         <TableRow>
                             <TableCell>Student</TableCell>
                             <TableCell>Enter Status</TableCell>
-                            <TableCell>Picture (temporary)</TableCell>
+                            <TableCell>Picture</TableCell>
                             <TableCell>Device</TableCell>
                             <TableCell>Time Stamp</TableCell>
                             <TableCell>Options</TableCell>
@@ -103,7 +107,7 @@ class AllEventsAdmin extends Component {
                                 <TableRow key={n.id}>
                                     <TableCell component="th" scope="row">{n.student}</TableCell>
                                     <TableCell>{enterstatus}</TableCell>
-                                    <TableCell>{n.picture}</TableCell>
+                                    <TableCell><img className={classes.img} src={n.picture}></img></TableCell>
                                     <TableCell>{n.device}</TableCell>
                                     <TableCell>{n.timestamp}</TableCell>
                                     <TableCell>

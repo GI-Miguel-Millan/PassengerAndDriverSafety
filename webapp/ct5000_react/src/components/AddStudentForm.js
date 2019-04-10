@@ -91,11 +91,11 @@ class AddStudentForm extends React.Component {
                     last_name: data['last_name'],
                     age: data['age'],
                     grade: data['grade'],
-                    bus: data['bus'],
-                    school: data['school'],
+                    bus: data['bus_id'],
+                    school: data['school_id'],
                     picture: data['picture'],
-                    parent_one: data['parent_one'],
-                    parent_two: data['parent_two'],
+                    parent_one: data['parent_one_id'],
+                    parent_two: data['parent_two_id'],
                     track: data['track'],
                  });
             });

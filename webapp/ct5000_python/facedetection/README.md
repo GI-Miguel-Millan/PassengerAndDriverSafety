@@ -10,3 +10,5 @@ In order to run these a couple things need to be configured:
 
     print(response.status_code)
     print(response.text)
+
+4. Group (bus) names CANNOT be uppercase

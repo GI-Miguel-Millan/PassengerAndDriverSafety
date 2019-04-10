@@ -19,5 +19,7 @@ def demo():
     face.delete_student(demogroup, 'bro2')
     face.delete_student(demogroup, 'bro1')
 
+    face.delete_group(demogroup)
+
 if __name__ == "__main__":
     demo()
