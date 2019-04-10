@@ -13,6 +13,7 @@ import StudentsAdmin from './components/StudentsAdmin';
 import BussAdmin from './components/BussAdmin';
 import DriversAdmin from './components/DriversAdmin';
 import SchoolsAdmin from './components/SchoolsAdmin';
+import NotFound from "./components/NotFound";
 
 class App extends Component {
     state = {
@@ -40,19 +41,20 @@ class App extends Component {
                     <Route path='/login' component={Login} />
                     <PrivateRoute path='/home' component={Dashboard} />
                     <PrivateRoute path='/student/:id' component={Dashboard} />
-					<Route path='/' exact component={Dashboard} />
-					<Route path='/parents' component={ParentAdmin} />
-                    <Route path='/devices' component={DevicesAdmin} />
-                    <Route path='/students' component={StudentsAdmin} />
-                    <Route path='/buss' component={BussAdmin} />
-                    <Route path='/drivers' component={DriversAdmin} />
-                    <Route path='/schools' component={SchoolsAdmin} />
-                    <Route path='/admin/parents' />
-                    <Route path='/admin/devices' />
-                    <Route path='/admin/students' />
-                    <Route path='/admin/buss' />
-                    <Route path='/admin/drivers' />
-                    <Route path='/admin/schools' />
+					<PrivateRoute path='/' exact component={Dashboard} />
+					<PrivateRoute path='/parents' component={ParentAdmin} />
+                    <PrivateRoute path='/devices' component={DevicesAdmin} />
+                    <PrivateRoute path='/students' component={StudentsAdmin} />
+                    <PrivateRoute path='/buss' component={BussAdmin} />
+                    <PrivateRoute path='/drivers' component={DriversAdmin} />
+                    <PrivateRoute path='/schools' component={SchoolsAdmin} />
+                    <PrivateRoute path='/admin/parents' />
+                    <PrivateRoute path='/admin/devices' />
+                    <PrivateRoute path='/admin/students' />
+                    <PrivateRoute path='/admin/buss' />
+                    <PrivateRoute path='/admin/drivers' />
+                    <PrivateRoute path='/admin/schools' />
+                    <Route component={NotFound}/>
                 </Switch>
             </BrowserRouter>
         );

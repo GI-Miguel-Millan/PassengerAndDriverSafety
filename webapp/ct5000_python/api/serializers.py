@@ -8,14 +8,30 @@ User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-
     class Meta:
         model = User
-        fields = (
-        'id', 'last_login', 'date_joined', 'username', 'password', 'first_name', 'last_name', 'email', 'is_active',
-        'is_parent', 'is_device', 'is_staff', 'is_superuser')
+        fields = ('id', 'last_login', 'date_joined', 'username', 'password', 'first_name', 'last_name', 'email', 'is_active','is_parent', 'is_device', 'is_staff', 'is_superuser')
         read_only_fields = ('id', 'last_login', 'date_joined')
-
+		
+class AdminSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+	
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data["username"],
+            password=make_password(validated_data["password"]),
+            first_name=validated_data["first_name"],
+            last_name=validated_data["last_name"],
+            email=validated_data["email"],
+            is_active=True,
+            is_staff=True,
+            is_superuser=True)
+        return user
+		
+    class Meta:
+        model = User
+        fields = ('id', 'last_login', 'date_joined', 'username', 'password', 'first_name', 'last_name', 'email')
+        read_only_fields = ('id', 'last_login', 'date_joined')
 
 class ParentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,7 +52,6 @@ class ParentUserSerializer(serializers.ModelSerializer):
         return representation
 
     def create(self, validated_data):
-        print(validated_data)
         user = User.objects.create(
             username=validated_data["username"],
             password=make_password(validated_data["password"]),
@@ -57,9 +72,7 @@ class ParentUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = (
-        'id', 'username', 'password', 'first_name', 'last_name', 'email', 'is_parent', 'last_login', 'date_joined',
-        'parent')
+        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'email', 'last_login', 'date_joined','parent')
         read_only_fields = ('id', 'last_login', 'date_joined')
 
 
@@ -89,8 +102,7 @@ class DeviceUserSerializer(serializers.ModelSerializer):
             is_device=True)
         device_data = validated_data.pop('device')
         device = Device.objects.create(
-            user=user,
-            registered_by=self.context['request'].user)
+            user=user)
         return user
 
     class Meta:
@@ -102,9 +114,7 @@ class DeviceUserSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = (
-        'id', 'first_name', 'last_name', 'age', 'grade', 'school', 'bus', 'picture', 'parent_one', 'parent_two',
-        'track')
+        fields = ('id', 'first_name', 'last_name', 'age', 'grade', 'school', 'bus', 'picture', 'parent_one', 'parent_two','track')
         read_only_fields = ('id',)
 
 
@@ -118,16 +128,16 @@ class EventSerializer(serializers.ModelSerializer):
 class BusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bus
-        fields = ('name',)
+        fields = ('id','name',)
 
 
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver
-        fields = ('bus', 'first_name', 'last_name')
+        fields = ('id','bus', 'first_name', 'last_name')
 
 
 class SchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = School
-        fields = ('name', 'address', 'city', 'state', 'zipcode')
+        fields = ('id','name', 'address', 'city', 'state', 'zipcode')

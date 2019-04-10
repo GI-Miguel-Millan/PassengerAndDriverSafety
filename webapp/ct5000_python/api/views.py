@@ -1,5 +1,5 @@
 from api.models import Parent, Device, Event, Bus, Driver, Student, School
-from api.serializers import UserSerializer, ParentUserSerializer, ParentSerializer, DeviceSerializer, DeviceUserSerializer, EventSerializer, BusSerializer, DriverSerializer, StudentSerializer, SchoolSerializer
+from api.serializers import UserSerializer, AdminSerializer, ParentUserSerializer, ParentSerializer, DeviceSerializer, DeviceUserSerializer, EventSerializer, BusSerializer, DriverSerializer, StudentSerializer, SchoolSerializer
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from facedetection.face import create_group, delete_group, add_student, delete_student, identify
@@ -7,14 +7,18 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 User = get_user_model()
+from facedetection import face
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = AdminSerializer
+    def get_queryset(self):
+        queryset = User.objects.filter(is_superuser=True)
+        return queryset
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = AdminSerializer
 
 class CurrentUser(APIView):
     def get_serializer_class(self):
@@ -29,8 +33,16 @@ class CurrentUser(APIView):
         serializer_class = self.get_serializer_class()(request.user)
         return Response(serializer_class.data)
 
+class AdminList(generics.ListCreateAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        queryset = User.objects.filter(is_superuser=True)
+        return queryset
+
 class ParentList(generics.ListCreateAPIView):
     serializer_class = ParentUserSerializer
+
     def get_queryset(self):
         queryset = User.objects.filter(is_parent=True)
         return queryset
@@ -41,6 +53,7 @@ class ParentDetail(generics.RetrieveUpdateDestroyAPIView):
     	
 class DeviceList(generics.ListCreateAPIView):
     serializer_class = DeviceUserSerializer
+
     def get_queryset(self):
         queryset = User.objects.filter(is_device=True)
         return queryset
@@ -50,20 +63,21 @@ class DeviceDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DeviceUserSerializer
 
 class StudentList(generics.ListCreateAPIView):
-    queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    queryset = Student.objects.all()
 
     def perform_create(self, serializer):
         add_student(self.request.data['bus'], self.request.data['first_name'] + ' ' + self.request.data['last_name'], self.request.files['picture'])
         super(EventList, self).perform_create(serializer)
+
 
 class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
 class EventList(generics.ListCreateAPIView):
-    queryset = Event.objects.all()
     serializer_class = EventSerializer
+    queryset = Event.objects.all()
 
     def perform_create(self, serializer):
         person = identify(self.request.data['bus'], self.request.files['picture'])
@@ -71,17 +85,19 @@ class EventList(generics.ListCreateAPIView):
             serializer.save(student=person)
         super(EventList, self).perform_create(serializer)
 
+
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
 class BusList(generics.ListCreateAPIView):
-    queryset = Bus.objects.all()
     serializer_class = BusSerializer
+    queryset = Bus.objects.all()
 
     def perform_create(self, serializer):
         create_group(self.request.data['name'])
         super(BusList, self).perform_create(serializer)
+
 
 
 class BusDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -113,13 +129,16 @@ class ParentStudents(generics.ListAPIView):
         return self.queryset.filter(Q(parent_one__pk=parent_id) | Q(parent_two__pk=parent_id))
 
 class CurrentParentStudents(generics.ListAPIView):
-    queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
     def get_queryset(self):
-        if(self.request.user.is_parent):
-            parent_id = self.request.user.id
-            return self.queryset.filter(Q(parent_one__pk=parent_id) | Q(parent_two__pk=parent_id))
+        queryset = Student.objects.all()
+
+        if self.request.user.is_parent is False:
+            return queryset
+
+        parent_id = self.request.user.id
+        return Student.objects.filter(Q(parent_one__pk=parent_id) | Q(parent_two__pk=parent_id))
 
 class StudentEvents(generics.ListAPIView):
     queryset = Event.objects.all()

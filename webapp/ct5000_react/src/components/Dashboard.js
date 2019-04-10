@@ -31,6 +31,13 @@ import DomainIcon from '@material-ui/icons/Domain';
 import { Redirect, Route } from 'react-router-dom';
 import StudentLayout from './StudentLayout.js';
 import EventTable from './EventTable.js';
+import StudentsAdmin from './StudentsAdmin.js';
+import ParentAdmin from './ParentAdmin.js';
+import DevicesAdmin from './DevicesAdmin.js';
+import SchoolsAdmin from './SchoolsAdmin.js';
+import BussAdmin from './BussAdmin.js';
+import AdminHome from './AdminHome.js';
+import AllEventsAdmin from './AllEventsAdmin.js';
 
 const drawerWidth = 240;
 
@@ -112,11 +119,18 @@ const styles = theme => ({
 });
 
 class Dashboard extends Component {
-    state = {
-        open: false,
-        anchorEl: null,
-        user: localStorage.getItem('user') !== null ? (JSON.parse(localStorage.getItem('user'))) : ({}),
-    };
+    constructor(props){
+        super(props);
+        this.state= {
+            open: false,
+            anchorEl: null,
+            user: localStorage.getItem('user') !== null ? (JSON.parse(localStorage.getItem('user'))) : ({}),
+            page: "Home",
+            selectedIndex: 0,
+        };
+        
+        //this.handleNavClick = this.handleNavClick.bind(this);
+    }
 
     handleMenu = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -134,10 +148,16 @@ class Dashboard extends Component {
         this.setState({ open: false });
     };
 
+    handleListItemClick = (event, index, page) => {
+        this.setState({ selectedIndex: index, page: page });
+        console.log(page);
+    };
+
     render() {
         const { classes } = this.props;
-        const { open, anchorEl, user } = this.state;
+        const { open, anchorEl, user, page } = this.state;
         const menu = Boolean(anchorEl);
+        
         const PrivateRoute = ({ component: Component, ...rest }) => (
             <Route {...rest} render={(props) => (
                 localStorage.getItem('access') !== null
@@ -148,7 +168,33 @@ class Dashboard extends Component {
                     }} />
             )} />
         )
+
+        let mainContent = null;
+        
+        if (user.is_superuser){
+            if (page == "Home"){
+                mainContent = <PrivateRoute path="/" component={AdminHome} />
+            } else if (page == "Students"){
+                mainContent = <PrivateRoute path="/" component={StudentsAdmin} />
+            } else if (page == "Events"){
+                mainContent = <PrivateRoute path="/" component={AllEventsAdmin} />
+            }else if (page == "Devices"){
+                mainContent = <PrivateRoute path="/" component={DevicesAdmin} />
+            }else if (page == "Parents"){
+                mainContent = <PrivateRoute path="/" component={ParentAdmin} />
+            }else if (page == "Schools"){
+                mainContent = <PrivateRoute path="/" component={SchoolsAdmin} />
+            }else if (page == "Buses"){
+                mainContent = <PrivateRoute path="/" component={BussAdmin} />
+            }else {
+                mainContent = <div> An error occurred: Admin page not found.</div>
+            }
+        } else {
+
+        }
+        
         return (
+            
             <div className={classes.root}>
                 <CssBaseline />
                 <AppBar
@@ -226,43 +272,70 @@ class Dashboard extends Component {
                     <List>
                         {(user.is_superuser || user.is_superuser) &&
                             <div>
-                                <ListItem button>
+                                <ListItem 
+                                    button 
+                                    onClick={event => this.handleListItemClick(event, 0, "Home")}
+                                >
                                     <ListItemIcon>
                                         <HomeIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Home" />
                                 </ListItem>
-                                <ListItem button>
+                                <ListItem 
+                                    button 
+                                    selected = {this.state.selectedIndex === 1}
+                                    onClick={event => this.handleListItemClick(event, 1, "Students")}
+                                >
                                     <ListItemIcon>
                                         <SchoolIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Students" />
                                 </ListItem>
-                                <ListItem button>
+                                <ListItem 
+                                    button 
+                                    selected = {this.state.selectedIndex === 2}
+                                    onClick={event => this.handleListItemClick(event, 2, "Events")}
+                                >
                                     <ListItemIcon>
                                         <EventIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Events" />
                                 </ListItem>
-                                <ListItem button>
+                                <ListItem 
+                                    button 
+                                    selected = {this.state.selectedIndex === 3}
+                                    onClick={event => this.handleListItemClick(event, 3, "Devices")}
+                                >
                                     <ListItemIcon>
                                         <RouterIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Devices" />
                                 </ListItem>
-                                <ListItem button>
+                                <ListItem 
+                                    button 
+                                    selected = {this.state.selectedIndex === 4}
+                                    onClick={event => this.handleListItemClick(event, 4, "Parents")}
+                                >
                                     <ListItemIcon>
                                         <PersonIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Parents" />
                                 </ListItem>
-                                <ListItem button>
+                                <ListItem 
+                                    button 
+                                    selected = {this.state.selectedIndex === 5}
+                                    onClick={event => this.handleListItemClick(event, 5, "Schools")}
+                                >
                                     <ListItemIcon>
                                         <DomainIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Schools" />
                                 </ListItem>
-                                <ListItem button>
+                                <ListItem 
+                                    button 
+                                    selected = {this.state.selectedIndex === 6}
+                                    onClick={event => this.handleListItemClick(event, 6, "Buses")}
+                                >
                                     <ListItemIcon>
                                         <DirectionsBusIcon />
                                     </ListItemIcon>
@@ -308,8 +381,7 @@ class Dashboard extends Component {
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
-                    <PrivateRoute path="/home" component={StudentLayout} />
-                    <PrivateRoute path="/student/:id" component={EventTable} />
+                    {mainContent}
                 </main>
             </div>
         );
