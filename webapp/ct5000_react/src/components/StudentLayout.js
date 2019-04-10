@@ -56,13 +56,18 @@ class StudentLayout extends Component {
         }));
     }
 	
-	handleTableClick = () => {
-        this.setState({ graph: false });
+	handleTableClick = (index) => {
+		let graph = this.state.graph;
+		graph[index] = false;
+		this.setState({ graph: graph })
     };
 	
-	handleGraphClick = () => {
-        this.setState({ graph: true });
+	handleGraphClick = (index) => {
+		let graph = this.state.graph;
+		graph[index] = true;
+		this.setState({ graph: graph })
     };
+
 
 
     render() {
@@ -77,7 +82,7 @@ class StudentLayout extends Component {
             return (
                 <Grid container spacing={24}>
 				{
-					students.map(student => {
+					students.map((student, index) => {
 						return (
 							<React.Fragment>
 								<Grid item xs={4}>
@@ -86,18 +91,12 @@ class StudentLayout extends Component {
 								<Grid item xs={8}>
 									<Card className={classes.card, classes.tableContainer}>
 										<CardMedia className={classes.media}>
-											{this.state.graph ? (<ApexScatterChart student={student}></ApexScatterChart>) : (<EventTable student={student}></EventTable>)}
+											{this.state.graph[index] ? (<ApexScatterChart student={student}></ApexScatterChart>) : (<EventTable student={student}></EventTable>)}
 										</CardMedia>
 										<CardActions>
-											{this.state.graph ? (
-												<Button size="small" color="primary" onClick={() => this.handleTableClick()}>
-													Table
-												</Button>
-											) : (
-												<Button size="small" color="primary" onClick={() => this.handleGraphClick()}>
-													Graph
-												</Button>
-											)}
+											<Button key={index} size="small" color="primary" onClick={this.state.graph[index] ? (() => this.handleTableClick(index)) : (() => this.handleGraphClick(index))}>
+												{this.state.graph[index] ? ("Table") : ("Graph")}
+											</Button>
 										</CardActions>
 									</Card>
 								</Grid>
