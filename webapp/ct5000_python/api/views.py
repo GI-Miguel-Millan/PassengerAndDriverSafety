@@ -78,6 +78,7 @@ class StudentList(generics.ListCreateAPIView):
         instance = serializer.save()
         add_student(instance.bus, instance.id, instance.picture)
 
+
     def perform_destroy(self, instance):
         delete_student(instance.bus, instance.first_name + ' ' + instance.last_name)
         super(StudentList, self).perform_destroy(instance)
@@ -92,10 +93,12 @@ class EventList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         instance = serializer.save()
-        person = identify(self.request.data['bus'], self.request.data['picture'])
+        device = Device.objects.get(pk=instance.device_id)
+        person = identify(device.bus_id, instance.picture.url)
+
         if person is not None:
-            serializer.save(student=person)
-        super(EventList, self).perform_create(serializer)
+            instance.student_id = person
+            instance.save()
 
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
