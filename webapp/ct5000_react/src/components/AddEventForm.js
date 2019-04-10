@@ -39,7 +39,7 @@ const styles = theme => ({
 
 class AddEventForm extends React.Component {
 state = {
-    enter: "",
+    enter: false,
     picture: "",
     device: "",
     student: "",
@@ -114,7 +114,7 @@ state = {
             console.log("200 all good");
             this.setState(
                 {
-                enter: "",
+                enter: false,
                 picture: "",
                 device: "",
                 student: "",
