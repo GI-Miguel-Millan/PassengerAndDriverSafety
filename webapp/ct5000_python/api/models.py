@@ -14,7 +14,7 @@ class Parent(models.Model):
     zipcode = models.CharField(max_length=5)
 
     def __str__(self):
-        return self.user.username + " (" + str(self.user.id) + ")"
+        return self.user.first_name + " " + self.user.last_name
 
 class Device(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -33,17 +33,10 @@ class Event(models.Model):
 
 class Bus(models.Model):
     name = models.CharField(max_length=50)
+    #driver = models.CharField(max_length=60)
 
     def __str__(self):
         return self.name
-
-class Driver(models.Model):
-    bus = models.ForeignKey('Bus', null=True, on_delete=models.SET_NULL)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.first_name + ' ' + self.last_name
 
 class Student(models.Model):
     first_name = models.CharField(max_length=30)

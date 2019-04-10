@@ -1,5 +1,5 @@
-from api.models import Parent, Device, Event, Bus, Driver, Student, School
-from api.serializers import UserSerializer, AdminSerializer, ParentUserSerializer, ParentSerializer, DeviceSerializer, DeviceUserSerializer, EventSerializer, BusSerializer, DriverSerializer, StudentSerializer, SchoolSerializer
+from api.models import Parent, Device, Event, Bus, Student, School
+from api.serializers import UserSerializer, AdminSerializer, ParentUserSerializer, ParentSerializer, DeviceSerializer, DeviceUserSerializer, EventSerializer, BusSerializer, StudentSerializer, SchoolSerializer
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from rest_framework import generics
@@ -109,14 +109,6 @@ class BusList(generics.ListCreateAPIView):
 class BusDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Bus.objects.all()
     serializer_class = BusSerializer
-
-class DriverList(generics.ListCreateAPIView):
-    queryset = Driver.objects.all()
-    serializer_class = DriverSerializer
-
-class DriverDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Driver.objects.all()
-    serializer_class = DriverSerializer
 	
 class SchoolList(generics.ListCreateAPIView):
     queryset = School.objects.all()
@@ -145,6 +137,30 @@ class CurrentParentStudents(generics.ListAPIView):
 
         parent_id = self.request.user.id
         return Student.objects.filter(Q(parent_one__pk=parent_id) | Q(parent_two__pk=parent_id))
+        
+class ParentStudentsEvents(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+    def get_queryset(self):
+        parent_id = self.kwargs['parent_id']
+        last_login = User.objects.get(pk=parent_id).last_login
+        if last_login != None:
+            return self.queryset.filter((Q(student__parent_one__pk=parent_id) | Q(student__parent_two__pk=parent_id)) & Q(timestamp__gte=last_login))
+        return self.queryset.filter(Q(student__parent_one__pk=parent_id) | Q(student__parent_two__pk=parent_id))
+        
+class CurrentParentStudentsEvents(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+    def get_queryset(self):
+        queryset = Event.objects.all()
+        if self.request.user.is_parent is False:
+            return queryset
+        last_login = self.request.user.last_login
+        if last_login != None:
+            return self.queryset.filter((Q(student__parent_one__pk=parent_id) | Q(student__parent_two__pk=parent_id)) & Q(timestamp__gte=last_login))
+        return self.queryset.filter(Q(student__parent_one__pk=parent_id) | Q(student__parent_two__pk=parent_id))
 
 class StudentEvents(generics.ListAPIView):
     queryset = Event.objects.all()
