@@ -97,8 +97,8 @@ class DeviceSerializer(serializers.ModelSerializer):
     bus_id = serializers.PrimaryKeyRelatedField(queryset=Bus.objects.all(), source='bus')
     class Meta:
         model = Device
-        fields = ('registered_by', 'bus')
-        read_only_fields = ('registered_by',)
+        fields = ('registered_by', 'bus', 'bus_id')
+        read_only_fields = ('registered_by','bus')
 
 class DeviceUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
