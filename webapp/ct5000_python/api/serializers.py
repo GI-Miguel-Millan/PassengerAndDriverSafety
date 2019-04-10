@@ -98,7 +98,8 @@ class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device
         fields = ('registered_by', 'bus', 'bus_id')
-        read_only_fields = ('registered_by','bus')
+        read_only_fields = ('registered_by', 'bus')
+
 
 class DeviceUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -151,12 +152,12 @@ class DeviceUserSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     parent_one = serializers.StringRelatedField()
     parent_two = serializers.StringRelatedField()
-    parent_one_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_parent=True), source='parent_one')
-    parent_two_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_parent=True), source='parent_two')
+    parent_one_id = serializers.PrimaryKeyRelatedField(queryset=Parent.objects.all(), source='parent_one', required=False)
+    parent_two_id = serializers.PrimaryKeyRelatedField(queryset=Parent.objects.all(), source='parent_two', required=False)
     school = serializers.StringRelatedField()
-    school_id = serializers.PrimaryKeyRelatedField(queryset=School.objects.all(), source='school')
+    school_id = serializers.PrimaryKeyRelatedField(queryset=School.objects.all(), source='school', required=False)
     bus = serializers.StringRelatedField()
-    bus_id = serializers.PrimaryKeyRelatedField(queryset=Bus.objects.filter(), source='bus')
+    bus_id = serializers.PrimaryKeyRelatedField(queryset=Bus.objects.filter(), source='bus', required=False)
     class Meta:
         model = Student
         fields = ('id', 'first_name', 'last_name', 'age', 'grade', 'school', 'school_id', 'bus', 'bus_id', 'picture', 'parent_one', 'parent_two', 'parent_one_id', 'parent_two_id','track')
@@ -164,9 +165,9 @@ class StudentSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     device = serializers.StringRelatedField()
-    device_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_device=True), source='device')
+    device_id = serializers.PrimaryKeyRelatedField(queryset=Device.objects.all(), source='device', required=False)
     student = serializers.StringRelatedField()
-    student_id = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), source='student')
+    student_id = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), source='student', required=False)
     class Meta:
         model = Event
         fields = ('id', 'timestamp', 'enter', 'picture', 'device', 'device_id', 'student', 'student_id')

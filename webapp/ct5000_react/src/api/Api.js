@@ -20,6 +20,7 @@ export const login = async (username, password) => {
     )
     return await response
 }
+
 export const refresh = async () => {
 
     const formBody = JSON.stringify({ "refresh": localStorage.getItem('refresh') })
@@ -37,7 +38,6 @@ export const refresh = async () => {
     return await response.json()
 }
 
-// GET Requests
 export const current_user = async () => {
     let response = await fetch(
         baseurl + 'users/current/',
@@ -51,6 +51,7 @@ export const current_user = async () => {
     )
     return await response.json()
 }
+
 export const get_parents = async () => {
     let response = await fetch(
         baseurl + 'parents/',
@@ -65,6 +66,7 @@ export const get_parents = async () => {
     )
     return await response.json()
 }
+
 export const get_parent = async (parent_id) => {
     let response = await fetch(
         baseurl + 'parents/' + parent_id,
@@ -79,6 +81,7 @@ export const get_parent = async (parent_id) => {
     )
     return await response.json()
 }
+
 export const get_students_by_parent = async (parent_id) => {
     let response = await fetch(
         baseurl + 'parents/' + parent_id + '/students/',
@@ -93,6 +96,7 @@ export const get_students_by_parent = async (parent_id) => {
     )
     return await response.json()
 }
+
 export const get_students_by_current_parent = async () => {
     let response = await fetch(
         baseurl + 'parents/students/',
@@ -106,6 +110,21 @@ export const get_students_by_current_parent = async () => {
     )
     return await response.json()
 }
+
+export const get_student_events_by_current_parent = async () => {
+    let response = await fetch(
+        baseurl + 'parents/students/events/',
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
+            }
+        }
+    )
+    return await response.json()
+}
+
 export const get_admins = async () => {
     let response = await fetch(
         baseurl + 'users/admins/',
@@ -356,11 +375,11 @@ export const add_student = async (first_name, last_name, age, grade, school, bus
     data.append('last_name',last_name);
     data.append('age',age);
     data.append('grade',grade);
-    data.append('school',school);
-    data.append('bus',bus);
+    data.append('school_id',school);
+    data.append('bus_id',bus);
     data.append('picture',picture);
-    data.append('parent_one',parent_one);
-    data.append('parent_two',parent_two);
+    data.append('parent_one_id',parent_one);
+    data.append('parent_two_id',parent_two);
     data.append('track',track);
 
     let response = await fetch(

@@ -12,10 +12,11 @@ import { Link } from 'react-router-dom'
 
 const styles = {
     card: {
-        width: 300,
+		width: '100%',
     },
     media: {
-        height: 300,
+        minHeight: 200,
+		height: '100%',
     },
 };
 
@@ -28,24 +29,22 @@ class StudentCard extends Component {
         const { classes, student } = this.props;
         return (
             <Card className={classes.card}>
-                <CardActionArea>
-                    <CardMedia
-                        className={classes.media}
-                        image={student.picture}
-                        title="Student"
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {student.first_name + " " + student.last_name}
-                        </Typography>
-                        <Typography component="p">
-                            Age: {student.age}
-                        </Typography>
-                        <Typography component="p">
-                            Grade: {student.grade}
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
+				<CardMedia
+					className={classes.media}
+					image={student.picture}
+					title="Student"
+				/>
+				<CardContent>
+					<Typography gutterBottom variant="h5" component="h2">
+						{student.first_name + " " + student.last_name}
+					</Typography>
+					<Typography component="p">
+						Age: {student.age}
+					</Typography>
+					<Typography component="p">
+						Grade: {student.grade}
+					</Typography>
+				</CardContent>
                 <CardActions>
                     <Button size="small" color="primary" component={Link} to={"/student/"+student.id}>
                         Events
