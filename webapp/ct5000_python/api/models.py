@@ -21,6 +21,9 @@ class Device(models.Model):
     registered_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='admin')
     bus = models.OneToOneField('Bus', null=True, on_delete=models.SET_NULL)
     
+    def __str__(self):
+        return self.user.username
+    
 class Event(models.Model):
     enter = models.BooleanField()
     picture = models.ImageField(upload_to='events/', blank=True)

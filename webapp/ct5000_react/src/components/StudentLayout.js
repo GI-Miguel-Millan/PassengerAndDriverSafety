@@ -3,25 +3,47 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { refresh, get_students_by_current_parent } from '../api/Api.js';
 import StudentCard from './StudentCard.js';
+import EventTable from './EventTable.js';
+import ApexScatterChart from './ApexScatterChart.js';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
-    root: {
-        flexGrow: 1,
+	container: {
+		display: 'grid',
+		gridTemplateColumns: 'repeat(12, 1fr)',
+		gridGap: `${theme.spacing.unit * 3}px`,
+	},
+	paper: {
+		padding: theme.spacing.unit,
+		textAlign: 'center',
+		color: theme.palette.text.secondary,
+		whiteSpace: 'nowrap',
+		marginBottom: theme.spacing.unit,
+	},
+	divider: {
+		margin: `${theme.spacing.unit * 2}px 0`,
+	},
+	tableContainer: {
+        width: '100%',
+		height: '100%',
     },
-    paper: {
-        height: 140,
-        width: 100,
-    },
-    control: {
-        padding: theme.spacing.unit * 2,
-    },
+	media: {
+		height: '87%',
+		margin: "0 auto",
+	}
 });
 
 class StudentLayout extends Component {
     state = {
         students: null,
         isLoading: true,
+		graph: [],
     }
 
     componentDidMount() {
@@ -33,6 +55,15 @@ class StudentLayout extends Component {
             this.setState({ students: studs, isLoading: false });
         }));
     }
+	
+	handleTableClick = () => {
+        this.setState({ graph: false });
+    };
+	
+	handleGraphClick = () => {
+        this.setState({ graph: true });
+    };
+
 
     render() {
         const { classes } = this.props;
@@ -44,22 +75,38 @@ class StudentLayout extends Component {
 
         if (students !== null) {
             return (
-                <Grid container className={classes.root} spacing={16}>
-                    <Grid item>
-                        <Grid container className={classes.demo} justify="center" spacing={16}>
-                            {
-                                students.map(student => {
-                                    return (
-                                        <Grid item xs>
-                                            <StudentCard student={student}></StudentCard>
-                                        </Grid>
-                                    );
-                                })
-                            }
-                        </Grid>
-                    </Grid>
+                <Grid container spacing={24}>
+				{
+					students.map(student => {
+						return (
+							<React.Fragment>
+								<Grid item xs={4}>
+									<StudentCard student={student}></StudentCard>
+								</Grid>
+								<Grid item xs={8}>
+									<Card className={classes.card, classes.tableContainer}>
+										<CardMedia className={classes.media}>
+											{this.state.graph ? (<ApexScatterChart student={student}></ApexScatterChart>) : (<EventTable student={student}></EventTable>)}
+										</CardMedia>
+										<CardActions>
+											{this.state.graph ? (
+												<Button size="small" color="primary" onClick={() => this.handleTableClick()}>
+													Table
+												</Button>
+											) : (
+												<Button size="small" color="primary" onClick={() => this.handleGraphClick()}>
+													Graph
+												</Button>
+											)}
+										</CardActions>
+									</Card>
+								</Grid>
+							</React.Fragment>
+						);
+					})
+				}
                 </Grid>
-            )
+            );
         }
         return (
             <p>No students.</p>
