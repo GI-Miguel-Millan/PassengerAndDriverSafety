@@ -26,8 +26,6 @@ def add_student(group, person, img):
         'name': person
     }
     response = requests.post("https://eastus.api.cognitive.microsoft.com/face/v1.0/persongroups/%s/persons" % group, data=json.dumps(data), headers=headers)
-    print(response.status_code)
-    print(response.text)
     if response.status_code == 200:
         with open('personIds/%s.json' % person, 'w') as f:
             json.dump(response.json(), f)
@@ -84,13 +82,12 @@ def identify(group, img):
         response2 = requests.post(url2, data=json.dumps(data2), headers=headers)
         jsonResp2 = response2.json()
 
-        if jsonResp2[0]['candidates'][0]:
+        if jsonResp2[0]:
             personId = jsonResp2[0]['candidates'][0]['personId']
 
             try:
                 with open('./personIds/%s.json' % personId) as f:
                     target = json.load(f)
-                print(target[0])
                 return target[0]
 
             except:
@@ -115,15 +112,24 @@ def delete_student(group, person):
 
             response = requests.delete(url, data=None, headers=headers)
 
-            if response.status_code == 200:
+        if response.status_code == 200:
+             
+            os.remove('./personIds/%s.json' % target['personId'])
+            os.remove('./personIds/%s.json' % person)
+            return True
 
-                print('./personIds/%s.json' % target['personId'])                
-                os.remove('./personIds/%s.json' % target['personId'])
-                print('./personIds/%s.json' % person)
-                os.remove('./personIds/%s.json' % person)
-                return True
-
-            else:
-                return False
+        else:
+            return False
     except:
         print('No student named %s on file' % person)
+
+#Delete group
+def delete_group(group):
+    headers = {
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': api_key,
+    }
+
+    url = "https://eastus.api.cognitive.microsoft.com/face/v1.0/persongroups/%s" % group
+
+    response = requests.delete(url, data=None, headers=headers)

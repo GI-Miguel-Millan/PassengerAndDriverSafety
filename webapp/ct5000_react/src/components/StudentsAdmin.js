@@ -24,6 +24,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 // Add form
 import AddStudentForm from './AddStudentForm.js';
+import { NONAME } from 'dns';
 
 const styles = {
     root: {
@@ -33,6 +34,10 @@ const styles = {
     table: {
         minWidth: 700,
     },
+    img:{
+        maxWidth: 75,
+        maxHeight: 75
+    }
 };
 
 function Buttons(props) {
@@ -86,11 +91,11 @@ class StudentsAdmin extends Component {
                   <TableHead>
                         <TableRow>
                             <TableCell>Name</TableCell>
+                            <TableCell align="right">Picture</TableCell>  
                             <TableCell align="right">Age</TableCell>  
                             <TableCell align="right">Grade</TableCell> 
                              <TableCell align="right">School</TableCell>
                             <TableCell align="right">Bus</TableCell>  
-                            <TableCell align="right">Picture</TableCell> 
                              <TableCell align="right">Parent 1</TableCell>
                             <TableCell align="right">Parent 2</TableCell>  
                             <TableCell align="right">Tracking</TableCell> 
@@ -101,12 +106,14 @@ class StudentsAdmin extends Component {
                         {this.state.isLoaded && this.state.data.map(n => {
                             return (
                                 <TableRow key={n.id}>
-                                    <TableCell component="th" scope="row">{n.first_name} {n.last_name}</TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {n.first_name} {n.last_name}
+                                    </TableCell>
+                                    <TableCell align="right"><img className={classes.img} src={n.picture}></img></TableCell>  
                                     <TableCell align="right">{n.age}</TableCell>  
                                     <TableCell align="right">{n.grade}</TableCell>
                                     <TableCell align="right">{n.school}</TableCell> 
                                     <TableCell align="right">{n.bus}</TableCell> 
-                                    <TableCell align="right">{n.picture}</TableCell> 
                                     <TableCell align="right">{n.parent_one}</TableCell> 
                                     <TableCell align="right">{n.parent_two}</TableCell> 
                                     <TableCell align="right">{n.track}</TableCell> 

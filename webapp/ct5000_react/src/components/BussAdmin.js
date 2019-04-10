@@ -74,7 +74,8 @@ class BussAdmin extends Component {
             entities = this.state.data.map(function(entity){
                 return(
                     <TableRow key={entity.id}>
-                    <TableCell component="th" scope="row">{entity.name}</TableCell>
+                    <TableCell component="th" scope="row">{entity.id}</TableCell>
+                    <TableCell>{entity.name}</TableCell>
                     <TableCell >
                         <IconButton data-id={entity.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
                             <Edit data-id={entity.id} />
@@ -96,6 +97,7 @@ class BussAdmin extends Component {
                 <Table className={classes.table}>
                   <TableHead>
                         <TableRow>
+                            <TableCell>ID</TableCell>
                             <TableCell>Name</TableCell>
                             <TableCell>Options</TableCell>
                            

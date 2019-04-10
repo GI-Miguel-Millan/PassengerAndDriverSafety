@@ -100,6 +100,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         fields = ('registered_by', 'bus', 'bus_id')
         read_only_fields = ('registered_by', 'bus')
 
+
 class DeviceUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     device = DeviceSerializer()
