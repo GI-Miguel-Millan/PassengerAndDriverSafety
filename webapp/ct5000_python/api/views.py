@@ -67,9 +67,9 @@ class StudentList(generics.ListCreateAPIView):
     queryset = Student.objects.all()
 
     def perform_create(self, serializer):
-        add_student(self.request.data['bus'], self.request.data['first_name'] + ' ' + self.request.data['last_name'], self.request.data['picture'])
-        super(StudentList, self).perform_create(serializer)
-        
+        instance = serializer.save()
+        add_student(self.request.data['bus'], instance.id, self.request.data['picture'])
+
     def perform_destroy(self, instance):
         delete_student(instance.bus, instance.first_name + ' ' + instance.last_name)
         super(StudentList, self).perform_destroy(instance)
