@@ -19,7 +19,7 @@ class Parent(models.Model):
 class Device(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     registered_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='admin')
-    bus = models.OneToOneField('Bus', null=True, on_delete=models.SET_NULL)
+    bus = models.ForeignKey('Bus', null=True, on_delete=models.SET_NULL)
     
     def __str__(self):
         return self.user.username
