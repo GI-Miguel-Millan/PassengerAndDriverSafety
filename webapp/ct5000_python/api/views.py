@@ -97,7 +97,7 @@ class EventList(generics.ListCreateAPIView):
         if bus is not None and picture is not None:
             person = face.identify(bus, picture)
             if person is not None:
-                serializer_class.save(student=self.kwargs['student'])
+                serializer_class.save(student=person)
         return queryset
 
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
