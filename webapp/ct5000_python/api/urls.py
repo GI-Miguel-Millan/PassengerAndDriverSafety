@@ -15,15 +15,15 @@ urlpatterns = [
     path('parents/', views.ParentList.as_view()),
     path('parents/<int:pk>/', views.ParentDetail.as_view()),
     path('parents/<int:parent_id>/students/', views.ParentStudents.as_view()),
+    path('parents/<int:parent_id>/students/events/', views.ParentStudentsEvents.as_view()),
     path('parents/students/', views.CurrentParentStudents.as_view()),
+    path('parents/students/events/', views.CurrentParentStudentsEvents.as_view()),
     path('devices/', views.DeviceList.as_view()),
     path('devices/<int:pk>/', views.DeviceDetail.as_view()),
     path('buses/', views.BusList.as_view()),
     path('buses/<int:pk>/', views.BusDetail.as_view()),
     path('schools/', views.SchoolList.as_view()),
     path('schools/<int:pk>/', views.SchoolDetail.as_view()),
-    path('drivers/', views.DriverList.as_view()),
-    path('drivers/<int:pk>/', views.DriverDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
