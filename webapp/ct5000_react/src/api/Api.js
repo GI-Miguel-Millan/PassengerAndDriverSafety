@@ -356,11 +356,11 @@ export const add_student = async (first_name, last_name, age, grade, school, bus
     data.append('last_name',last_name);
     data.append('age',age);
     data.append('grade',grade);
-    data.append('school',school);
-    data.append('bus',bus);
+    data.append('school_id',school);
+    data.append('bus_id',bus);
     data.append('picture',picture);
-    data.append('parent_one',parent_one);
-    data.append('parent_two',parent_two);
+    data.append('parent_one_id',parent_one);
+    data.append('parent_two_id',parent_two);
     data.append('track',track);
 
     let response = await fetch(
@@ -382,8 +382,8 @@ export const add_event = async (enter, picture, device, student) => {
     const data = new FormData();
     data.append('enter',enter);
     data.append('picture',picture);
-    data.append('device',device);
-    data.append('student',student);
+    data.append('device_id',device);
+    data.append('student_id',student);
     
     let response = await fetch(
 		baseurl + 'events/',
@@ -536,11 +536,11 @@ export const edit_student = async (id, first_name, last_name, age, grade, school
     data.append('last_name',last_name);
     data.append('age',age);
     data.append('grade',grade);
-    data.append('school',school);
-    data.append('bus',bus);
+    data.append('school_id',school);
+    data.append('bus_id',bus);
     data.append('picture',picture);
-    data.append('parent_one',parent_one);
-    data.append('parent_two',parent_two);
+    data.append('parent_one_id',parent_one);
+    data.append('parent_two_id',parent_two);
     data.append('track',track);
 
     let response = await fetch(
@@ -562,8 +562,8 @@ export const edit_event = async (id,enter, picture, device, student) => {
     const data = new FormData();
     data.append('enter',enter);
     data.append('picture',picture);
-    data.append('device',device);
-    data.append('student',student);
+    data.append('device_id',device);
+    data.append('student_id',student);
     
     let response = await fetch(
 		baseurl + 'events/'+id+"/",
