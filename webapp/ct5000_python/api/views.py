@@ -54,7 +54,7 @@ class StudentList(generics.ListCreateAPIView):
     serializer_class = StudentSerializer
 
     def perform_create(self, serializer):
-        add_student(self.request.data['bus'], self.request.data['id'], self.request.files['picture'])
+        add_student(self.request.data['bus'], self.request.data['first_name'] + ' ' + self.request.data['last_name'], self.request.files['picture'])
         super(EventList, self).perform_create(serializer)
 
 class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -68,14 +68,13 @@ class EventList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         person = identify(self.request.data['bus'], self.request.files['picture'])
         if person is not None:
-             serializer.save(student=person)
+            serializer.save(student=person)
         super(EventList, self).perform_create(serializer)
-            
 
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-	
+
 class BusList(generics.ListCreateAPIView):
     queryset = Bus.objects.all()
     serializer_class = BusSerializer
