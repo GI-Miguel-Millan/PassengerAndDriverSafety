@@ -71,8 +71,8 @@ state = {
                 this.setState({ 
                     enter: data['enter'], 
                     picture: data['picture'], 
-                    device: data['device'], 
-                    student: data['student'], 
+                    device: data['device_id'], 
+                    student: data['student_id'], 
                 })
             });
         }
@@ -104,7 +104,7 @@ state = {
         this.setState({device: parseInt(this.state.device)}); // get device as an int
 
         let response = null;
-        if (this.props.entityID !== -1){
+        if (this.props.entityID === -1){
             response = await add_event(this.state.enter,this.state.picture, this.state.device, this.state.student);
         }else{
             response = await edit_event(this.props.entityID,this.state.enter,this.state.picture, this.state.device, this.state.student);
