@@ -145,3 +145,10 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
     'AUTH_HEADER_TYPES': ('JWT',),
 }
+
+# Email
+EMAIL_HOST = 'mail.gandi.net'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'admin@isrow.net'
+EMAIL_HOST_PASSWORD = 'AJ=S7?=Tr7!*hus,'
+EMAIL_USE_TLS = True

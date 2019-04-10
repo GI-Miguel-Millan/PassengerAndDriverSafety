@@ -96,7 +96,6 @@ class EventList(generics.ListCreateAPIView):
             serializer.save(student=person)
         super(EventList, self).perform_create(serializer)
 
-
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer

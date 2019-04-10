@@ -2,6 +2,7 @@ from api.models import Parent, Device, Event, Bus, Student, School
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
 
 User = get_user_model()
 
