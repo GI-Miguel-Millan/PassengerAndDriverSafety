@@ -91,6 +91,8 @@ class AddAdminForm extends React.Component {
                 error: false,
                 errorMessage: "",
               });
+
+              this.props.callback();
         } else if (response.status === 400) {
             console.log("400 no good check input");
             let message = "";
