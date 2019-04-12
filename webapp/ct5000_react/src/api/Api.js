@@ -138,6 +138,20 @@ export const get_admins = async () => {
     )
     return await response.json()
 }
+export const get_admin = async (admin_id) => {
+    let response = await fetch(
+        baseurl + 'admins/' + admin_id,
+        {
+            method: 'GET',
+            
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'JWT ' + localStorage.getItem('access'),
+            }
+        }
+    )
+    return await response.json()
+}
 export const get_students = async () => {
     let response = await fetch(
         baseurl +'students/',

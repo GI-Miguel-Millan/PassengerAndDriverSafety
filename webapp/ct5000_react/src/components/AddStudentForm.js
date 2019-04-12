@@ -190,15 +190,6 @@ class AddStudentForm extends React.Component {
 
             this.setState(
                 {
-                first_name: "",
-                last_name: "",
-                age: "",
-                grade: "",
-                bus: "",
-                school: "",
-                picture: "",
-                parent_one: "",
-                parent_two: "",
                 track: false,
                 error: true,
                 errorMessage: message,
@@ -207,15 +198,6 @@ class AddStudentForm extends React.Component {
         } else {
             this.setState(
             {
-                first_name: "",
-                last_name: "",
-                age: "",
-                grade: "",
-                bus: "",
-                school: "",
-                picture: "",
-                parent_one: "",
-                parent_two: "",
                 track: false,
                 error: true,
                 errorMessage: "Something is wrong with the server. Try again later.",

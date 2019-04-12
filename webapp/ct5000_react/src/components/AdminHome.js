@@ -43,7 +43,13 @@ const styles = {
 class AdminHome extends Component {
     constructor(props) {
         super(props)
-        this.state = { data: [], isLoaded: false , open: false}
+        this.state = { 
+            data: [], 
+            isLoaded: false , 
+            open: false,
+            entityID: -1,
+            title: "Add Student",
+        }
     }
 
     componentDidMount() {
@@ -53,12 +59,17 @@ class AdminHome extends Component {
         });
     }
 
-    handleOpen = () => {
-        this.setState({ open: true });
+    handleOpen = (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        if(id){
+            this.setState({ open: true, entityID:  id, title:"Edit Admin"});
+        }else{
+            this.setState({ open: true, title: "Add Admin"});
+        }
     };
 
     handleClose = () => {
-        this.setState({ open: false });
+        this.setState({ open: false, entityID: -1 });
     };
 
     handleDelete = async (e) => {
@@ -92,8 +103,8 @@ class AdminHome extends Component {
                                     <TableCell>{n.email}</TableCell>
                                     <TableCell>{n.last_login}</TableCell>
                                     <TableCell>
-                                        <IconButton aria-label="Edit" color="primary">
-                                            <Edit />
+                                        <IconButton data-id={n.id} onClick={e => this.handleOpen(e)} aria-label="Edit" color="primary">
+                                            <Edit data-id={n.id}/>
                                         </IconButton>
                                         <IconButton data-id={n.id} onClick={e => this.handleDelete(e)} aria-label="Delete" color="primary">
                                             <DeleteIcon data-id={n.id}/>
@@ -110,9 +121,9 @@ class AdminHome extends Component {
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                     >
-                    <DialogTitle id="form-dialog-title">Add Admin</DialogTitle>
+                    <DialogTitle id="form-dialog-title">{this.state.title}</DialogTitle>
                     <DialogContent>
-                        <AddAdminForm />
+                        <AddAdminForm entityID={this.state.entityID}/>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {add_admin} from '../api/Api.js';
+import {add_admin, get_admin, edit_admin} from '../api/Api.js';
 import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
@@ -28,11 +28,11 @@ const styles = theme => ({
 
 class AddAdminForm extends React.Component {
   state = {
-    username: null,
-    password: null,
-    firstname: null,
-    lastname: null,
-    email: null,
+    username: "",
+    password: "",
+    firstname: "",
+    lastname: "",
+    email: "",
     error: false,
     errorMessage: "",
   };
@@ -54,10 +54,30 @@ class AddAdminForm extends React.Component {
       });
   };
 
+  componentDidMount() {
+    if (this.props.entityID !== -1){
+        get_admin(this.props.entityID).then(data => {
+            this.setState({ 
+                username: data['username'], 
+                password: data['password'],
+                firstname: data['first_name'],
+                lastname: data['last_name'],
+                email: data['email'],
+             });
+        });
+    }
+}
+
   handleSubmit = async () => {
 
-        let response = await add_admin(this.state.username, this.state.firstname, this.state.lastname, 
+        let response = null;
+        if(this.props.entityID === -1){
+            response = await add_admin(this.state.username, this.state.firstname, this.state.lastname, 
+              this.state.email, this.state.password);
+        }else{
+          response = await edit_admin(this.props.entityID, this.state.username, this.state.firstname, this.state.lastname, 
             this.state.email, this.state.password);
+        }
 
         if (response.status < 300 ) {
             console.log("200 all good");
@@ -86,22 +106,12 @@ class AddAdminForm extends React.Component {
 
             this.setState(
               {
-                username: "",
-                password: "",
-                firstname: "",
-                lastname: "",
-                email: "",
                 error: true, 
                 errorMessage: message
               });
         } else {
           this.setState(
             {
-              username: "",
-              password: "",
-              firstname: "",
-              lastname: "",
-              email: "",
               error: true, 
               errorMessage: "Something is wrong with the server. Try again later."
             });
