@@ -93,7 +93,7 @@ class AddStudentForm extends React.Component {
                     grade: data['grade'],
                     bus: data['bus_id'],
                     school: data['school_id'],
-                    picture: data['picture'],
+                   
                     parent_one: data['parent_one_id'],
                     parent_two: data['parent_two_id'],
                     track: data['track'],
@@ -161,6 +161,8 @@ class AddStudentForm extends React.Component {
                 errorMessage: "",
                 uploadButtonColor: "default",
                 });
+
+                this.props.callback();
         } else if (response.status === 400) {
             console.log("400 no good check input");
             let message = "Make sure you've entered your: ";
@@ -185,7 +187,7 @@ class AddStudentForm extends React.Component {
             }
 
             if(message === "Make sure you've entered your: ") {
-                message = "Your username was taken, try a different one."
+                message = "You forgot to upload a picture."
             }
 
             this.setState(
