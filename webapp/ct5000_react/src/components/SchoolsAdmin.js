@@ -60,11 +60,17 @@ class SchoolsAdmin extends Component {
 
     handleClose = () => {
         this.setState({ open: false, entityID: -1 });
+        get_schools().then(data => {
+            this.setState({ data: data, isLoaded: true })
+        });
     };
 
     handleDelete = async (e) => {
         const id = e.currentTarget.getAttribute('data-id');
         let response = await delete_school(id);
+        get_schools().then(data => {
+            this.setState({ data: data, isLoaded: true })
+        });
     }
 
     render() {
@@ -108,7 +114,7 @@ class SchoolsAdmin extends Component {
                     >
                     <DialogTitle id="form-dialog-title">{this.state.title}</DialogTitle>
                     <DialogContent>
-                        <AddSchoolForm entityID={this.state.entityID}/>
+                        <AddSchoolForm callback={this.handleClose} entityID={this.state.entityID}/>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
