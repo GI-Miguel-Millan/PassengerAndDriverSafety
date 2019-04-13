@@ -47,7 +47,6 @@ class ParentAdmin extends Component {
 
     componentDidMount() {
         get_parents().then(data => {
-            console.log(data)
             this.setState({ data: data, isLoaded: true })
         });
     }
@@ -63,11 +62,17 @@ class ParentAdmin extends Component {
 
     handleClose = () => {
         this.setState({ open: false, entityID: -1 });
+        get_parents().then(data => {
+            this.setState({ data: data, isLoaded: true })
+        });
     };
 
     handleDelete = async (e) => {
         const id = e.currentTarget.getAttribute('data-id');
         let response = await delete_parent(id);
+        get_parents().then(data => {
+            this.setState({ data: data, isLoaded: true })
+        });
     }
 
     render() {
@@ -118,7 +123,7 @@ class ParentAdmin extends Component {
                     >
                     <DialogTitle id="form-dialog-title">{this.state.title}</DialogTitle>
                     <DialogContent>
-                        <AddParentForm entityID={this.state.entityID}/>
+                        <AddParentForm callback={this.handleClose} entityID={this.state.entityID}/>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
