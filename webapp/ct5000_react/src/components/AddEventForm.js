@@ -70,7 +70,6 @@ state = {
                 //console.log(data)
                 this.setState({ 
                     enter: data['enter'], 
-                    picture: data['picture'], 
                     device: data['device_id'], 
                     student: data['student_id'], 
                 })
@@ -122,18 +121,17 @@ state = {
                 errorMessage: "",
                 uploadButtonColor: "default"
                 });
+
+            this.props.callback();
         } else if (response.status === 400) {
             console.log("400 no good check input");
             let message = "Make sure you've entered: ";
-            if (!this.state.enter){
-                message += "enter, "
-            }
 
             if (!this.state.picture){
                 message += "picture, "
             }
 
-            if(message === "Make sure you've entered your: ") {
+            if(message === "Make sure you've entered: ") {
                 message = "Unknown error occurred."
             }
 

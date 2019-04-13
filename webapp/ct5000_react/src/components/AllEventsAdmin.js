@@ -71,11 +71,19 @@ class AllEventsAdmin extends Component {
 
     handleClose = () => {
         this.setState({ open: false, entityID: -1 });
+        get_events().then(data => {
+            console.log(data)
+            this.setState({ data: data, isLoaded: true })
+        });
     };
 
     handleDelete = async (e) => {
         const id = e.currentTarget.getAttribute('data-id');
         let response = await delete_event(id);
+        get_events().then(data => {
+            console.log(data)
+            this.setState({ data: data, isLoaded: true })
+        });
     }
 
     render() {
@@ -130,7 +138,7 @@ class AllEventsAdmin extends Component {
                     >
                     <DialogTitle id="form-dialog-title">{this.state.title}</DialogTitle>
                     <DialogContent>
-                        <AddEventForm entityID={this.state.entityID} />
+                        <AddEventForm callback={this.handleClose} entityID={this.state.entityID} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
