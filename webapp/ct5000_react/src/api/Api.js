@@ -591,11 +591,11 @@ export const edit_student = async (id, first_name, last_name, age, grade, school
     return await response
 }
 
-export const edit_event = async (id,enter, picture, device, student) => {
+export const edit_event = async (id,enter, picture, is_active, student) => {
     const data = new FormData();
     data.append('enter',enter);
     data.append('picture',picture);
-    data.append('device_id',device);
+    data.append('is_active',is_active);
     data.append('student_id',student);
     
     let response = await fetch(

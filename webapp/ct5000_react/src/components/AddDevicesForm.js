@@ -47,7 +47,7 @@ class AddDevicesForm extends React.Component {
     state = {
         username: "",
         password: "",
-        is_device: false,
+        is_active: false,
         registered_by: "",
         bus: "",
         error: false,
@@ -76,8 +76,9 @@ class AddDevicesForm extends React.Component {
                 //console.log(data)
                 this.setState({ 
                     username: data['username'], 
-                    is_device: data['is_device'], 
+                    is_active: data['is_active'], 
                     registered_by: data['registered_by_id'], 
+                    bus: data['bus_id'], 
 
                 })
             });
@@ -111,10 +112,10 @@ class AddDevicesForm extends React.Component {
 
         let response = null;
         if (this.props.entityID === -1){
-            response = await add_devices(this.state.username,this.state.password,this.state.is_device,
+            response = await add_devices(this.state.username,this.state.password,this.state.is_active,
                 device);
         }else {
-            response = await edit_device(this.props.entityID, this.state.username,this.state.password,this.state.is_device,
+            response = await edit_device(this.props.entityID, this.state.username,this.state.password,this.state.is_active,
                 device);
         }
 
@@ -124,12 +125,13 @@ class AddDevicesForm extends React.Component {
                 {
                 username: "",
                 password: "",
-                is_device: false,
+                is_active: false,
                 registered_by: "",
                 bus: "",
                 error: false,
                 errorMessage: "",
                 });
+            this.props.callback();
         } else if (response.status === 400) {
             console.log("400 no good check input");
             let message = "Make sure you've entered the: ";
@@ -213,7 +215,7 @@ class AddDevicesForm extends React.Component {
         >
             {this.state.adminsLoaded && this.state.adminData.map(n => {
                     return (
-                        <option value={n.id}>{n.username}</option>
+                        <option value={n.id}>{n.id} {n.username} {this.state.registered_by}</option>
                     );
                 })}
   
@@ -242,12 +244,12 @@ class AddDevicesForm extends React.Component {
         <FormControlLabel
             control={
                 <Checkbox
-                    checked={this.state.is_device}
-                    onChange={this.handleCheckChange('is_device')}
-                    value="is_device"
+                    checked={this.state.is_active}
+                    onChange={this.handleCheckChange('is_active')}
+                    value="is_active"
                     />
             }
-            label="Is Device"
+            label="Is Active"
         />
 
         <Button type="submit" onClick={() => this.handleSubmit()} variant="contained" color="primary" className={classes.FormControl}>
