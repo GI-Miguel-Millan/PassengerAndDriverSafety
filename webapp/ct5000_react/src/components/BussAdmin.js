@@ -60,11 +60,17 @@ class BussAdmin extends Component {
 
     handleClose = () => {
         this.setState({ open: false, entityID: -1 });
+        get_buses().then(data => {
+            this.setState({ data: data, isLoaded: true })
+        });
     };
 
     handleDelete = async (e) => {
         const id = e.currentTarget.getAttribute('data-id');
         let response = await delete_bus(id);
+        get_buses().then(data => {
+            this.setState({ data: data, isLoaded: true })
+        });
     }
 
     render() {
@@ -114,7 +120,7 @@ class BussAdmin extends Component {
                     >
                     <DialogTitle id="form-dialog-title">{this.state.title}</DialogTitle>
                     <DialogContent>
-                        <AddBusForm entityID={this.state.entityID}/>
+                        <AddBusForm callback={this.handleClose} entityID={this.state.entityID}/>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">

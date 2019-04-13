@@ -90,6 +90,7 @@ class AddStudentForm extends React.Component {
                 errorMessage: "",
                 uploadButtonColor: "default",
                 });
+            this.props.callback();
         } else if (response.status === 400) {
             console.log("400 no good check input");
             let message = "Make sure you've entered: ";
