@@ -12,7 +12,6 @@ import { Redirect } from 'react-router-dom';
 import { get_devices, delete_device } from '../api/Api.js';
 import { login } from '../api/Api.js';
 import FloatingActionButtons from './ActionButton.js'
-import NavTabs from './tabs.js';
 import AddDevicesForm from './AddDevicesForm.js';
 import AddEditButtons from './AddEditButtons.js';
 

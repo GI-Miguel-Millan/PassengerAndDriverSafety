@@ -12,7 +12,6 @@ import { Redirect } from 'react-router-dom';
 import { students } from '../api/Api.js';
 import { get_admins } from '../api/Api.js';
 import FloatingActionButtons from './ActionButton.js';
-import NavTabs from './tabs.js';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import Button from '@material-ui/core/Button';

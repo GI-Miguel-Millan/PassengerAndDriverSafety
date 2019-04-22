@@ -32,10 +32,10 @@ import { Redirect, Route } from 'react-router-dom';
 import StudentLayout from './StudentLayout.js';
 import EventTable from './EventTable.js';
 import StudentsAdmin from './StudentsAdmin.js';
-import ParentAdmin from './ParentAdmin.js';
+import ParentsAdmin from './ParentsAdmin.js';
 import DevicesAdmin from './DevicesAdmin.js';
 import SchoolsAdmin from './SchoolsAdmin.js';
-import BussAdmin from './BussAdmin.js';
+import BusesAdmin from './BusesAdmin.js';
 import AdminHome from './AdminHome.js';
 import AllEventsAdmin from './AllEventsAdmin.js';
 import AlertDialog from './AlertDialog.js';
@@ -178,11 +178,11 @@ class Dashboard extends Component {
             } else if (page == "Devices") {
                 mainContent = <PrivateRoute path="/" component={DevicesAdmin} />
             } else if (page == "Parents") {
-                mainContent = <PrivateRoute path="/" component={ParentAdmin} />
+                mainContent = <PrivateRoute path="/" component={ParentsAdmin} />
             } else if (page == "Schools") {
                 mainContent = <PrivateRoute path="/" component={SchoolsAdmin} />
             } else if (page == "Buses") {
-                mainContent = <PrivateRoute path="/" component={BussAdmin} />
+                mainContent = <PrivateRoute path="/" component={BusesAdmin} />
             } else {
                 mainContent = <div> An error occurred: Admin page not found.</div>
             }
