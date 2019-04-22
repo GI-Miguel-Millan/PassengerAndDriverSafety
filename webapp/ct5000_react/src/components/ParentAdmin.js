@@ -34,7 +34,7 @@ const styles = {
     },
 };
 
-class ParentAdmin extends Component {
+class ParentsAdmin extends Component {
     constructor(props) {
         super(props)
         this.state = { 
@@ -137,8 +137,8 @@ class ParentAdmin extends Component {
     }
 }
 
-ParentAdmin.propTypes = {
+ParentsAdmin.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ParentAdmin);
+export default withStyles(styles)(ParentsAdmin);
