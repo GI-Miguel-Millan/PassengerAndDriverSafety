@@ -40,7 +40,7 @@ class App extends Component {
                     <PrivateRoute path='/home' component={Dashboard} />
                     <PrivateRoute path='/student/:id' component={Dashboard} />
 					<PrivateRoute path='/' exact component={Dashboard} />
-					<PrivateRoute path='/parents' component={ParentAdmin} />
+					<PrivateRoute path='/parents' component={ParentsAdmin} />
                     <PrivateRoute path='/devices' component={DevicesAdmin} />
                     <PrivateRoute path='/students' component={StudentsAdmin} />
                     <PrivateRoute path='/buses' component={BusesAdmin} />

@@ -178,7 +178,7 @@ class Dashboard extends Component {
             } else if (page == "Devices") {
                 mainContent = <PrivateRoute path="/" component={DevicesAdmin} />
             } else if (page == "Parents") {
-                mainContent = <PrivateRoute path="/" component={ParentAdmin} />
+                mainContent = <PrivateRoute path="/" component={ParentsAdmin} />
             } else if (page == "Schools") {
                 mainContent = <PrivateRoute path="/" component={SchoolsAdmin} />
             } else if (page == "Buses") {
