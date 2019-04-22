@@ -99,6 +99,12 @@ class EventList(generics.ListCreateAPIView):
         if person is not None:
             instance.student_id = person
             instance.save()
+            parents = Parent.object.filter(student__id=instance.student_id).value_list('user__email', flat=True)
+            subject = 'An Event has Occurred!'
+            message = 'You child has entered the bus.' if instance.enter else 'Your child has exited the bus.'
+            from_email = 'admin@isrow.net'
+            send_mail(subject, message, from_email, parents)
+            
 
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
