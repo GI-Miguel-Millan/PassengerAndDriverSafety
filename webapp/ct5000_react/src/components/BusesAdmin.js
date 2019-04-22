@@ -32,7 +32,7 @@ const styles = {
     },
 };
 
-class BussAdmin extends Component {
+class BusesAdmin extends Component {
     constructor(props) {
         super(props)
         this.state = { 
@@ -134,8 +134,8 @@ class BussAdmin extends Component {
     }
 }
 
-BussAdmin.propTypes = {
+BusesAdmin.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(BussAdmin);
+export default withStyles(styles)(BusesAdmin);
