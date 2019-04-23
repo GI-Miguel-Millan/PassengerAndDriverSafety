@@ -508,9 +508,11 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                 faces_to_use = previous_faces
 
                 if previous_faces2:
+                    print("using faces2")
                     faces_to_use = previous_faces2
 
                 if previous_faces3:
+                    print("using faces3")
                     faces_to_use = previous_faces3
 
 
