@@ -434,6 +434,8 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
         joy_threshold_detector = threshold_detector(JOY_SCORE_LOW, JOY_SCORE_HIGH)
         joy_threshold_detector.send(None)  # Initialize.
 
+        previous_faces3 = []
+        previous_faces2 = []
         previous_faces = []
         num_faces = 0
         for faces, frame_size in run_inference(num_frames, model_loaded):
@@ -503,12 +505,23 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                 #if not use_annotator:
                     #take_photo()
 
-                for face in previous_faces:
+                faces_to_use = previous_faces
+
+                if previous_faces2:
+                    faces_to_use = previous_faces2
+
+                if previous_faces3:
+                    faces_to_use = previous_faces3
+
+
+                for face in faces_to_use:
                     print(classification_path, face, access_token)
                     if access_token is not None:
                         print("sent face with access token")
                         send_face(classification_path, face, access_token, dev)
 
+            previous_faces3 = previous_faces2
+            previous_faces2 = previous_faces
             previous_faces = tmp_arr
 
             if done.is_set():
