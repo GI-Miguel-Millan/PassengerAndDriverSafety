@@ -76,8 +76,7 @@ class StudentList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         instance = serializer.save()
-        add_student(instance.bus, instance.id, instance.picture)
-
+        add_student(instance.bus.id, instance.id, instance.picture)
 
     def perform_destroy(self, instance):
         delete_student(instance.bus, instance.first_name + ' ' + instance.last_name)
@@ -95,17 +94,24 @@ class EventList(generics.ListCreateAPIView):
         instance = serializer.save()
         device = Device.objects.get(pk=instance.device_id)
         person = identify(device.bus_id, instance.picture.url)
-
+        print(person)
         if person is not None:
-            instance.student_id = person
-            instance.save()
-            parents = Parent.object.filter(student__id=instance.student_id).value_list('user__email', flat=True)
-            subject = 'An Event has Occurred!'
-            message = 'You child has entered the bus.' if instance.enter else 'Your child has exited the bus.'
-            from_email = 'admin@isrow.net'
-            send_mail(subject, message, from_email, parents)
+            try:
+                instance.student_id = Student.objects.get(pk=int(person))
+                instance.save()
+            except Exception as e:
+                print("Hit exception.")
+                print(e)
+            try:
+                parents = Parent.objects.filter(student__id=instance.student_id).value_list('user__email', flat=True)
+                subject = 'An Event has Occurred!'
+                message = 'You child has entered the bus.' if instance.enter else 'Your child has exited the bus.'
+                from_email = 'admin@isrow.net'
+                send_mail(subject, message, from_email, parents)
+            except Exception as e:
+                print(e)
+                print("Failed to send email notifications.")
             
-
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
