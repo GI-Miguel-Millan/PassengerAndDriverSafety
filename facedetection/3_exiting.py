@@ -1,45 +1,4 @@
 #!/usr/bin/env python3
-# Copyright 2017 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"""Joy detection demo."""
-import argparse
-import requests
-import collections
-import contextlib
-import io
-import logging
-import math
-import os
-import queue
-import signal
-import sys
-import threading
-import time
-import json
-
-from PIL import Image, ImageDraw, ImageFont
-from picamera import PiCamera
-
-from aiy.board import Board
-from aiy.leds import Color, Leds, Pattern, PrivacyLed
-from aiy.toneplayer import TonePlayer
-from aiy.vision.inference import CameraInference
-from aiy.vision.models import face_detection
-from aiy.vision.streaming.server import StreamingServer
-from aiy.vision.streaming import svg
-from aiy.vision.annotator import Annotator
-from timeit import default_timer as timer
 
 logger = logging.getLogger(__name__)
 
@@ -344,18 +303,18 @@ def connect_to_server(url, user_name, password):
     return r.json() # returns a json containing the access and refresh tokens.
 
 # Sends a face to the cloud for classification:
-def send_face(url, face, access_token, bus):
+def send_face(url, face, access_token, dev):
     headers={'Authorization':'access_token {}'.format(access_token)}
     #headers = {'Content-type': 'application/json'}
-    data = {'enter': face[1], 'bus': bus}
+    data = {'enter': face[1], 'device_id': dev}
     files = {'picture': open(face[0], 'rb')} # mode r = reading, b = binary mode
     r = requests.post(url, headers=headers, data=data, files=files)
 
-    print(r.json())
+    print(r.content)
 
 def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                 enable_streaming, streaming_bitrate, mdns_name,
-                width, height, fps, region, enter_side, use_annotator, url, uname, pw, image_dir, bus):
+                width, height, fps, region, enter_side, use_annotator, url, uname, pw, image_dir, dev):
 
     # Sign the device in and get an access and a refresh token, if a password and username provided.
     access_token = None
@@ -434,6 +393,8 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
         joy_threshold_detector = threshold_detector(JOY_SCORE_LOW, JOY_SCORE_HIGH)
         joy_threshold_detector.send(None)  # Initialize.
 
+        previous_faces3 = []
+        previous_faces2 = []
         previous_faces = []
         num_faces = 0
         for faces, frame_size in run_inference(num_frames, model_loaded):
@@ -503,12 +464,25 @@ def monitor_run(num_frames, preview_alpha, image_format, image_folder,
                 #if not use_annotator:
                     #take_photo()
 
-                for face in previous_faces:
+                faces_to_use = previous_faces
+
+                if previous_faces2:
+                    print("using faces2")
+                    faces_to_use = previous_faces2
+
+                if previous_faces3:
+                    print("using faces3")
+                    faces_to_use = previous_faces3
+
+
+                for face in faces_to_use:
                     print(classification_path, face, access_token)
                     if access_token is not None:
                         print("sent face with access token")
-                        send_face(classification_path, face, access_token, bus)
+                        send_face(classification_path, face, access_token, dev)
 
+            previous_faces3 = previous_faces2
+            previous_faces2 = previous_faces
             previous_faces = tmp_arr
 
             if done.is_set():
@@ -530,9 +504,9 @@ def main():
                         help='Folder to save captured images')
     parser.add_argument('--blink_on_error', default=False, action='store_true',
                         help='Blink red if error occurred')
-    parser.add_argument('--enable_streaming', default=True, action='store_true',
+    parser.add_argument('--enable_streaming', default=False, action='store_true',
                         help='Enable streaming server')
-    parser.add_argument('--streaming_bitrate', type=int, default=1000000,
+    parser.add_argument('--streaming_bitrate', type=int, default=100000, # 1000000
                         help='Streaming server video bitrate (kbps)')
     parser.add_argument('--mdns_name', default='',
                         help='Streaming server mDNS name')
@@ -550,23 +524,22 @@ def main():
                              'Or in dual camera operation: 2 = entering, 3 = Exiting')
     parser.add_argument('--annotator', default=False,
                         help='Shows the annotator overlay, however disables camera snapshots.')
-    parser.add_argument('--url', default="http://10.8.0.6:8000",
+    parser.add_argument('--url', default="https://isrow.net",
                         help='Url to send the face captures that are taken.')
-    parser.add_argument('--username', default="device-exiting",
+    parser.add_argument('--username', default="CL-24-2",
                         help='User name used to authenticate this device initially')
-    parser.add_argument('--password', default="Temp12345",
+    parser.add_argument('--password', default="1qw2!QW@1qw2",
                         help='Password used to authenticate this device initially')
-    parser.add_argument('--image_dir', default="events/",
+    parser.add_argument('--image_dir', default="api/events/",
                         help='{url + "/" + image_dir} will give us path to send the face data')
-    parser.add_argument('--bus', default="1",
-                        help='Specify the bus number this bus is on')
+    parser.add_argument('--dev', default=20)
     args = parser.parse_args()
 
     try:
         monitor_run(args.num_frames, args.preview_alpha, args.image_format, args.image_folder,
                     args.enable_streaming, args.streaming_bitrate, args.mdns_name,
                     args.cam_width, args.cam_height, args.fps, args.region, args.enter_side,
-                    args.annotator, args.url, args.username, args.password, args.image_dir, args.bus)
+                    args.annotator, args.url, args.username, args.password, args.image_dir, args.dev)
     except KeyboardInterrupt:
         pass
     except Exception:
