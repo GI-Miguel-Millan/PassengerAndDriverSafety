@@ -6,6 +6,7 @@ from facedetection.face import create_group, delete_group, add_student, delete_s
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.core.mail import send_mail
 User = get_user_model()
 from facedetection import face
 
@@ -97,17 +98,20 @@ class EventList(generics.ListCreateAPIView):
         print(person)
         if person is not None:
             try:
-                instance.student_id = Student.objects.get(pk=int(person))
+                student = Student.objects.get(pk=int(person))
+                instance.student_id = student
                 instance.save()
             except Exception as e:
                 print("Hit exception.")
                 print(e)
             try:
-                parents = Parent.objects.filter(student__id=instance.student_id).value_list('user__email', flat=True)
+                
+                parents = [student.parent_one.user.email, student.parent_two.user.email]
+                print(parents)
                 subject = 'An Event has Occurred!'
-                message = 'You child has entered the bus.' if instance.enter else 'Your child has exited the bus.'
+                message = 'Your child has entered the bus.' if instance.enter else 'Your child has exited the bus.'
                 from_email = 'admin@isrow.net'
-                send_mail(subject, message, from_email, parents)
+                send_mail(subject, message, from_email, parents,fail_silently=False)
             except Exception as e:
                 print(e)
                 print("Failed to send email notifications.")
