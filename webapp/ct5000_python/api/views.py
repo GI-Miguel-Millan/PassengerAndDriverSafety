@@ -34,13 +34,6 @@ class CurrentUser(APIView):
         print(request.user)
         serializer_class = self.get_serializer_class()(request.user)
         return Response(serializer_class.data)
-        
-#class CurrentUser(generics.UpdateAPIView):
-    #queryset = User.objects.all()
-    #serializer_class = ParentUserSerializer
-    
-    #def get_object(self):
-        #return self.request.user(last_login=
 
 class AdminList(generics.ListCreateAPIView):
     serializer_class = UserSerializer
@@ -97,24 +90,14 @@ class EventList(generics.ListCreateAPIView):
         person = identify(device.bus_id, instance.picture.url)
         print(person)
         if person is not None:
-            try:
-                student = Student.objects.get(pk=int(person))
-                instance.student_id = student
-                instance.save()
-            except Exception as e:
-                print("Hit exception.")
-                print(e)
-            try:
-                
-                parents = [student.parent_one.user.email, student.parent_two.user.email]
-                print(parents)
-                subject = 'An Event has Occurred!'
-                message = 'Your child has entered the bus.' if instance.enter else 'Your child has exited the bus.'
-                from_email = 'admin@isrow.net'
-                send_mail(subject, message, from_email, parents,fail_silently=False)
-            except Exception as e:
-                print(e)
-                print("Failed to send email notifications.")
+            student = Student.objects.get(pk=int(person))
+            instance.student_id = student
+            instance.save()
+            parents = [student.parent_one.user.email, student.parent_two.user.email]
+            subject = 'An Event has Occurred!'
+            message = 'Your child has entered the bus.' if instance.enter else 'Your child has exited the bus.'
+            from_email = 'admin@isrow.net'
+            send_mail(subject, message, from_email, parents,fail_silently=True)
             
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
