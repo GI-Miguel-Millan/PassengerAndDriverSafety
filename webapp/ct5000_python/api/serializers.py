@@ -75,7 +75,7 @@ class ParentUserSerializer(serializers.ModelSerializer):
         instance.first_name=validated_data["first_name"]
         instance.last_name=validated_data["last_name"]
         instance.email=validated_data["email"]
-        instance.is_active=validated_data["is_active"]
+        instance.is_active=True
         instance.save()
         parent_data = validated_data.pop('parent')
         parent = Parent.objects.get(user=instance.id)
@@ -136,12 +136,12 @@ class DeviceUserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.username=validated_data["username"]
         instance.password=make_password(validated_data["password"])
-        instance.is_active=validated_data["is_active"]
+        instance.is_active=True
         instance.save()
         device_data = validated_data.pop('device')
         device = Device.objects.get(user=instance)
-        device.bus = device_data["bus"].id
-        device.registered_by=device_data["user"].id
+        device.bus = Bus.objects.get(pk=device_data["bus"].id)
+        device.registered_by=User.objects.get(pk=device_data["user"].id)
         device.save()
         return instance
 
