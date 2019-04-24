@@ -24,10 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'eq)$-^@^eepod5j_ue2x%llr13i^a@jy6lna92mcw#*#0y$03+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
-
+ALLOWED_HOSTS = ['isrow.net','localhost']
 
 # Application definition
 
@@ -81,8 +80,12 @@ WSGI_APPLICATION = 'ct5000_python.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ct5000',
+        'USER': 'ct5000user',
+        'PASSWORD': 'vtPCN2CjURPpRDhb',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -148,7 +151,7 @@ SIMPLE_JWT = {
 
 # Email
 EMAIL_HOST = 'mail.gandi.net'
-EMAIL_PORT = 587
+EMAIL_PORT = 465
 EMAIL_HOST_USER = 'admin@isrow.net'
 EMAIL_HOST_PASSWORD = 'AJ=S7?=Tr7!*hus,'
-EMAIL_USE_TLS = True
+EMAIL_USE_SSL = True
