@@ -7,7 +7,7 @@
     "@material-ui/icons": "^3.0.2",
     "@material-ui/styles": "^3.0.0-alpha.10",
     "apexcharts": "^3.6.6",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "moment": "^2.24.0",
     "package-lock.json": "^1.0.0",
     "package.json": "^2.0.1",
