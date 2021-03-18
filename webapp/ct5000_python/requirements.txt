@@ -9,7 +9,7 @@ djangorestframework-simplejwt==4.0.0
 djoser==1.5.1
 idna==2.8
 Markdown==3.0.1
-Pillow==5.4.1
+Pillow==8.1.1
 PyJWT==1.7.1
 pytz==2018.9
 requests==2.21.0
